@@ -1,0 +1,50 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Афиша — Вместе</title><meta name="description" content="Ближайшие встречи и события молодёжного движения «Вместе» в Перми."><link rel="stylesheet" href="pages.css"></head><body>
+<header class="site-head"><div class="wrap"><a class="logo" href="index.html">Вместе</a><nav><a href="about.html">О нас</a><a href="afisha.html" aria-current="page">Афиша</a><a href="directions.html">Направления</a><a href="experts.html">Эксперты</a><a href="news.html">Новости</a></nav><a class="button" href="index.html#join">Вступить</a></div></header>
+<main><section class="page-hero"><div class="wrap"><h1>Афиша</h1><p class="intro">Выбирай день и приходи. Если никого не знаешь, познакомим на месте.</p></div></section>
+<section class="section"><div class="wrap"><div class="section-head"><h2>Ближайшие встречи</h2><p>Нажми на встречу, чтобы записаться.</p></div><div class="events" id="upcoming"></div></div></section>
+<section class="section soft"><div class="wrap"><div class="calendar-shell"><div class="calendar-main"><div class="calendar-top"><h2 id="calendar-title">Октябрь 2026</h2><div class="month-switch" aria-label="Выбор месяца"><button type="button" data-month="9" aria-pressed="true">Октябрь</button><button type="button" data-month="10" aria-pressed="false">Ноябрь</button></div></div><div class="weekdays" aria-hidden="true"><div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div></div><div class="calendar-grid" id="calendar-grid" aria-labelledby="calendar-title"></div></div><aside class="calendar-detail" id="calendar-detail" aria-live="polite"></aside></div></div></section>
+<section class="section"><div class="wrap split"><div><h2>Предложить встречу</h2></div><div class="copy"><p>Есть тема, опыт или идея формата? Напишите. Вместе уточним задачу, аудиторию и площадку.</p><p><a class="button" href="https://t.me/Paltus10">Написать</a></p></div></div></section></main>
+<footer><div class="wrap"><div class="grid"><div><div class="logo">Вместе</div><p style="margin-top:16px">Молодёжное движение в Перми</p></div><div class="col"><p class="title">Разделы</p><a href="about.html">О нас</a><a href="directions.html">Направления</a><a href="news.html">Новости</a></div><div class="col"><p class="title">Контакты</p><a href="https://t.me/Paltus10">Телеграм</a><p>Пермь, ул. Ленина, 44</p></div></div><div class="copyline">© 2026 «Вместе» · <a href="privacy.html">Политика обработки данных</a></div></div></footer>
+<script src="events.js"></script>
+<script>
+// события берутся из events.js — здесь ничего не заводить
+const calendarEvents={};
+EVENTS.forEach(ev=>ev.dates.forEach(d=>(calendarEvents[d]=calendarEvents[d]||[]).push(ev)));
+const monthNames=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+const grid=document.getElementById('calendar-grid');
+const detail=document.getElementById('calendar-detail');
+const title=document.getElementById('calendar-title');
+let activeMonth=9;
+function keyFor(month,day){return `2026-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`}
+function showDetail(key,button){
+  document.querySelectorAll('.calendar-day.is-active').forEach(el=>el.classList.remove('is-active'));
+  if(button)button.classList.add('is-active');
+  const day=Number(key.slice(-2));const month=Number(key.slice(5,7))-1;const items=calendarEvents[key]||[];
+  detail.innerHTML=`<p class="detail-date">${day} ${MONTHS_GEN[month]}</p><h3>${items.length>1?`${items.length} события`:items[0].title}</h3><div class="detail-list">${items.map(item=>`<div class="detail-event"><time>${item.time}</time>${items.length>1?`<h4>${item.title}</h4>`:''}<p>${item.text}</p><p>${item.place||DEFAULT_PLACE}</p>${parseDay(key)>=todayStart()?`<a class="button" href="${eventUrl(item)}">${regNotOpenYet(item)?'Подробнее':item.action}</a>${regNotOpenYet(item)?`<p>Регистрация откроется ${fmtOpens(item)}</p>`:''}`:'<p>Прошло</p>'}</div>`).join('')}</div><p class="calendar-note">На телефоне нажмите на выделенный день, чтобы открыть подробности.</p>`;
+}
+function render(month){
+  activeMonth=month;title.textContent=`${monthNames[month]} 2026`;
+  document.querySelectorAll('[data-month]').forEach(btn=>btn.setAttribute('aria-pressed',String(Number(btn.dataset.month)===month)));
+  const first=(new Date(2026,month,1).getDay()+6)%7;const days=new Date(2026,month+1,0).getDate();grid.innerHTML='';
+  for(let i=0;i<first;i++){const blank=document.createElement('div');blank.className='calendar-day is-empty';grid.append(blank)}
+  let firstEventButton=null;
+  for(let day=1;day<=days;day++){
+    const key=keyFor(month,day);const items=calendarEvents[key];const cell=document.createElement(items?'button':'div');cell.className='calendar-day'+(items?' has-event':'');cell.innerHTML=`<span>${day}</span>${items?`<span class="event-count">${items.length===1?'Событие':`${items.length} события`}</span>`:''}`;
+    if(items){cell.type='button';cell.setAttribute('aria-label',`${day} ${monthNames[month].toLowerCase()}: ${items.length===1?items[0].title:`${items.length} события`}`);cell.addEventListener('mouseenter',()=>showDetail(key,cell));cell.addEventListener('focus',()=>showDetail(key,cell));cell.addEventListener('click',()=>showDetail(key,cell));if(!firstEventButton||(parseDay(firstEventButton.key)<todayStart()&&parseDay(key)>=todayStart()))firstEventButton={key,cell}}
+    grid.append(cell);
+  }
+  while(grid.children.length%7){const blank=document.createElement('div');blank.className='calendar-day is-empty';grid.append(blank)}
+  if(firstEventButton)showDetail(firstEventButton.key,firstEventButton.cell);else detail.innerHTML='<p class="detail-date">Событий пока нет</p>';
+}
+document.querySelectorAll('[data-month]').forEach(btn=>btn.addEventListener('click',()=>render(Number(btn.dataset.month))));
+render(activeMonth);
+// список ближайших встреч: у каждой своя кнопка записи и строка мест
+function renderUpcoming(seats){
+  document.getElementById('upcoming').innerHTML=EVENTS.filter(ev=>openDates(ev).length).map(ev=>{
+    const day=openDates(ev)[0];const soon=regNotOpenYet(ev);
+    const line=ev.dates.length>1&&!soon?'':seatLine(ev,day,seats);
+    return `<a class="event" href="${eventUrl(ev)}"><time>${fmtRange(ev)}<small>${ev.time}</small></time><div><h3>${ev.title}</h3><p class="event-text">${ev.text}</p>${line?`<span class="event-status">${line}</span>`:''}</div><span class="meta place">${ev.place||DEFAULT_PLACE}</span><span class="button">${soon?'Подробнее':ev.action}</span></a>`;
+  }).join('');
+}
+renderUpcoming({});loadSeats().then(renderUpcoming);
+</script></body></html>

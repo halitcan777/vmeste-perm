@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Вместе — молодёжное движение в Перми</title>
+<meta name="description" content="Молодёжное движение в Перми. Своё пространство, пять направлений, встречи с предпринимателями. Открываемся 1 ноября.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Rubik:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f7f1df; --paper-2:#eadfbd; --card:#fffaf0;
+  --ink:#302a23; --muted:#5c5347; --line:#bdb19b;
+  --dark:#382f27; --dark-2:#463a2f; --on-dark:#fffaf0; --on-dark-muted:#d7cab5;
+  --navy:#4f6573; --accent:#efd77b;
+  --container:1440px; --gutter:48px; --section:80px;
+  --r:0;
+  --f-head:'Rubik',Arial,sans-serif; --f-body:'Onest',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font:400 18px/1.55 var(--f-body);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+.wrap{width:100%;max-width:calc(var(--container) + var(--gutter)*2);margin:0 auto;padding:0 var(--gutter)}
+section{padding:var(--section) 0}
+h1,h2,h3{font-family:var(--f-head);font-weight:600;letter-spacing:-.035em;line-height:1.04}
+h2{font-size:clamp(44px,5vw,72px)}
+h3{font-size:22px;line-height:1.25;letter-spacing:-.01em}
+.lead{font-size:22px;line-height:1.45;color:var(--muted);max-width:720px;margin-top:24px}
+.head{margin-bottom:56px}
+.head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-bottom:56px}
+.head-row .lead{margin-top:24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:54px;padding:0 32px;border-radius:0;background:var(--ink);color:#fff;font:700 14px/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;transition:background .2s,color .2s;touch-action:manipulation}
+.btn:hover{background:#665747}
+.btn.light{background:var(--paper);color:var(--ink)}
+.btn.light:hover{background:#fff}
+.link{font-weight:500;border-bottom:1px solid currentColor;padding-bottom:2px;transition:color .2s}
+.link:hover{color:var(--navy)}
+.dark{background:var(--dark);color:var(--on-dark)}
+.dark a:focus-visible,footer a:focus-visible{outline-color:var(--paper)}
+.dark .lead,.dark .muted{color:var(--on-dark-muted)}
+.muted{color:var(--muted)}
+
+/* плёнка: тёплая обработка + зерно */
+.film{position:relative;overflow:hidden;background:#ddd2b7}
+.film img{width:100%;height:100%;object-fit:cover;filter:sepia(.18) saturate(.88) contrast(1.04) brightness(.98)}
+.film::after{display:none}
+
+/* шапка */
+header{position:sticky;top:0;z-index:20;background:rgba(244,243,239,.97);border-bottom:1px solid var(--ink)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:80px}
+.logo{font:700 27px/1 var(--f-head);letter-spacing:-.06em;text-transform:uppercase}
+nav{display:flex;gap:32px;font-size:16px}
+nav a{color:var(--muted);transition:color .2s}
+nav a:hover{color:var(--ink)}
+header .btn{height:44px;padding:0 20px;font-size:16px}
+
+/* герой */
+.hero{position:relative;height:calc(100vh - 80px);min-height:560px;max-height:720px;padding:0;color:var(--ink);background:#fff}
+.hero .film{position:absolute;inset:0 34% 0 0;border-right:1px solid var(--ink);background-image:url('assets/img/hero-rug-v2.jpg');background-size:cover;background-position:center}
+.hero::before{display:none}
+.hero .wrap{position:relative;z-index:2;width:34%;height:100%;margin:0 0 0 auto;padding:64px 48px;display:flex;flex-direction:column;justify-content:flex-end;background:var(--paper-2)}
+.hero h1{font-size:clamp(38px,4vw,64px);max-width:100%}
+.hero p{font-size:20px;margin-top:24px;opacity:1}
+.hero .actions{display:flex;align-items:center;gap:32px;margin-top:40px}
+.hero .link{color:var(--ink)}
+
+/* о нас */
+.about .grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.facts{border-top:1px solid var(--line)}
+.facts div{display:grid;grid-template-columns:200px 1fr;gap:24px;padding:24px 0;border-bottom:1px solid var(--line)}
+.facts b{font:600 20px/1.3 var(--f-head)}
+.about .film{aspect-ratio:4/3;border-radius:var(--r);margin-top:56px}
+
+/* как всё начиналось */
+.beginning{background:var(--card)}
+.beginning .grid{display:grid;grid-template-columns:5fr 7fr;gap:80px;align-items:center}
+.beginning-copy{max-width:520px}
+.beginning-copy p{margin-top:24px;color:var(--muted)}
+.beginning-photos{display:grid;grid-template-columns:7fr 5fr;gap:16px;align-items:end}
+.beginning-photos .film{border-radius:var(--r)}
+.beginning-photos .film:first-child{aspect-ratio:4/3}
+.beginning-photos .film:last-child{aspect-ratio:4/5;margin-bottom:40px}
+
+/* афиша */
+.events{border-top:1px solid var(--line)}
+.event{display:grid;grid-template-columns:160px 1fr 240px 160px;gap:32px;align-items:center;padding:32px 0;border-bottom:1px solid var(--line)}
+.event .date{font:600 32px/1 var(--f-head)}
+.event .date small{display:block;font:400 16px/1.4 var(--f-body);color:var(--muted);margin-top:8px}
+.event .what{font-size:16px;color:var(--muted);margin-top:8px}
+.event .where{font-size:16px;color:var(--muted)}
+.event .link{justify-self:end;font-size:16px}
+
+/* направления */
+.days{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.day{grid-column:span 2}
+.day:nth-child(4),.day:nth-child(5){grid-column:span 3}
+.day .film{aspect-ratio:4/3;border-radius:var(--r)}
+.day:nth-child(4) .film,.day:nth-child(5) .film{aspect-ratio:16/9}
+.day h3{margin-top:24px}
+.day p{font-size:16px;color:var(--muted);margin-top:8px}
+
+/* эксперты */
+.experts{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.expert .slot{aspect-ratio:3/4;border-radius:var(--r);background:var(--dark-2);display:flex;align-items:flex-end;padding:20px;color:var(--on-dark-muted);font-size:16px}
+.expert h3{margin-top:20px}
+.expert p{font-size:16px;margin-top:8px}
+
+/* слово основателей */
+.word .grid{display:grid;grid-template-columns:5fr 7fr;gap:80px;align-items:center}
+.word .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.word .pair .film{aspect-ratio:3/4;border-radius:var(--r)}
+.word blockquote{font:500 36px/1.3 var(--f-head);letter-spacing:-.015em}
+.word cite{display:block;font:400 16px/1.5 var(--f-body);font-style:normal;color:var(--muted);margin-top:32px}
+
+/* принципы */
+.principles{display:grid;grid-template-columns:repeat(2,1fr);gap:0 80px;border-top:1px solid rgba(245,239,228,.18)}
+.principles div{padding:32px 0;border-bottom:1px solid rgba(245,239,228,.18)}
+.principles h3{font-size:24px}
+.principles p{margin-top:8px;font-size:17px}
+
+/* пространство */
+.space .big{aspect-ratio:21/9;border-radius:var(--r)}
+.space .info{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:40px}
+.space .info b{display:block;font:600 20px/1.3 var(--f-head);margin-bottom:8px}
+.space .info span{font-size:17px;color:var(--muted)}
+
+/* как участвовать */
+.ways{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.way{background:var(--card);border-radius:var(--r);padding:32px 24px;display:flex;flex-direction:column;min-height:280px}
+.way p{font-size:16px;color:var(--muted);margin-top:16px;flex:1}
+.way .link{margin-top:24px;align-self:flex-start;font-size:16px}
+
+/* поддержать */
+.support .grid{display:grid;grid-template-columns:7fr 5fr;gap:80px}
+.goal{margin-top:40px}
+.goal .row{display:flex;justify-content:space-between;font-size:17px}
+.goal .row b{font:600 28px/1 var(--f-head)}
+.bar{height:12px;border-radius:6px;background:var(--dark-2);margin-top:16px;overflow:hidden}
+.bar i{display:block;height:100%;width:8%;background:var(--paper)}
+.qr{aspect-ratio:1;max-width:240px;border-radius:var(--r);background:var(--paper);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:16px}
+.wishlist{margin-top:40px;border-top:1px solid rgba(245,239,228,.18)}
+.wishlist div{display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid rgba(245,239,228,.18);font-size:17px}
+.wishlist span{color:var(--on-dark-muted)}
+
+/* партнёры */
+.partners .rows{display:grid;grid-template-columns:auto 1fr;gap:80px;align-items:start}
+.partners .label{font-size:16px;color:var(--muted);margin-bottom:24px}
+.logos{display:flex;align-items:center;gap:56px;flex-wrap:wrap}
+
+/* подвал */
+footer{background:var(--dark);color:var(--on-dark);padding:80px 0 40px}
+footer .grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px}
+footer .logo{font-size:40px}
+footer p,footer a{font-size:16px;color:var(--on-dark-muted)}
+footer a:hover{color:var(--on-dark)}
+footer .col{display:flex;flex-direction:column;gap:8px}
+footer .copy{margin-top:80px;padding-top:24px;border-top:1px solid rgba(245,239,228,.18);font-size:14px;color:var(--on-dark-muted)}
+
+.draft{position:fixed;right:16px;bottom:16px;z-index:30;background:var(--accent);color:var(--ink);font-size:13px;padding:8px 12px;border-radius:6px}
+
+/* фирменная система: деловая структура + масштаб Berghaus */
+section{border-bottom:1px solid var(--ink)}
+.about .film,.beginning-photos .film,.day .film,.word .pair .film,.space .big{border-radius:0}
+.about .grid{grid-template-columns:5fr 7fr}
+.facts{border-top:2px solid var(--ink)}
+.facts div{grid-template-columns:220px 1fr;border-bottom:1px solid var(--ink)}
+.beginning{background:#fff}
+.events{border-top:2px solid var(--ink)}
+.event{grid-template-columns:190px 1fr 220px 150px;border-bottom:1px solid var(--ink)}
+.event .date{font-family:var(--f-head);font-size:36px}
+.days{gap:1px;background:var(--ink);border:1px solid var(--ink)}
+.day{background:var(--paper);padding:0 0 28px}
+.day{min-height:230px;padding:28px;display:flex;flex-direction:column}
+.day h3,.day p{margin-left:24px;margin-right:24px}
+.day h3{margin:0;margin-top:auto}
+.day p{margin:12px 0 0}
+.experts{gap:1px;background:#555;border:1px solid #555}
+.expert{background:var(--dark);padding-bottom:28px}
+.expert h3,.expert p{margin-left:20px;margin-right:20px}
+.expert .slot{border-radius:0;background:#30302d}
+.word blockquote{font-size:clamp(28px,3.1vw,48px);line-height:1.18}
+.principles{gap:0;border-top:2px solid var(--on-dark)}
+.principles div{padding:36px 0;border-bottom:1px solid rgba(255,255,255,.55)}
+.ways{gap:0;border:1px solid var(--ink)}
+.way{border-radius:0;border-right:1px solid var(--ink);background:transparent;min-height:320px}
+.way:last-child{border-right:0}
+.partners{background:#fff}
+.draft{border-radius:0;text-transform:uppercase;font-weight:700;letter-spacing:.04em}
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--ink)}
+.news-card{display:flex;flex-direction:column;min-height:330px;padding:28px;border-right:1px solid var(--ink)}
+.news-card:last-child{border-right:0}
+.news-card time,.news-card .rubric{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.news-card .rubric{margin-top:auto;color:var(--accent)}
+.news-card h3{margin-top:40px;font-size:25px}
+.news-card .link{align-self:flex-start;margin-top:24px}
+.socials{background:var(--paper-2)}
+.social-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--ink)}
+.social-card{min-height:230px;padding:32px;border-right:1px solid var(--ink);display:flex;flex-direction:column}
+.social-card:last-child{border-right:0}
+.social-card h3{font-size:28px}
+.social-card p{margin-top:18px;max-width:320px}
+.social-card .link{margin-top:auto;align-self:flex-start}
+.week-list{border-top:1px solid var(--ink)}
+.week-list a{display:grid;grid-template-columns:72px 280px 1fr;gap:32px;align-items:center;padding:24px 0;border-bottom:1px solid var(--ink)}
+.week-list b{font-size:15px;text-transform:uppercase}
+.week-list strong{font:600 22px/1.25 var(--f-head)}
+.week-list span{color:var(--muted)}
+.week-list a:hover strong{color:#75622e}
+.join-direct{display:grid;grid-template-columns:5fr 7fr;gap:80px;align-items:start}
+.join-direct>div>p:first-child{max-width:650px;font-size:22px;line-height:1.55}
+.join-links{display:flex;align-items:center;gap:28px;margin-top:32px}
+.home-news{border-top:1px solid var(--ink)}
+.home-news a{display:grid;grid-template-columns:160px 1fr 180px;gap:32px;padding:32px 0;border-bottom:1px solid var(--ink);align-items:start}
+.home-news time,.home-news span{font-size:14px;font-weight:600}
+.home-news strong{font:600 24px/1.25 var(--f-head)}
+.home-news span{text-align:right;color:var(--muted)}
+.social-links{border-top:1px solid var(--ink)}
+.social-links>a,.social-links>div{display:grid;grid-template-columns:240px 1fr 120px;gap:32px;padding:24px 0;border-bottom:1px solid var(--ink);align-items:center}
+.social-links strong{font:600 24px/1.2 var(--f-head)}
+.social-links span{color:var(--muted)}
+.social-links b{text-align:right;font-size:14px}
+
+@media (max-width:1100px){
+  nav{display:none}
+  .event{grid-template-columns:120px 1fr 140px}
+  .event .where{display:none}
+  .experts,.ways{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:800px){
+  :root{--gutter:16px;--section:64px}
+  h2{font-size:34px}
+  .lead{font-size:19px}
+  .hero{height:auto;min-height:0;display:flex;flex-direction:column;padding:0}
+  .hero .film{position:relative;inset:auto;width:100%;height:62vw;min-height:250px;border-right:0;border-bottom:1px solid var(--ink)}
+  .hero .wrap{width:100%;height:auto;margin:0;padding:40px 16px 48px;background:var(--paper-2)}
+  .hero h1{font-size:38px}
+  .hero p{font-size:19px}
+  .about .grid,.beginning .grid,.word .grid,.support .grid,.partners .rows{grid-template-columns:1fr;gap:40px}
+  .beginning-photos{grid-template-columns:3fr 2fr}
+  .facts div{grid-template-columns:1fr;gap:8px}
+  .event{grid-template-columns:1fr;gap:8px;padding:24px 0}
+  .event .link{justify-self:start;margin-top:8px}
+  .days{grid-template-columns:1fr}
+  .day,.day:nth-child(4),.day:nth-child(5){grid-column:auto}
+  .day:nth-child(4) .film,.day:nth-child(5) .film{aspect-ratio:4/3}
+  .experts,.ways{grid-template-columns:1fr 1fr;gap:1px}
+  .word blockquote{font-size:26px}
+  .principles{grid-template-columns:1fr}
+  .space .big{aspect-ratio:4/3}
+  .space .info{grid-template-columns:1fr;gap:24px}
+  .head-row{flex-direction:column;align-items:flex-start;gap:24px}
+  .news-grid,.social-grid{grid-template-columns:1fr}
+  .news-card,.social-card{border-right:0;border-bottom:1px solid var(--ink)}
+  .news-card:last-child,.social-card:last-child{border-bottom:0}
+  footer .grid{grid-template-columns:1fr}
+  header .btn{height:40px;padding:0 16px}
+  .logos{gap:32px}
+  .week-list a,.home-news a,.social-links>a,.social-links>div{grid-template-columns:1fr;gap:8px}
+  .home-news span,.social-links b{text-align:left}
+  .join-direct{grid-template-columns:1fr;gap:24px}
+}
+@media (max-width:520px){
+  .experts,.ways{grid-template-columns:1fr}
+  .way{border-right:0;border-bottom:1px solid var(--ink)}
+  .way:last-child{border-bottom:0}
+  .hero h1{font-size:32px}
+}
+</style>
+<link rel="stylesheet" href="editorial.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="index.html">Вместе</a>
+    <nav>
+      <a href="about.html">О нас</a><a href="afisha.html">Афиша</a><a href="directions.html">Направления</a><a href="experts.html">Эксперты</a><a href="news.html">Новости</a><a href="#join">Участвовать</a>
+    </nav>
+    <a class="btn" href="#join">Вступить</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="film" aria-hidden="true"></div>
+  <div class="wrap">
+    <h1>Место в Перми, куда можно прийти одному</h1>
+    <p>Встречи, проекты и обычные вечера для людей от 18 лет. Ленина, 44. Участие бесплатное.</p>
+    <div class="actions"><a class="btn light" href="#join">Вступить</a><a class="link" href="#afisha">Афиша</a></div>
+  </div>
+</section>
+
+<section id="about" class="about">
+  <div class="wrap grid">
+    <div>
+      <h2>Здесь знакомятся и начинают делать</h2>
+      <p class="lead">Мы с Ильёй сняли помещение в центре Перми и собираем вокруг него людей. Можно прийти на встречу, найти команду или просто провести вечер не одному.</p>
+    </div>
+    <div class="facts">
+      <div><b>Своё пространство</b><span class="muted">Зал на 30 человек в центре города, обустраиваем его сами.</span></div>
+      <div><b>Пять направлений</b><span class="muted">Каждый будний вечер свой формат: от профориентации до пятницы для своих.</span></div>
+      <div><b>Бесплатно</b><span class="muted">Для участников вход свободный. Мы держимся на партнёрах и благодарности.</span></div>
+    </div>
+    <figure class="home-spread"><img src="assets/img/real_empty.jpg" alt="Зал пространства на Ленина, 44"><figcaption><span>01</span> Ленина, 44 · помещение до обустройства</figcaption></figure>
+  </div>
+</section>
+
+<section id="afisha" style="background:var(--paper-2)">
+  <div class="wrap">
+    <div class="head-row">
+      <div><h2>Афиша</h2><p class="lead">Ближайшие встречи. Приходите, даже если никого не знаете.</p></div>
+      <a class="link" href="afisha.html">Вся афиша</a>
+    </div>
+    <div class="events">
+      <div class="event"><div class="date">8–18<small>октября</small></div><div><h3>Обустраиваем зал</h3><p class="what">Красим, реставрируем мебель, раскладываем ковёр</p></div><div class="where">Ленина, 44</div><a class="link" href="event.html?id=obustroystvo">Помочь</a></div>
+      <div class="event"><div class="date">24<small>октября, 19:00</small></div><div><h3>Знакомство с командой</h3><p class="what">Неофициальная встреча до открытия</p></div><div class="where">Ленина, 44</div><a class="link" href="event.html?id=znakomstvo">Записаться</a></div>
+      <div class="event"><div class="date">1<small>ноября</small></div><div><h3>Открытие «Вместе»</h3><p class="what">Первый официальный вечер</p></div><div class="where">Ленина, 44</div><a class="link" href="event.html?id=otkrytie">Записаться</a></div>
+    </div>
+  </div>
+</section>
+
+<section id="days">
+  <div class="wrap">
+    <div class="head-row"><div><h2>Неделя во «Вместе»</h2><p class="lead">У каждого вечера свой повод прийти.</p></div><a class="link" href="directions.html">Подробнее</a></div>
+    <div class="week-list">
+      <a href="directions.html"><b>Пн</b><strong>Профориентация</strong><span>Пробуем профессии и разбираемся, что подходит</span></a>
+      <a href="directions.html"><b>Вт</b><strong>Общение</strong><span>Чай и разговоры без обязательной программы</span></a>
+      <a href="directions.html"><b>Ср</b><strong>Бизнес</strong><span>Встречи с предпринимателями</span></a>
+      <a href="directions.html"><b>Чт</b><strong>Проекты</strong><span>Собираем команды вокруг идей</span></a>
+      <a href="directions.html"><b>Пт</b><strong>Для своих</strong><span>Кино, музыка и настольные игры</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="join" style="background:var(--paper-2)">
+  <div class="wrap">
+    <div class="join-direct"><h2>Можно просто прийти</h2><div><p>Не нужно готовить проект или доказывать, что ты полезен. Выбери встречу в афише. Если хочется помогать с запуском, заходи в рабочий чат.</p><p class="join-links"><a class="btn" href="afisha.html">Выбрать встречу</a><a class="link" href="https://t.me/+Bs7x5h7SbtI4NWQy">Войти в чат</a></p></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head-row">
+      <div><h2>Новости</h2><p class="lead">Как растёт пространство, кто к нам приходит и что делают участники.</p></div>
+      <a class="link" href="news.html">Все новости</a>
+    </div>
+    <div class="home-news">
+      <a href="news.html#start"><time datetime="2026-10-06">6 октября</time><strong>Начинаем собирать пространство «Вместе»</strong><span>Пространство</span></a>
+      <a href="news.html#meeting"><time datetime="2026-10-05">5 октября</time><strong>Что решили после первой встречи с экспертами</strong><span>Люди</span></a>
+      <a href="news.html#week"><time datetime="2026-10-04">4 октября</time><strong>Пять вечеров: как будет устроена неделя</strong><span>Направления</span></a>
+    </div>
+    <div class="editorial-strip" aria-label="Дневник пространства"><figure><img src="assets/img/18_1928.jpg" alt="Деталь помещения"><figcaption>Дневник запуска · 01</figcaption></figure><figure><img src="assets/img/19_1929.jpg" alt="Мебель для пространства"><figcaption>Собираем интерьер · 02</figcaption></figure><figure><img src="assets/img/20_1930.jpg" alt="Работа в помещении"><figcaption>Работаем своими руками · 03</figcaption></figure></div>
+  </div>
+</section>
+
+<section class="socials">
+  <div class="wrap">
+    <div class="head"><h2>Мы в соцсетях</h2><p class="lead" style="color:var(--ink)">Новости запуска, приглашения на встречи и жизнь пространства.</p></div>
+    <div class="social-links">
+      <a href="https://t.me/Paltus10"><strong>Телеграм</strong><span>Новости и ближайшие встречи</span><b>Открыть</b></a>
+      <a href="https://t.me/+Bs7x5h7SbtI4NWQy"><strong>Рабочий чат</strong><span>Обустройство зала и задачи команды</span><b>Вступить</b></a>
+      <div><strong>ВКонтакте</strong><span>Страница ещё не открыта</span><b>Скоро</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="partners">
+  <div class="wrap rows">
+    <div><p class="label">Сотрудничаем с</p><img src="assets/logos/deloros_original.png" alt="Деловая Россия" style="height:72px"></div>
+    <div><p class="label">Привлекаем ребят из</p><div class="logos"><img src="assets/logos/pgniu_ink.png" alt="ПГНИУ" style="height:88px"><img src="assets/logos/hse_ink.png" alt="ВШЭ Пермь" style="height:36px"><img src="assets/logos/pnipu_ink.png" alt="Пермский политех" style="height:52px"></div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="grid">
+      <div><div class="logo">Вместе</div><p style="margin-top:16px;max-width:360px">Молодёжное движение в Перми</p></div>
+      <div class="col"><p style="color:var(--on-dark)">Разделы</p><a href="about.html">О нас</a><a href="afisha.html">Афиша</a><a href="news.html">Новости</a></div>
+      <div class="col"><p style="color:var(--on-dark)">Адрес</p><p>Пермь, ул. Ленина, 44</p></div>
+    </div>
+    <div class="copy">© 2026 «Вместе»</div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Запись на встречу — Вместе</title><meta name="description" content="Запись на встречу молодёжного движения «Вместе» в Перми."><link rel="stylesheet" href="pages.css"></head><body class="event-page">
+<header class="site-head"><div class="wrap"><a class="logo" href="index.html">Вместе</a><nav><a href="about.html">О нас</a><a href="afisha.html" aria-current="page">Афиша</a><a href="directions.html">Направления</a><a href="experts.html">Эксперты</a><a href="news.html">Новости</a></nav><a class="button" href="index.html#join">Вступить</a></div></header>
+<main>
+
+<!-- 1. Шапка события: дата, время, название -->
+<section class="page-hero"><div class="wrap">
+  <div><p class="event-when" id="ev-when"></p><h1 id="ev-title">Встреча</h1></div>
+  <p class="intro" id="ev-text"></p>
+</div></section>
+
+<!-- 2. Подробности слева, форма справа -->
+<section class="section"><div class="wrap split">
+  <div>
+    <div class="facts" id="ev-facts"></div>
+    <div class="copy" id="ev-about"></div>
+    <p class="back-link"><a class="text-link" href="afisha.html">Вся афиша</a></p>
+  </div>
+
+  <div id="reg">
+    <h2 id="reg-title">Записаться</h2>
+    <p class="seat-line" id="seat-line" hidden></p>
+
+    <!-- запись ещё не открыта -->
+    <div class="reg-soon" id="reg-soon" hidden>
+      <p class="intro" id="soon-text"></p>
+      <p class="done-actions"><a class="button" id="soon-ics" download="vmeste-registration.ics">Напомнить в календаре</a><a class="text-link" href="afisha.html">Другие встречи</a></p>
+    </div>
+
+    <form class="reg-form" id="reg-form" novalidate hidden>
+      <label class="field" id="day-field" hidden><span>Какой день</span><select name="day" id="day-select"></select></label>
+      <label class="field"><span>Имя</span><input name="name" autocomplete="given-name" required maxlength="80"></label>
+      <label class="field"><span>Телефон</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+7" maxlength="20"></label>
+      <label class="field"><span>Сколько вас придёт</span><select name="people"><option value="1">Только я</option><option value="2">Я и ещё один</option><option value="3">Я и ещё двое</option></select></label>
+      <label class="field"><span>Откуда узнали</span><select name="heard"><option value="">Выберите</option><option>От друзей</option><option>Телеграм</option><option>Вуз</option><option>Деловая Россия</option><option>Другое</option></select></label>
+      <label class="field"><span>Вопрос или пожелание <small>необязательно</small></span><textarea name="comment" rows="3" maxlength="500"></textarea></label>
+      <!-- ловушка для ботов: люди это поле не видят -->
+      <label class="hp" aria-hidden="true">Сайт<input name="website" tabindex="-1" autocomplete="off"></label>
+      <label class="check"><input type="checkbox" name="consent" required><span>Согласен на обработку персональных данных по <a class="text-link" href="privacy.html" target="_blank">политике</a></span></label>
+      <p class="form-note">Место закрепляется после подтверждения в Телеграме, это один шаг.</p>
+      <p class="form-error" id="form-error" role="alert" hidden></p>
+      <button class="button" type="submit" id="reg-submit">Записаться</button>
+    </form>
+
+    <!-- шаг 2: подтвердить в Телеграме -->
+    <div class="reg-confirm" id="reg-confirm" hidden>
+      <p class="intro" id="confirm-text"></p>
+      <p class="done-actions"><a class="button" id="tg-confirm" target="_blank" rel="noopener">Подтвердить в Телеграме</a></p>
+      <p class="form-note">Откроется наш бот, нажми «Старт». Без подтверждения место освободится через 15 минут. Бот напомнит о встрече за день, а если планы поменяются, там же можно отменить запись.</p>
+    </div>
+
+    <!-- запись закрыта / событие прошло / не найдено -->
+    <div class="reg-closed" id="reg-closed" hidden>
+      <p class="intro" id="closed-text"></p>
+      <p><a class="button" href="afisha.html">Выбрать другую встречу</a></p>
+    </div>
+  </div>
+</div></section>
+</main>
+<footer><div class="wrap"><div class="grid"><div><div class="logo">Вместе</div><p style="margin-top:16px">Молодёжное движение в Перми</p></div><div class="col"><p class="title">Разделы</p><a href="about.html">О нас</a><a href="afisha.html">Афиша</a><a href="news.html">Новости</a></div><div class="col"><p class="title">Контакты</p><a href="https://t.me/Paltus10">Телеграм</a><p>Пермь, ул. Ленина, 44</p></div></div><div class="copyline">© 2026 «Вместе» · <a href="privacy.html">Политика обработки данных</a></div></div></footer>
+
+<script src="events.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+const ev = eventById(params.get('id'));
+const source = params.get('from') || params.get('utm_source') || (document.referrer ? new URL(document.referrer).hostname : 'прямой заход');
+const $ = id => document.getElementById(id);
+const show = id => { ['reg-soon','reg-form','reg-confirm','reg-closed'].forEach(x => $(x).hidden = x !== id); };
+let seats = {};
+
+function closed(text){ show('reg-closed'); $('closed-text').textContent = text; }
+
+function currentDay(){ return ev.dates.length > 1 ? $('day-select').value : ev.dates[0]; }
+
+// Строка «записались / осталось» и текст кнопки под выбранный день
+function refreshSeats(){
+  const line = seatLine(ev, currentDay(), seats);
+  $('seat-line').textContent = line; $('seat-line').hidden = !line;
+  const s = seats[`${ev.id}|${currentDay()}`];
+  const full = ev.capacity && s && s.taken >= ev.capacity;
+  $('reg-submit').textContent = full ? 'В лист ожидания' : ev.action === 'Помочь' ? 'Записаться помогать' : 'Записаться';
+}
+
+/* .ics: событие или напоминание об открытии записи */
+function ics(summary, dtLine, uid){
+  const text = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Vmeste//RU','BEGIN:VEVENT', `UID:${uid}@vmeste`, dtLine,
+    `SUMMARY:${summary}`, `LOCATION:${ev.place || DEFAULT_PLACE}`, `URL:${location.href.split('#')[0]}`, 'END:VEVENT','END:VCALENDAR'].join('\r\n');
+  return URL.createObjectURL(new Blob([text], { type: 'text/calendar' }));
+}
+
+async function init(){
+  if (!ev) {
+    $('ev-title').textContent = 'Встреча не найдена';
+    $('ev-text').textContent = 'Возможно, ссылка устарела. Все ближайшие встречи в афише.';
+    $('reg-title').hidden = true; closed(''); return;
+  }
+  document.title = `${ev.title} — Вместе`;
+  $('ev-when').textContent = `${fmtRange(ev)} · ${ev.time}`;
+  $('ev-title').textContent = ev.title;
+  $('ev-text').textContent = ev.text;
+  $('reg-title').textContent = ev.action === 'Помочь' ? 'Записаться помогать' : 'Записаться';
+
+  const facts = [['Когда', `${fmtRange(ev)}, ${ev.time.toLowerCase()}`], ['Где', ev.place || DEFAULT_PLACE], ['Вход', 'Бесплатно']];
+  if (ev.capacity) facts.push(['Мест', `${ev.capacity}${ev.dates.length > 1 ? ' в день' : ''}`]);
+  $('ev-facts').innerHTML = facts.map(([k, v]) => `<div class="fact"><strong>${k}</strong><p>${v}</p></div>`).join('');
+  $('ev-about').innerHTML = (ev.about || []).map(p => `<p>${p}</p>`).join('');
+
+  const days = openDates(ev);
+  if (!days.length) return closed('Эта встреча уже прошла. Посмотри ближайшие в афише.');
+
+  if (regNotOpenYet(ev)) {
+    show('reg-soon');
+    $('reg-title').textContent = 'Запись скоро';
+    $('soon-text').textContent = 'Добавь напоминание в календарь, чтобы не пропустить. Страница сама откроет запись, когда придёт время.';
+    const o = new Date(regOpensAt(ev).getTime() + 5 * 3600e3), pad = n => String(n).padStart(2, '0');
+    $('soon-ics').href = ics(`Открылась запись: ${ev.title}`, `DTSTART;TZID=Asia/Yekaterinburg:${o.getUTCFullYear()}${pad(o.getUTCMonth()+1)}${pad(o.getUTCDate())}T${pad(o.getUTCHours())}${pad(o.getUTCMinutes())}00`, `${ev.id}-open`);
+    $('seat-line').textContent = seatLine(ev, days[0], {}); $('seat-line').hidden = false;
+    // страница сама откроет форму, когда время придёт
+    setTimeout(() => location.reload(), Math.min(regOpensAt(ev) - new Date() + 1000, 2 ** 31 - 1));
+    return;
+  }
+
+  show('reg-form');
+  if (ev.dates.length > 1) {
+    $('day-field').hidden = false;
+    $('day-select').innerHTML = days.map(d => `<option value="${d}">${fmtDay(d)}</option>`).join('');
+    $('day-select').addEventListener('change', refreshSeats);
+  }
+  refreshSeats();
+  seats = await loadSeats();
+  refreshSeats();
+}
+init();
+
+$('reg-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const f = e.target, err = $('form-error');
+  err.hidden = true;
+  if (!f.name.value.trim() || f.phone.value.replace(/\D/g, '').length < 10) { err.textContent = 'Укажи имя и телефон.'; err.hidden = false; return; }
+  if (!f.consent.checked) { err.textContent = 'Нужно согласие на обработку данных.'; err.hidden = false; return; }
+  if (f.website.value) return; // бот
+
+  if (!REG_ENDPOINT || !BOT_USERNAME) { // сервер ещё не подключён — не теряем человека
+    err.innerHTML = `Онлайн-запись скоро заработает. Пока напиши нам в <a class="text-link" href="${CONTACT_TG}">Телеграм</a>.`;
+    err.hidden = false; return;
+  }
+
+  const day = currentDay();
+  // токен создаём здесь: даже если ответ сервера не прочитается, ссылка на подтверждение будет
+  const token = Array.from(crypto.getRandomValues(new Uint8Array(12)), b => 'abcdefghijkmnpqrstuvwxyz23456789'[b % 32]).join('');
+  const btn = $('reg-submit'); btn.disabled = true; btn.textContent = 'Отправляем…';
+  const body = new URLSearchParams({
+    event_id: ev.id, event_title: ev.title, time: ev.time, day, token,
+    name: f.name.value.trim(), phone: f.phone.value.trim(),
+    people: f.people.value, heard: f.heard.value, comment: f.comment.value.trim(),
+    source, page: location.href, website: f.website.value
+  });
+
+  let res = { status: 'pending', token };
+  try {
+    const r = await fetch(REG_ENDPOINT, { method: 'POST', body });
+    try { res = await r.json(); } catch (_) {}
+  } catch (_) {
+    try { await fetch(REG_ENDPOINT, { method: 'POST', mode: 'no-cors', body }); } // ответ не прочитать, но заявка уйдёт
+    catch (__) {
+      err.innerHTML = `Не получилось отправить. Проверь интернет или напиши в <a class="text-link" href="${CONTACT_TG}">Телеграм</a>.`;
+      err.hidden = false; btn.disabled = false; refreshSeats(); return;
+    }
+  }
+
+  if (res.status === 'closed' || res.status === 'notopen') { btn.disabled = false; refreshSeats(); err.textContent = res.message || 'Запись на этот день закрыта.'; err.hidden = false; return; }
+
+  const waitlist = res.status === 'waitlist';
+  show('reg-confirm');
+  $('reg-title').textContent = 'Последний шаг';
+  $('confirm-text').textContent = res.status === 'duplicate'
+    ? `С этим номером уже есть запись на ${fmtDay(day)}. Подтверди её в Телеграме, если ещё не сделал.`
+    : waitlist
+      ? `Мест на ${fmtDay(day)} уже нет, ты в листе ожидания. Подтверди в Телеграме: если место освободится, бот сразу напишет.`
+      : `Держим для тебя место на ${fmtDay(day)}. Подтверди его в Телеграме.`;
+  $('tg-confirm').href = `https://t.me/${BOT_USERNAME}?start=${res.token || token}`;
+});
+</script>
+</body></html>
