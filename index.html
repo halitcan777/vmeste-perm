@@ -5,245 +5,346 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Вместе. Молодёжное движение в Перми</title>
 <meta name="description" content="Молодёжное движение в Перми. Своё пространство на Ленина, 44, пять вечеров в неделю, встречи с предпринимателями. Открываемся 1 ноября.">
-<link rel="stylesheet" href="y2k.css">
+<link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="brand.css">
 <style>
 /* герой */
-.hero{position:relative;padding:clamp(28px,4vw,56px) 0 clamp(56px,7vw,96px);overflow:hidden;border-bottom:2px solid var(--ink)}
-.hero-tags{display:flex;flex-wrap:wrap;gap:8px}
-.hero .y-chrome{margin:clamp(20px,3vw,36px) 0 clamp(24px,3vw,40px);white-space:nowrap}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(24px,4vw,64px);align-items:end}
-.hero h1{font:700 clamp(26px,3vw,42px)/1.1 var(--f-display);letter-spacing:-.035em;max-width:640px}
-.hero p{margin-top:16px;font-size:clamp(17px,1.5vw,20px);color:var(--ink-2);max-width:520px}
-.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
-.hero .s1{top:9%;right:8%;width:46px;height:46px}
-.hero .s2{top:44%;left:47%;width:22px;height:22px;animation-delay:.9s;color:var(--pink)}
-.hero .s3{bottom:12%;left:3%;width:30px;height:30px;animation-delay:1.6s;color:var(--blue)}
-.hero .s4{top:30%;right:30%;width:16px;height:16px;animation-delay:.4s}
+.hero{position:relative;padding:clamp(28px,4vw,52px) 0 clamp(64px,8vw,112px);overflow:hidden}
+.hero .b-wrap{position:relative;z-index:2}
+.hero-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.hero-tags .b-pill:nth-child(1){rotate:-3deg}.hero-tags .b-pill:nth-child(3){rotate:3deg}
+.hero-word{display:block;width:min(100%,1000px);margin:clamp(10px,2vw,22px) auto 0;color:var(--blue)}
+.hero-word svg{display:block;width:100%;height:auto;overflow:visible;
+  filter:drop-shadow(.13vw .13vw 0 var(--red)) drop-shadow(.13vw .13vw 0 var(--red)) drop-shadow(.13vw .13vw 0 var(--red)) drop-shadow(.13vw .13vw 0 var(--red)) drop-shadow(.13vw .13vw 0 var(--red))}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(32px,5vw,80px);align-items:center;margin-top:clamp(28px,3.4vw,48px)}
+.hero h1{font:900 clamp(32px,3.8vw,58px)/1.08 var(--f-display);letter-spacing:-.02em;text-transform:uppercase;max-width:680px}
+.hero h1 mark{display:inline-block;background:var(--green);color:var(--beige);padding:.06em .22em .02em;border-radius:.24em;rotate:-2deg}
+.hero-sub{margin-top:18px;font-size:clamp(17px,1.4vw,20px);color:var(--ink-2);max-width:540px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
 
-/* таймер */
-.lcd{background:#0d0f1c;border:2px solid var(--ink);border-radius:8px;padding:18px 16px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
-.lcd div{display:flex;flex-direction:column;gap:10px}
-.lcd b{font:400 clamp(22px,2.6vw,34px)/1 var(--f-pixel);color:var(--lime);text-shadow:0 0 12px rgba(200,255,46,.55);font-variant-numeric:tabular-nums}
-.lcd span{font:400 8px/1 var(--f-pixel);color:#8f94b8;text-transform:uppercase}
-.load{margin-top:18px}
-.load-top{display:flex;justify-content:space-between;font:400 9px/1 var(--f-pixel);margin-bottom:8px}
-.load-bar{height:22px;border:2px solid var(--ink);border-radius:5px;background:#fff;padding:2px;overflow:hidden}
-.load-bar i{display:block;height:100%;background:repeating-linear-gradient(90deg,#2fd35a 0 12px,transparent 12px 15px);transition:width .6s}
-.timer-note{margin-top:16px;font-size:14px;color:var(--ink-2)}
+/* таймер-билет */
+.count{position:relative;background:var(--blue);color:var(--beige);border:2px solid var(--ink);border-radius:var(--r);padding:clamp(22px,2.4vw,32px);box-shadow:8px 8px 0 var(--ink);rotate:1.6deg}
+.count-top{font:900 clamp(18px,1.6vw,22px)/1 var(--f-display);text-transform:uppercase;letter-spacing:.01em;margin-bottom:18px;padding-right:84px}
+.lcd{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.lcd div{background:var(--beige);color:var(--ink);border-radius:16px;padding:14px 4px 11px;text-align:center}
+.lcd b{display:block;font:900 clamp(30px,3.4vw,50px)/1 var(--f-display);font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.lcd span{display:block;margin-top:7px;font:800 11px/1 var(--f-display);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
+.load{margin-top:20px}
+.load-top{display:flex;justify-content:space-between;font:800 12px/1 var(--f-display);text-transform:uppercase;letter-spacing:.05em;margin-bottom:9px}
+.load-bar{height:18px;border-radius:999px;background:rgba(255,244,226,.16);border:2px solid var(--beige);overflow:hidden}
+.load-bar i{display:block;height:100%;background:repeating-linear-gradient(-45deg,var(--green) 0 9px,#7aa244 9px 18px);transition:width .6s}
+.timer-note{margin-top:14px;font-size:15px;color:rgba(255,244,226,.82)}
+.burst-badge{position:absolute;top:-38px;right:-22px;width:112px;aspect-ratio:1;display:grid;place-items:center;color:var(--red);rotate:12deg;animation:b-float 4s ease-in-out infinite alternate}
+.burst-badge svg{position:absolute;inset:0;width:100%;height:100%}
+.burst-badge span{position:relative;color:var(--beige);font:900 13px/1 var(--f-display);text-transform:uppercase;text-align:center}
+.burst-badge b{display:block;font-size:34px;line-height:.9}
+
+/* приходи, чтобы */
+.why{text-align:center;overflow:hidden}
+.why .b-h2{position:relative;z-index:2}
+.cloud{position:relative;z-index:2;list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(12px,1.4vw,18px) clamp(10px,1.6vw,22px);max-width:1100px;margin:clamp(30px,4vw,52px) auto 0}
+.cloud li{font:900 clamp(18px,2.4vw,34px)/1 var(--f-display);text-transform:uppercase;padding:.5em 1em;border-radius:999px;border:2px solid var(--beige);background:var(--blue);color:var(--beige);rotate:-3deg;transition:rotate .2s,transform .2s}
+.cloud li:nth-child(2n){rotate:2.5deg}.cloud li:nth-child(3n){rotate:-1deg}
+.cloud li:hover{rotate:0deg;transform:scale(1.05)}
+.cloud .red{background:var(--red)}.cloud .green{background:var(--green)}.cloud .beige{background:var(--beige);color:var(--ink)}
 
 /* о нас */
-.about .y-h2{font-size:clamp(32px,4vw,56px)}
-.about-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:start}
-.facts{display:grid;gap:12px;margin-top:28px}
-.fact{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;padding:16px;border:2px solid var(--ink);border-radius:12px;background:#fff}
-.fact .y-tag{margin-top:2px}
-.fact b{display:block;font:700 18px/1.2 var(--f-display);letter-spacing:-.02em;margin-bottom:4px}
-.fact span{color:var(--ink-2);font-size:15px}
-.photo .y-win-body{padding:0}
-.photo img{width:100%;aspect-ratio:4/3;object-fit:cover}
-.photo figcaption{padding:10px 14px;font:400 9px/1.5 var(--f-pixel);border-top:2px solid var(--ink);background:var(--bg-2)}
+.about{overflow-x:clip}
+.about-head{text-align:center}
+.ah{position:relative;display:inline-block;padding:0 clamp(0px,2vw,24px)}
+.ah .b-pill{position:absolute;z-index:2;font-size:clamp(12px,1.1vw,15px);padding:12px 20px;box-shadow:0 3px 0 var(--ink)}
+.ah .p1{left:-5%;top:-26%;rotate:-7deg}.ah .p2{right:-3%;top:-30%;rotate:6deg}.ah .p3{right:8%;bottom:-34%;rotate:-4deg}
+.about-head .b-lead{margin:clamp(64px,6vw,80px) auto 0;text-align:center}
+.about-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(32px,5vw,72px);align-items:center;margin-top:clamp(48px,6vw,80px)}
+.collage{position:relative;min-height:clamp(360px,40vw,540px)}
+.ph{position:absolute;margin:0;background:var(--card);padding:10px 10px 44px;border:2px solid var(--ink);box-shadow:6px 6px 0 var(--ink)}
+.ph img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.ph figcaption{position:absolute;left:14px;right:14px;bottom:12px;font:600 14px/1.2 var(--f-body);color:var(--ink-2)}
+.ph::before{content:'';position:absolute;z-index:2;top:-15px;left:50%;width:120px;height:30px;translate:-50% 0;background:rgba(127,25,62,.82)}
+.ph.one{left:0;top:2%;width:64%;rotate:-4deg}.ph.one::before{rotate:-4deg}
+.ph.two{right:0;bottom:0;width:60%;rotate:3.5deg}.ph.two::before{background:rgba(92,128,45,.85);rotate:5deg}
+.ph .b-pill{position:absolute;z-index:3;top:18px;left:-14px;rotate:-8deg}
+.ph.two .b-pill{left:auto;right:-12px;rotate:7deg}
+.facts{display:grid;gap:14px}
+.fact{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;padding:24px;border-radius:var(--r);background:var(--blue);color:var(--beige);transition:transform .2s}
+.fact:nth-child(2){background:var(--red);rotate:1deg}.fact:nth-child(3){background:var(--green);rotate:-1deg}
+.fact:hover{transform:translateX(-6px)}
+.fact .n{font:900 44px/.9 var(--f-display);letter-spacing:-.04em}
+.fact b{display:block;font:900 22px/1.05 var(--f-display);text-transform:uppercase;margin-bottom:8px}
+.fact span{font-size:16px;opacity:.9}
 
-/* афиша */
-.ev{display:grid;grid-template-columns:132px minmax(0,1fr) auto;gap:20px;align-items:center;padding:16px 0;border-bottom:2px dashed #b9bdd6}
-.ev:last-child{border-bottom:0}
-.ev-date{height:88px;border:2px solid var(--ink);border-radius:10px;background:var(--chrome);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px}
-.ev-date b{font:900 26px/1 var(--f-display);letter-spacing:-.04em}
-.ev-date small{font:400 8px/1.4 var(--f-pixel);margin-top:6px;text-transform:uppercase}
-.ev h3{font:700 clamp(18px,1.8vw,24px)/1.15 var(--f-display);letter-spacing:-.03em}
-.ev p{color:var(--ink-2);font-size:15px;margin-top:6px}
-.ev-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.ev-empty{padding:12px 0;color:var(--ink-2)}
+/* афиша: билеты */
+.tickets{display:grid;gap:18px}
+.tk{display:grid;grid-template-columns:180px minmax(0,1fr) auto;border:2px solid var(--ink);border-radius:var(--r);background:var(--card);box-shadow:6px 6px 0 var(--ink);overflow:hidden;transition:transform .15s,box-shadow .15s}
+.tk:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
+.tk-date{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px 10px;background:var(--blue);color:var(--beige);border-right:2px dashed var(--ink);text-align:center}
+.tk:nth-child(3n+2) .tk-date{background:var(--red)}.tk:nth-child(3n+3) .tk-date{background:var(--green)}
+.tk-date b{font:900 clamp(46px,4.6vw,66px)/.85 var(--f-display);letter-spacing:-.04em}
+.tk-date small{font:800 13px/1.2 var(--f-display);text-transform:uppercase;letter-spacing:.06em;margin-top:10px}
+.tk-date::before,.tk-date::after{content:'';position:absolute;right:-13px;width:24px;height:24px;border-radius:50%;background:var(--beige);border:2px solid var(--ink)}
+.tk-date::before{top:-14px}.tk-date::after{bottom:-14px}
+.tk-body{padding:clamp(20px,2.2vw,30px)}
+.tk h3{font:900 clamp(22px,2.4vw,34px)/1 var(--f-display);text-transform:uppercase;letter-spacing:-.01em}
+.tk p{color:var(--ink-2);margin-top:10px}
+.tk-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.tk-meta .b-pill{font-size:12px;padding:7px 12px}
+.tk-go{display:flex;align-items:center;padding:0 clamp(20px,2.2vw,30px)}
+.tk-empty{padding:28px;border:2px dashed var(--ink);border-radius:var(--r);font-size:18px}
+.offer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;margin-top:22px;padding:20px 24px;border-radius:var(--r);background:var(--beige-2)}
+.offer p{font:800 clamp(17px,1.5vw,20px)/1.2 var(--f-display);text-transform:uppercase}
 
-/* неделя */
-.week{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
-.day{position:relative;display:flex;flex-direction:column;min-height:260px;padding:18px;border:2px solid var(--ink);border-radius:16px;background:#fff;box-shadow:5px 5px 0 var(--ink);transition:transform .18s}
-.day:nth-child(odd){transform:rotate(-1.4deg)}.day:nth-child(even){transform:rotate(1.2deg)}
-.day:hover{transform:rotate(0) translateY(-4px)}
-.day .d{font:900 46px/1.1 var(--f-display);letter-spacing:-.05em;background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(1.5px 0 0 var(--ink)) drop-shadow(-1.5px 0 0 var(--ink)) drop-shadow(0 1.5px 0 var(--ink)) drop-shadow(0 -1.5px 0 var(--ink))}
-.day strong{font:700 19px/1.15 var(--f-display);letter-spacing:-.03em;margin-top:auto}
-.day span{font-size:14px;color:var(--ink-2);margin-top:8px}
-.day:nth-child(1){background:#e3e9ff}.day:nth-child(2){background:#ffe3f4}.day:nth-child(3){background:#f2ffd1}.day:nth-child(4){background:#dcfaff}.day:nth-child(5){background:#efe6ff}
+/* неделя: папки */
+.week{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;padding-top:30px}
+.day{--c:var(--blue);position:relative;display:flex;flex-direction:column;min-height:400px;padding:16px 16px 24px;border-radius:0 var(--r) var(--r) var(--r);background:var(--c);color:var(--beige);transition:transform .2s}
+.day::before{content:attr(data-d);position:absolute;left:0;bottom:100%;height:32px;padding:0 20px;display:flex;align-items:center;border-radius:16px 16px 0 0;background:var(--c);font:900 16px/1 var(--f-display);letter-spacing:.05em}
+.day:hover{transform:translateY(-8px) rotate(-1deg)}
+.day img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:16px;border:2px solid var(--ink);rotate:-2.5deg;transition:rotate .25s}
+.day:nth-child(even) img{rotate:2.5deg}
+.day:hover img{rotate:0deg}
+.day strong{margin-top:auto;padding-top:20px;font:900 clamp(17px,1.4vw,22px)/1 var(--f-display);text-transform:uppercase}
+.day span{margin-top:8px;font-size:15px;opacity:.9}
+.day.c1{--c:var(--green)}.day.c2{--c:var(--red)}.day.c3{--c:var(--blue)}.day.c4{--c:var(--black)}.day.c5{--c:var(--beige-3);color:var(--ink)}
 
-/* вступить */
-.join{background:var(--ink);color:#fff;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);position:relative;overflow:hidden}
-.join .y-wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:center}
-.join .y-h2{color:var(--lime)}
-.join p{color:#c9cce3;font-size:clamp(17px,1.5vw,20px)}
-.join .hero-actions{margin-top:24px}
-.join .y-spark{color:var(--pink)}
+/* можно просто прийти */
+.join{text-align:center;overflow:hidden}
+.join .b-wrap{position:relative;z-index:2}
+.join h2{font:900 clamp(48px,9.6vw,150px)/1.1 var(--f-display);letter-spacing:-.03em;text-transform:uppercase}
+.join h2 em{position:relative;z-index:-1;display:inline-block;font-style:normal;line-height:.84;background:var(--red);padding:.07em .14em .05em;border-radius:.16em;rotate:2.5deg}
+.join p{max-width:620px;margin:28px auto 0;font-size:clamp(17px,1.5vw,20px);color:rgba(255,244,226,.8)}
+.join .hero-actions{justify-content:center}
 
 /* новости */
-.news{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start}
-.news-list a{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:16px 0;border-bottom:2px dashed #b9bdd6}
-.news-list a:last-child{border-bottom:0}
-.news-list time{font:400 9px/1.6 var(--f-pixel);color:var(--blue)}
-.news-list strong{font:600 18px/1.3 var(--f-body)}
-.news-list a:hover strong{color:var(--blue)}
-.strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.strip figure{border:2px solid var(--ink);border-radius:10px;overflow:hidden;background:#fff}
+.news{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4vw,56px);align-items:start}
+.news-list{display:grid;gap:12px}
+.news-list a{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:18px 20px;border:2px solid var(--ink);border-radius:20px;background:var(--card);transition:background .15s,color .15s}
+.news-list time{font:800 12px/1 var(--f-display);text-transform:uppercase;letter-spacing:.04em;padding:8px 12px;border-radius:999px;background:var(--beige-2)}
+.news-list strong{font:700 18px/1.25 var(--f-body)}
+.news-list a::after{content:'→';display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:2px solid currentColor;font-size:18px}
+.news-list a:hover{background:var(--blue);color:var(--beige)}
+.news-list a:hover time{background:var(--beige);color:var(--ink)}
+.strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding-top:12px}
+.strip figure{position:relative;background:var(--card);padding:8px 8px 34px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);rotate:-3deg}
+.strip figure:nth-child(2){rotate:2.5deg;translate:0 22px}.strip figure:nth-child(3){rotate:-1.5deg}
 .strip img{width:100%;aspect-ratio:3/4;object-fit:cover}
-.strip figcaption{padding:8px 10px;font:400 8px/1.5 var(--f-pixel)}
-.strip figure:nth-child(2){transform:translateY(24px)}
+.strip figcaption{position:absolute;left:10px;bottom:9px;font:800 11px/1 var(--f-display);text-transform:uppercase;letter-spacing:.04em}
 
-/* соцсети и партнёры */
-.social{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.social>*{display:flex;flex-direction:column;gap:8px;min-height:170px;padding:20px;border:2px solid var(--ink);border-radius:16px;background:#fff;transition:transform .15s}
-.social a:hover{transform:translateY(-3px)}
-.social strong{font:800 24px/1 var(--f-display);letter-spacing:-.04em}
-.social span:not(.y-tag){color:var(--ink-2);font-size:15px}
-.social .y-tag{margin-top:auto;align-self:flex-start}
-.social .off{background:transparent;border-style:dashed}
-.partners{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:14px;margin-top:14px}
-.partners .y-win-body{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(24px,4vw,56px);min-height:140px}
-.partners img{filter:grayscale(1) contrast(1.15)}
+/* соцсети: пластыри */
+.social-sec{text-align:center;overflow:hidden}
+.social-sec .b-lead{margin-left:auto;margin-right:auto}
+.bands{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;margin-top:clamp(36px,4vw,56px)}
+.band{display:inline-flex;align-items:center;gap:18px;padding:14px 36px 14px 14px;border:2px solid var(--ink);border-radius:999px;box-shadow:0 5px 0 var(--ink);color:var(--beige);text-align:left;transition:rotate .2s,transform .2s}
+.band+.band{margin-top:-6px}
+.band.blue{background:var(--blue);rotate:-5deg}.band.red{background:var(--red);rotate:4deg}.band.green{background:var(--green);rotate:-2deg}
+a.band:hover{rotate:0deg;transform:scale(1.03)}
+.band i{flex:none;display:grid;place-items:center;width:clamp(52px,5vw,68px);aspect-ratio:1;border-radius:50%;background:var(--beige);color:var(--ink)}
+.band i svg{width:48%;height:48%}
+.band b{display:block;font:900 clamp(24px,3.2vw,44px)/1 var(--f-display);text-transform:uppercase;letter-spacing:-.01em}
+.band span{display:block;margin-top:4px;font-size:15px;opacity:.88}
+.band.off{opacity:.7}
+.partners{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:16px;margin-top:clamp(56px,7vw,96px);text-align:left}
+.partners>div{border:2px solid var(--ink);border-radius:var(--r);background:var(--card);padding:22px 26px}
+.partners small{display:block;font:800 13px/1 var(--f-display);text-transform:uppercase;letter-spacing:.04em;margin-bottom:18px}
+.logos{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(24px,4vw,56px);min-height:84px}
+.logos img{mix-blend-mode:multiply}
 
-@media (max-width:1000px){
-  .hero-grid,.about-grid,.join .y-wrap,.news{grid-template-columns:1fr}
-  .week{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .week .day:last-child{grid-column:1/-1;min-height:180px}
-  .social,.partners{grid-template-columns:1fr}
+@media (max-width:1100px){
+  .week{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:48px}
 }
-@media (max-width:620px){
-  .ev{grid-template-columns:88px minmax(0,1fr)}
-  .ev .y-btn{grid-column:1/-1;justify-self:start}
-  .ev-date{height:76px}.ev-date b{font-size:20px}
-  .week{grid-template-columns:1fr}.day{min-height:170px}
-  .news-list a{grid-template-columns:1fr;gap:6px}
-  .strip figure:nth-child(2){transform:none}
-  .lcd{gap:4px;padding:14px 8px}
+@media (max-width:980px){
+  .hero-grid,.about-grid,.news{grid-template-columns:1fr}
+  .count{max-width:560px}
+  .partners{grid-template-columns:1fr}
+  .collage{max-width:640px}
+}
+@media (max-width:760px){
+  .hide-m{display:none}
+  .ah{display:block;padding:0}
+  .ah .b-pill{position:static;margin:0 4px 10px}
+  .about-head .b-lead{margin-top:20px}
+  .week{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .day{min-height:0}
+  .tk{grid-template-columns:110px minmax(0,1fr)}
+  .tk-go{grid-column:1/-1;padding:0 20px 20px}
+  .tk-date::before,.tk-date::after{display:none}
+  .news-list a{grid-template-columns:1fr auto;gap:10px}
+  .news-list time{grid-column:1/-1;justify-self:start}
+  .strip figure:nth-child(2){translate:0 12px}
+  .band{padding:10px 24px 10px 10px;gap:12px}
+  .band span{font-size:13px}
+}
+@media (max-width:480px){
+  .week{grid-template-columns:1fr}
+  .day img{aspect-ratio:16/10}
+  .burst-badge{width:88px;top:-30px;right:-8px}
+  .burst-badge b{font-size:26px}
+  .count{rotate:0deg;box-shadow:5px 5px 0 var(--ink)}
+  .count-top{padding-right:64px}
+  .lcd{gap:5px}.lcd div{padding:12px 2px 9px;border-radius:12px}
+  .hero-actions .b-btn{flex:1 1 100%}
+  .tk{grid-template-columns:1fr}
+  .tk-date{flex-direction:row;justify-content:flex-start;gap:12px;padding:14px 20px;border-right:0;border-bottom:2px dashed var(--ink)}
+  .tk-date small{margin-top:0}
+  .tk-date b{font-size:40px}
 }
 </style>
-<link rel="stylesheet" href="wire.css"></head>
-<body class="y-page">
+</head>
+<body class="b-page">
 
 <section class="hero">
-  <span class="y-spark s1"></span><span class="y-spark s2"></span><span class="y-spark s3"></span><span class="y-spark s4"></span>
-  <div class="y-wrap">
-    <div class="hero-tags"><span class="y-tag lime">молодёжное движение</span><span class="y-tag">пермь</span><span class="y-tag pink">ленина, 44</span></div>
-    <div class="y-chrome" aria-hidden="true">вместе</div>
+  <i class="b-st hide-m" data-s="burst" style="--x:3%;--y:14%;--s:clamp(64px,9vw,132px);--c:var(--red);--r:-10deg"></i>
+  <i class="b-st" data-s="spark" style="--x:88%;--y:9%;--s:clamp(36px,4.4vw,62px);--c:var(--green);--d:4s"></i>
+  <i class="b-st hide-m" data-s="ring" style="--x:13%;--y:44%;--s:46px;--c:var(--blue);--d:6s"></i>
+  <i class="b-st hide-m" data-s="heart" style="--x:86%;--y:40%;--s:44px;--c:var(--red);--d:4.6s;--r:12deg"></i>
+  <i class="b-st hide-m" data-s="tri" style="--x:72%;--y:4%;--s:34px;--c:var(--blue);--d:5.4s;--r:-14deg"></i>
+  <i class="b-st hide-m" data-s="plus" style="--x:22%;--y:6%;--s:28px;--c:var(--green);--d:3.8s"></i>
+  <i class="b-st hide-m" data-s="wave" style="--x:48%;--y:92%;--s:90px;--c:var(--green);--d:5s"></i>
+  <div class="b-wrap">
+    <div class="hero-tags"><span class="b-pill green">молодёжное движение</span><span class="b-pill">пермь</span><span class="b-pill red">ленина, 44</span></div>
+    <div class="hero-word" aria-hidden="true"><svg viewBox="0 0 862 377"><use href="assets/logo/sprite.svg#word"/></svg></div>
     <div class="hero-grid">
       <div>
-        <h1>Место в Перми, куда можно прийти одному</h1>
-        <p>Встречи, свои проекты и обычные вечера с людьми, которым тоже не хочется быть одному. Участие бесплатное.</p>
-        <div class="hero-actions"><a class="y-btn" href="#join">Вступить</a><a class="y-btn silver" href="#afisha">Афиша</a></div>
+        <h1>Место в Перми, куда можно прийти <mark>одному</mark></h1>
+        <p class="hero-sub">Встречи, свои проекты и обычные вечера с людьми, которым тоже не хочется быть одному. Участие бесплатное.</p>
+        <div class="hero-actions"><a class="b-btn" href="#join">Вступить</a><a class="b-btn beige" href="#afisha">Афиша</a></div>
       </div>
-      <div class="y-win pink">
-        <div class="y-win-bar"><span>открытие.exe</span><i><b>_</b><b>□</b><b>×</b></i></div>
-        <div class="y-win-body">
-          <div class="lcd" id="lcd"><div><b>--</b><span>дней</span></div><div><b>--</b><span>часов</span></div><div><b>--</b><span>минут</span></div><div><b>--</b><span>секунд</span></div></div>
-          <div class="load"><div class="load-top"><span>собираем движение</span><span id="load-pct">0%</span></div><div class="load-bar"><i id="load-bar" style="width:0"></i></div></div>
-          <p class="timer-note" id="timer-note">Открываемся 1 ноября. Зал уже наш, сейчас доделываем.</p>
-        </div>
+      <div class="count">
+        <div class="burst-badge" aria-hidden="true"><svg viewBox="0 0 100 100"><path fill="currentColor" d=""/></svg><span><b>1</b>ноября</span></div>
+        <div class="count-top">До открытия</div>
+        <div class="lcd" id="lcd"><div><b>--</b><span>дней</span></div><div><b>--</b><span>часов</span></div><div><b>--</b><span>минут</span></div><div><b>--</b><span>секунд</span></div></div>
+        <div class="load"><div class="load-top"><span>собираем движение</span><span id="load-pct">0%</span></div><div class="load-bar"><i id="load-bar" style="width:0"></i></div></div>
+        <p class="timer-note" id="timer-note">Открываемся 1 ноября. Зал уже наш, сейчас доделываем.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section id="about" class="y-sec about">
-  <div class="y-wrap about-grid">
-    <div>
-      <h2 class="y-h2">Здесь знакомятся и начинают делать</h2>
-      <p class="y-lead">Мы с Ильёй сняли помещение в центре Перми и собираем вокруг него людей. Можно прийти на встречу, найти команду или просто провести вечер не одному.</p>
+<section class="b-sec b-dark b-zig why">
+  <i class="b-st" data-s="star" style="--x:6%;--y:16%;--s:clamp(34px,4vw,56px);--c:var(--beige-3);--r:-12deg"></i>
+  <i class="b-st" data-s="flower" style="--x:89%;--y:20%;--s:clamp(38px,4.4vw,62px);--c:var(--red);--d:6s"></i>
+  <i class="b-st hide-m" data-s="tri" style="--x:12%;--y:72%;--s:40px;--c:var(--green);--r:18deg;--d:4.4s"></i>
+  <i class="b-st hide-m" data-s="ring" style="--x:84%;--y:70%;--s:44px;--c:#4d6fc0;--d:5.2s"></i>
+  <div class="b-wrap">
+    <h2 class="b-h2">Приходи, чтобы</h2>
+    <ul class="cloud">
+      <li class="blue">знакомиться</li><li class="red">найти команду</li><li class="green">попробовать профессию</li>
+      <li class="beige">услышать предпринимателей</li><li class="red">запустить свой проект</li><li class="blue">просто провести вечер</li>
+    </ul>
+  </div>
+</section>
+
+<section id="about" class="b-sec about">
+  <div class="b-wrap">
+    <div class="about-head">
+      <div class="ah">
+        <span class="b-pill green p1">зал на 30 человек</span>
+        <span class="b-pill red p2">5 вечеров в неделю</span>
+        <span class="b-pill blue p3">вход бесплатный</span>
+        <h2 class="b-h2">Здесь знакомятся<br>и начинают делать</h2>
+      </div>
+      <p class="b-lead">У «Вместе» есть свой зал в центре Перми, и вокруг него собираются люди. Сюда приходят на встречи, ищут команду для своих идей или просто проводят вечер не в одиночку.</p>
+    </div>
+    <div class="about-grid">
+      <div class="collage">
+        <figure class="ph one"><span class="b-pill black">было</span><img src="assets/img/real_empty.jpg" alt="Зал на Ленина, 44 до обустройства" loading="lazy"><figcaption>зал до обустройства</figcaption></figure>
+        <figure class="ph two"><span class="b-pill green">задумали</span><img src="assets/img/16_1925.jpg" alt="Визуализация обустроенного зала" loading="lazy"><figcaption>скоро тут будет уютно</figcaption></figure>
+      </div>
       <div class="facts">
-        <div class="fact"><span class="y-tag blue">01</span><div><b>Своё пространство</b><span>Зал на 30 человек в центре города. Обустраиваем его сами.</span></div></div>
-        <div class="fact"><span class="y-tag pink">02</span><div><b>Пять вечеров</b><span>Каждый будний вечер свой формат: от профориентации до пятницы для своих.</span></div></div>
-        <div class="fact"><span class="y-tag lime">03</span><div><b>Бесплатно</b><span>Для участников вход свободный. Держимся на партнёрах и благодарности.</span></div></div>
+        <div class="fact"><span class="n">01</span><div><b>Своё пространство</b><span>Зал на 30 человек в центре города. Обустраиваем его сами.</span></div></div>
+        <div class="fact"><span class="n">02</span><div><b>Пять вечеров</b><span>Каждый будний вечер свой формат: от профориентации до пятницы для своих.</span></div></div>
+        <div class="fact"><span class="n">03</span><div><b>Бесплатно</b><span>Для участников вход свободный. Держимся на партнёрах и благодарности.</span></div></div>
       </div>
     </div>
-    <figure class="y-win photo">
-      <div class="y-win-bar"><span>ленина_44.jpg</span><i><b>_</b><b>□</b><b>×</b></i></div>
-      <div class="y-win-body"><img src="assets/img/real_empty.jpg" alt="Зал на Ленина, 44 до обустройства" loading="lazy"></div>
-      <figcaption>зал до обустройства. скоро тут будет уютно</figcaption>
-    </figure>
   </div>
 </section>
 
-<section id="afisha" class="y-sec" style="padding-top:0">
-  <div class="y-wrap">
-    <div class="y-row"><div><h2 class="y-h2">Афиша</h2><p class="y-lead">Ближайшие встречи. Приходи, даже если никого не знаешь.</p></div><a class="y-more" href="afisha.html">Вся афиша</a></div>
-    <div class="y-win">
-      <div class="y-win-bar"><span>афиша — ближайшие встречи</span><i><b>_</b><b>□</b><b>×</b></i></div>
-      <div class="y-win-body" id="events"></div>
-    </div>
+<div class="b-tapes" aria-hidden="true"><div class="b-tape a" data-t="a"></div><div class="b-tape b" data-t="b"></div></div>
+
+<section id="afisha" class="b-sec">
+  <div class="b-wrap">
+    <div class="b-row"><div><h2 class="b-h2">Афиша</h2><p class="b-lead">Ближайшие встречи. Приходи, даже если никого не знаешь.</p></div><a class="b-more" href="afisha.html">Вся афиша</a></div>
+    <div class="tickets" id="events"></div>
+    <div class="offer"><p>Есть тема или идея встречи?</p><a class="b-btn sm blue" href="https://t.me/Paltus10">Предложить</a></div>
   </div>
 </section>
 
-<section id="days" class="y-sec" style="padding-top:0">
-  <div class="y-wrap">
-    <div class="y-row"><div><h2 class="y-h2">Неделя во «Вместе»</h2><p class="y-lead">У каждого вечера свой повод прийти.</p></div><a class="y-more" href="directions.html">Подробнее</a></div>
+<section id="days" class="b-sec" style="padding-top:0">
+  <div class="b-wrap">
+    <div class="b-row"><div><h2 class="b-h2">Неделя во «Вместе»</h2><p class="b-lead">У каждого вечера свой повод прийти.</p></div><a class="b-more" href="directions.html">Подробнее</a></div>
     <div class="week">
-      <a class="day" href="directions.html"><span class="d">ПН</span><strong>Профориентация</strong><span>Пробуем профессии и разбираемся, что подходит</span></a>
-      <a class="day" href="directions.html"><span class="d">ВТ</span><strong>Общение</strong><span>Чай и разговоры без обязательной программы</span></a>
-      <a class="day" href="directions.html"><span class="d">СР</span><strong>Бизнес</strong><span>Встречи с предпринимателями</span></a>
-      <a class="day" href="directions.html"><span class="d">ЧТ</span><strong>Проекты</strong><span>Собираем команды вокруг идей</span></a>
-      <a class="day" href="directions.html"><span class="d">ПТ</span><strong>Для своих</strong><span>Кино, музыка и настольные игры</span></a>
+      <a class="day c1" data-d="ПН" href="directions.html"><img src="assets/img/prof.jpg" alt="" loading="lazy"><strong>Профориентация</strong><span>Пробуем профессии и разбираемся, что подходит</span></a>
+      <a class="day c2" data-d="ВТ" href="directions.html"><img src="assets/img/cups.jpg" alt="" loading="lazy"><strong>Общение</strong><span>Чай и разговоры без обязательной программы</span></a>
+      <a class="day c3" data-d="СР" href="directions.html"><img src="assets/img/18_1928.jpg" alt="" loading="lazy"><strong>Бизнес</strong><span>Встречи с предпринимателями</span></a>
+      <a class="day c4" data-d="ЧТ" href="directions.html"><img src="assets/img/prototype.jpg" alt="" loading="lazy"><strong>Проекты</strong><span>Собираем команды вокруг идей</span></a>
+      <a class="day c5" data-d="ПТ" href="directions.html"><img src="assets/img/guitar.jpg" alt="" loading="lazy"><strong>Для своих</strong><span>Кино, музыка и настольные игры</span></a>
     </div>
   </div>
 </section>
 
-<section id="join" class="join y-sec">
-  <span class="y-spark" style="top:14%;right:6%;width:40px;height:40px"></span><span class="y-spark" style="bottom:16%;left:46%;width:20px;height:20px;animation-delay:1.2s"></span>
-  <div class="y-wrap">
-    <h2 class="y-h2">Можно просто прийти</h2>
-    <div>
-      <p>Не нужно готовить проект или доказывать, что ты полезен. Выбери встречу в афише. Хочешь помогать с запуском, заходи в рабочий чат.</p>
-      <div class="hero-actions"><a class="y-btn lime" href="afisha.html">Выбрать встречу</a><a class="y-btn pink" href="https://t.me/+Bs7x5h7SbtI4NWQy">Войти в чат</a></div>
-    </div>
+<section id="join" class="b-sec b-dark b-zig join">
+  <i class="b-st hide-m" data-s="logo" style="--x:81%;--y:56%;--s:clamp(110px,12vw,180px);--lb:var(--green);--lf:var(--beige);--r:-12deg;--d:6s"></i>
+  <i class="b-st" data-s="spiky" style="--x:4%;--y:10%;--s:clamp(54px,7vw,104px);--c:var(--red);--r:8deg"></i>
+  <i class="b-st hide-m" data-s="heart" style="--x:10%;--y:70%;--s:42px;--c:var(--beige-3);--r:-10deg;--d:4.2s"></i>
+  <i class="b-st" data-s="spark" style="--x:88%;--y:9%;--s:clamp(32px,3.6vw,52px);--c:#9cc35f;--d:3.6s"></i>
+  <div class="b-wrap">
+    <h2>Можно <em>просто</em><br>прийти</h2>
+    <p>Не нужно готовить проект или доказывать, что ты полезен. Выбери встречу в афише. Хочешь помогать с запуском, заходи в рабочий чат.</p>
+    <div class="hero-actions"><a class="b-btn beige" href="afisha.html">Выбрать встречу</a><a class="b-btn" href="https://t.me/+Bs7x5h7SbtI4NWQy">Войти в чат</a></div>
   </div>
 </section>
 
-<section class="y-sec">
-  <div class="y-wrap">
-    <div class="y-row"><div><h2 class="y-h2">Новости</h2><p class="y-lead">Как растёт пространство, кто к нам приходит и что делают участники.</p></div><a class="y-more" href="news.html">Все новости</a></div>
+<section class="b-sec">
+  <div class="b-wrap">
+    <div class="b-row"><div><h2 class="b-h2">Новости</h2><p class="b-lead">Как растёт пространство, кто к нам приходит и что делают участники.</p></div><a class="b-more" href="news.html">Все новости</a></div>
     <div class="news">
-      <div class="y-win">
-        <div class="y-win-bar"><span>входящие (3)</span><i><b>_</b><b>□</b><b>×</b></i></div>
-        <div class="y-win-body news-list">
-          <a href="news.html#start"><time datetime="2026-10-06">06.10.2026</time><strong>Начинаем собирать пространство «Вместе»</strong></a>
-          <a href="news.html#meeting"><time datetime="2026-10-05">05.10.2026</time><strong>Что решили после первой встречи с экспертами</strong></a>
-          <a href="news.html#week"><time datetime="2026-10-04">04.10.2026</time><strong>Пять вечеров: как будет устроена неделя</strong></a>
-        </div>
+      <div class="news-list">
+        <a href="news.html#start"><time datetime="2026-10-06">06.10.2026</time><strong>Начинаем собирать пространство «Вместе»</strong></a>
+        <a href="news.html#meeting"><time datetime="2026-10-05">05.10.2026</time><strong>Что решили после первой встречи с экспертами</strong></a>
+        <a href="news.html#week"><time datetime="2026-10-04">04.10.2026</time><strong>Пять вечеров: как будет устроена неделя</strong></a>
       </div>
       <div class="strip" aria-label="Дневник запуска">
-        <figure><img src="assets/img/18_1928.jpg" alt="Деталь помещения" loading="lazy"><figcaption>дневник · 01</figcaption></figure>
-        <figure><img src="assets/img/19_1929.jpg" alt="Мебель для пространства" loading="lazy"><figcaption>интерьер · 02</figcaption></figure>
-        <figure><img src="assets/img/20_1930.jpg" alt="Работа в помещении" loading="lazy"><figcaption>своими руками · 03</figcaption></figure>
+        <figure><img src="assets/img/19_1929.jpg" alt="Уголок для работы" loading="lazy"><figcaption>дневник · 01</figcaption></figure>
+        <figure><img src="assets/img/20_1930.jpg" alt="Кухня с чайной полкой" loading="lazy"><figcaption>интерьер · 02</figcaption></figure>
+        <figure><img src="assets/img/21_1932.jpg" alt="Кресла у окна" loading="lazy"><figcaption>своими руками · 03</figcaption></figure>
       </div>
     </div>
   </div>
 </section>
 
-<section class="y-sec" style="padding-top:0">
-  <div class="y-wrap">
-    <div class="y-row"><div><h2 class="y-h2">Мы в сети</h2><p class="y-lead">Новости запуска, приглашения на встречи и жизнь пространства.</p></div></div>
-    <div class="social">
-      <a href="https://t.me/Paltus10"><strong>Телеграм</strong><span>Новости и ближайшие встречи</span><span class="y-tag blue">открыть</span></a>
-      <a href="https://t.me/+Bs7x5h7SbtI4NWQy"><strong>Рабочий чат</strong><span>Обустройство зала и задачи команды</span><span class="y-tag pink">вступить</span></a>
-      <div class="off"><strong>ВКонтакте</strong><span>Страница ещё не открыта</span><span class="y-tag">скоро</span></div>
+<section class="b-sec social-sec" style="padding-top:0">
+  <i class="b-st hide-m" data-s="burst" style="--x:8%;--y:14%;--s:84px;--c:var(--green);--r:14deg"></i>
+  <i class="b-st hide-m" data-s="star" style="--x:86%;--y:12%;--s:52px;--c:var(--red);--d:4.4s"></i>
+  <i class="b-st hide-m" data-s="dot" style="--x:80%;--y:36%;--s:22px;--c:var(--blue);--d:3.4s"></i>
+  <div class="b-wrap">
+    <h2 class="b-h2">Мы в сети</h2>
+    <p class="b-lead">Новости запуска, приглашения на встречи и жизнь пространства.</p>
+    <div class="bands">
+      <a class="band blue" href="https://t.me/Paltus10"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.5 3.6 2.9 10.8c-1.3.5-1.2 1.3-.2 1.6l4.8 1.5 1.8 5.6c.2.7.4.9.9.9.4 0 .6-.2.9-.4l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.9-1.4-1.5ZM9.7 14.2l-.4 4.1-1.4-4.6 10.3-6.5-8.5 7Z"/></svg></i><span><b>Телеграм</b><span>Новости и ближайшие встречи</span></span></a>
+      <a class="band red" href="https://t.me/+Bs7x5h7SbtI4NWQy"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 3h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H9l-4 3.5V14H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm16 5a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1v3l-3.6-3H11a2 2 0 0 1-2-2v-.5h7a3.5 3.5 0 0 0 3.5-3.5V8Z"/></svg></i><span><b>Рабочий чат</b><span>Обустройство зала и задачи команды</span></span></a>
+      <div class="band green off"><i><svg viewBox="0 0 24 24" aria-hidden="true"><text x="12" y="16.5" text-anchor="middle" font-family="Rubik,Arial" font-weight="900" font-size="11" fill="currentColor">ВК</text></svg></i><span><b>ВКонтакте</b><span>Страница ещё не открыта, скоро</span></span></div>
     </div>
     <div class="partners">
-      <div class="y-win"><div class="y-win-bar"><span>сотрудничаем с</span><i><b>×</b></i></div><div class="y-win-body"><img src="assets/logos/deloros_original.png" alt="Деловая Россия" style="height:64px"></div></div>
-      <div class="y-win"><div class="y-win-bar"><span>привлекаем ребят из</span><i><b>×</b></i></div><div class="y-win-body"><img src="assets/logos/pgniu_ink.png" alt="ПГНИУ" style="height:80px"><img src="assets/logos/hse_ink.png" alt="ВШЭ Пермь" style="height:34px"><img src="assets/logos/pnipu_ink.png" alt="Пермский политех" style="height:48px"></div></div>
+      <div><small>сотрудничаем с</small><div class="logos"><img src="assets/logos/deloros_original.png" alt="Деловая Россия" style="height:64px"></div></div>
+      <div><small>привлекаем ребят из</small><div class="logos"><img src="assets/logos/pgniu_ink.png" alt="ПГНИУ" style="height:80px"><img src="assets/logos/hse_ink.png" alt="ВШЭ Пермь" style="height:34px"><img src="assets/logos/pnipu_ink.png" alt="Пермский политех" style="height:48px"></div></div>
     </div>
   </div>
 </section>
 
 <script src="events.js"></script>
-<script src="y2k.js"></script>
+<script src="brand.js"></script>
 <script>
-document.querySelectorAll('.y-spark').forEach(s => s.innerHTML = Y_SPARK);
+document.querySelector('.burst-badge path').setAttribute('d', bBurst(14, 50, 36));
 
 // афиша из events.js: только будущие встречи
 (function () {
   const box = document.getElementById('events');
   const list = EVENTS.filter(ev => openDates(ev).length).slice(0, 4);
-  if (!list.length) { box.innerHTML = '<p class="ev-empty">Новые встречи скоро появятся. Следи за Телеграмом.</p>'; return; }
+  if (!list.length) { box.innerHTML = '<p class="tk-empty">Новые встречи скоро появятся. Следи за Телеграмом.</p>'; return; }
   box.innerHTML = list.map(ev => {
     const days = openDates(ev), d = parseDay(days[0]);
     const big = days.length > 1 ? `${d.getDate()}–${parseDay(days[days.length - 1]).getDate()}` : d.getDate();
-    return `<div class="ev"><div class="ev-date"><b>${big}</b><small>${MONTHS_GEN[d.getMonth()]}</small></div>
-<div><h3>${ev.title}</h3><p>${ev.text}</p><div class="ev-meta"><span class="y-tag">${ev.time}</span><span class="y-tag">${ev.place || DEFAULT_PLACE.replace('Пермь, ', '')}</span></div></div>
-<a class="y-btn sm${ev.action === 'Помочь' ? ' pink' : ''}" href="${eventUrl(ev)}">${ev.action}</a></div>`;
+    return `<div class="tk"><div class="tk-date"><b>${big}</b><small>${MONTHS_GEN[d.getMonth()]}</small></div>
+<div class="tk-body"><h3>${ev.title}</h3><p>${ev.text}</p><div class="tk-meta"><span class="b-pill">${ev.time}</span><span class="b-pill">${ev.place || DEFAULT_PLACE.replace('Пермь, ', '')}</span></div></div>
+<div class="tk-go"><a class="b-btn${ev.action === 'Помочь' ? ' green' : ''}" href="${eventUrl(ev)}">${ev.action}</a></div></div>`;
   }).join('');
 })();
 
@@ -267,5 +368,5 @@ document.querySelectorAll('.y-spark').forEach(s => s.innerHTML = Y_SPARK);
   tick();
 })();
 </script>
-<script src="wire.js"></script></body>
+</body>
 </html>
