@@ -1,13 +1,13 @@
 /* «вместе» — фирменный стиль: беж, синий, красный, зелёный, чёрный.
    Круглый логотип, наклейки, ленты-скотч, таблетки. Подключается последним на всех страницах.
    Цвета менять только здесь, в :root. */
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Onest:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Caveat:wght@600;700&family=Onest:wght@400;500;600;700&display=swap');
 
 :root{
   --bg:#fffcf7; --beige:#fff4e2; --blue:#223970; --red:#7f193e; --green:#5c802d; --black:#0f0f0f;
   --beige-2:#f6e3c3; --beige-3:#f0d6a8; --card:#fff4e2;
   --ink:#0f0f0f; --ink-2:#4d463d;
-  --f-display:'Rubik',Arial,sans-serif; --f-body:'Onest',Arial,sans-serif;
+  --f-display:'Rubik',Arial,sans-serif; --f-body:'Onest',Arial,sans-serif; --f-hand:'Caveat','Comic Sans MS',cursive;
   --gut:clamp(16px,3vw,48px); --max:1320px; --r:24px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -71,6 +71,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--red);outline-offset
 .b-st{position:absolute;left:var(--x);top:var(--y);width:var(--s,40px);aspect-ratio:1;color:var(--c,var(--red));rotate:var(--r,0deg);pointer-events:none;z-index:1;
   animation:b-float var(--d,5s) ease-in-out infinite alternate}
 .b-st svg{display:block;width:100%;height:100%;overflow:visible}
+.b-st .d{fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
 .b-st.spin{animation:b-spin 26s linear infinite}
 @keyframes b-float{from{transform:translateY(-7px) rotate(-7deg)}to{transform:translateY(7px) rotate(7deg)}}
 @keyframes b-spin{to{transform:rotate(360deg)}}
@@ -97,7 +98,14 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--red);outline-offset
 .b-foot a:hover{color:var(--beige)}
 .b-foot .col{display:flex;flex-direction:column;gap:10px}
 .b-foot .col b{font:800 13px/1 var(--f-display);text-transform:uppercase;letter-spacing:.04em;color:var(--beige);margin-bottom:6px}
+.b-foot .copy .hand{font:700 22px/1 var(--f-hand);color:rgba(255,244,226,.85)}
 .b-foot .copy{margin-top:56px;padding-top:20px;border-top:1px solid rgba(255,244,226,.18);display:flex;justify-content:space-between;gap:16px;font-size:13px;color:rgba(255,244,226,.6)}
+
+/* хендмейд: рукописные пометки со стрелками, подчёркивание маркером */
+.b-note{position:absolute;z-index:3;display:inline-flex;align-items:center;gap:2px;font:700 clamp(22px,1.9vw,28px)/1 var(--f-hand);color:var(--red);rotate:-5deg;pointer-events:none;white-space:nowrap}
+.b-note svg{width:clamp(46px,4vw,62px);height:auto;flex:none;overflow:visible}
+.b-ul{position:relative;white-space:nowrap}
+.b-ul::after{content:'';position:absolute;left:-3%;right:-3%;bottom:-.16em;height:.24em;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 24' preserveAspectRatio='none'%3E%3Cpath d='M4 16C40 6 70 22 110 12S180 4 220 14 280 18 296 8' fill='none' stroke='%237f193e' stroke-width='7' stroke-linecap='round'/%3E%3Cpath d='M16 20C60 13 120 21 170 14S250 12 290 16' fill='none' stroke='%237f193e' stroke-width='3.5' stroke-linecap='round' opacity='.55'/%3E%3C/svg%3E") center/100% 100% no-repeat;pointer-events:none}
 
 @media (max-width:980px){
   .b-burger{display:inline-flex;align-items:center}

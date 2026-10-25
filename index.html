@@ -53,16 +53,19 @@
 .about-head{text-align:center}
 .ah{position:relative;display:inline-block;padding:0 clamp(0px,2vw,24px)}
 .ah .b-pill{position:absolute;z-index:2;font-size:clamp(12px,1.1vw,15px);padding:12px 20px;box-shadow:0 3px 0 var(--ink)}
-.ah .p1{left:-5%;top:-26%;rotate:-7deg}.ah .p2{right:-3%;top:-30%;rotate:6deg}.ah .p3{right:8%;bottom:-34%;rotate:-4deg}
+.ah .p1{left:-5%;top:-26%;rotate:-7deg}.ah .p2{right:-3%;top:-30%;rotate:6deg}.ah .p3{left:4%;bottom:-36%;rotate:-4deg}
 .about-head .b-lead{margin:clamp(64px,6vw,80px) auto 0;text-align:center}
 .about-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(32px,5vw,72px);align-items:center;margin-top:clamp(48px,6vw,80px)}
 .collage{position:relative;min-height:clamp(360px,40vw,540px)}
 .ph{position:absolute;margin:0;background:var(--card);padding:10px 10px 44px;border:2px solid var(--ink);box-shadow:6px 6px 0 var(--ink)}
 .ph img{width:100%;aspect-ratio:4/3;object-fit:cover}
-.ph figcaption{position:absolute;left:14px;right:14px;bottom:12px;font:600 14px/1.2 var(--f-body);color:var(--ink-2)}
-.ph::before{content:'';position:absolute;z-index:2;top:-15px;left:50%;width:120px;height:30px;translate:-50% 0;background:rgba(127,25,62,.82)}
+.ph figcaption{position:absolute;left:14px;right:14px;bottom:9px;font:700 24px/1 var(--f-hand);color:var(--ink)}
+.ph::before{content:'';position:absolute;z-index:2;top:-15px;left:50%;width:124px;height:30px;translate:-50% 0;background:linear-gradient(100deg,rgba(255,255,255,.16),transparent 45%,rgba(255,255,255,.1)),rgba(127,25,62,.8);clip-path:polygon(3% 0,97% 0,100% 22%,96% 45%,100% 70%,97% 100%,3% 100%,0 76%,4% 52%,0 28%)}
+.strip figure::before{content:'';position:absolute;z-index:2;top:-12px;left:50%;width:74px;height:22px;translate:-50% 0;rotate:-5deg;background:linear-gradient(100deg,rgba(255,255,255,.16),transparent 45%,rgba(255,255,255,.1)),rgba(240,214,168,.92);clip-path:polygon(3% 0,97% 0,100% 22%,96% 45%,100% 70%,97% 100%,3% 100%,0 76%,4% 52%,0 28%)}
+.strip figure:nth-child(2)::before{background:linear-gradient(100deg,rgba(255,255,255,.16),transparent 45%,rgba(255,255,255,.1)),rgba(92,128,45,.8);rotate:4deg}
+.strip figure:nth-child(3)::before{background:linear-gradient(100deg,rgba(255,255,255,.16),transparent 45%,rgba(255,255,255,.1)),rgba(34,57,112,.75);rotate:-2deg}
 .ph.one{left:0;top:2%;width:64%;rotate:-4deg}.ph.one::before{rotate:-4deg}
-.ph.two{right:0;bottom:0;width:60%;rotate:3.5deg}.ph.two::before{background:rgba(92,128,45,.85);rotate:5deg}
+.ph.two{right:0;bottom:0;width:60%;rotate:3.5deg}.ph.two::before{background:linear-gradient(100deg,rgba(255,255,255,.16),transparent 45%,rgba(255,255,255,.1)),rgba(92,128,45,.82);rotate:5deg}
 .ph .b-pill{position:absolute;z-index:3;top:18px;left:-14px;rotate:-8deg}
 .ph.two .b-pill{left:auto;right:-12px;rotate:7deg}
 .facts{display:grid;gap:14px}
@@ -126,7 +129,7 @@
 .strip figure{position:relative;background:var(--card);padding:8px 8px 34px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);rotate:-3deg}
 .strip figure:nth-child(2){rotate:2.5deg;translate:0 22px}.strip figure:nth-child(3){rotate:-1.5deg}
 .strip img{width:100%;aspect-ratio:3/4;object-fit:cover}
-.strip figcaption{position:absolute;left:10px;bottom:9px;font:800 11px/1 var(--f-display);text-transform:uppercase;letter-spacing:.04em}
+.strip figcaption{position:absolute;left:10px;bottom:7px;font:700 20px/1 var(--f-hand)}
 
 /* соцсети: пластыри */
 .social-sec{text-align:center;overflow:hidden}
@@ -147,6 +150,14 @@ a.band:hover{rotate:0deg;transform:scale(1.03)}
 .logos{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(24px,4vw,56px);min-height:84px}
 .logos img{mix-blend-mode:multiply}
 
+/* хендмейд: неровные края и строчка */
+.count{border-radius:26px 20px 28px 22px/22px 28px 20px 26px}
+.fact{border-radius:26px 18px 28px 20px/20px 28px 18px 26px}
+.tk{border-radius:22px 28px 20px 26px/26px 20px 28px 22px}
+.day{border-radius:0 26px 20px 28px/0 20px 28px 22px;outline:2px dashed rgba(255,244,226,.45);outline-offset:-9px}
+.day.c5{outline-color:rgba(15,15,15,.28)}
+.hero-actions .b-note{position:relative;align-self:center;rotate:-4deg;margin-left:4px}
+
 @media (max-width:1100px){
   .week{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:48px}
 }
@@ -158,6 +169,8 @@ a.band:hover{rotate:0deg;transform:scale(1.03)}
 }
 @media (max-width:760px){
   .hide-m{display:none}
+  .ph{padding-bottom:34px}.ph figcaption{font-size:18px;white-space:nowrap;bottom:8px}
+  .strip figcaption{font-size:16px}
   .ah{display:block;padding:0}
   .ah .b-pill{position:static;margin:0 4px 10px}
   .about-head .b-lead{margin-top:20px}
@@ -193,10 +206,10 @@ a.band:hover{rotate:0deg;transform:scale(1.03)}
 <section class="hero">
   <i class="b-st hide-m" data-s="burst" style="--x:3%;--y:14%;--s:clamp(64px,9vw,132px);--c:var(--red);--r:-10deg"></i>
   <i class="b-st" data-s="spark" style="--x:88%;--y:9%;--s:clamp(36px,4.4vw,62px);--c:var(--green);--d:4s"></i>
-  <i class="b-st hide-m" data-s="ring" style="--x:13%;--y:44%;--s:46px;--c:var(--blue);--d:6s"></i>
+  <i class="b-st hide-m" data-s="loop" style="--x:12%;--y:42%;--s:60px;--c:var(--blue);--d:6s"></i>
   <i class="b-st hide-m" data-s="heart" style="--x:86%;--y:40%;--s:44px;--c:var(--red);--d:4.6s;--r:12deg"></i>
-  <i class="b-st hide-m" data-s="tri" style="--x:72%;--y:4%;--s:34px;--c:var(--blue);--d:5.4s;--r:-14deg"></i>
-  <i class="b-st hide-m" data-s="plus" style="--x:22%;--y:6%;--s:28px;--c:var(--green);--d:3.8s"></i>
+  <i class="b-st hide-m" data-s="dstar" style="--x:72%;--y:3%;--s:46px;--c:var(--blue);--d:5.4s;--r:-14deg"></i>
+  <i class="b-st hide-m" data-s="rays" style="--x:21%;--y:5%;--s:48px;--c:var(--green);--d:3.8s"></i>
   <i class="b-st hide-m" data-s="wave" style="--x:48%;--y:92%;--s:90px;--c:var(--green);--d:5s"></i>
   <div class="b-wrap">
     <div class="hero-tags"><span class="b-pill green">молодёжное движение</span><span class="b-pill">пермь</span><span class="b-pill red">ленина, 44</span></div>
@@ -205,9 +218,10 @@ a.band:hover{rotate:0deg;transform:scale(1.03)}
       <div>
         <h1>Место в Перми, куда можно прийти <mark>одному</mark></h1>
         <p class="hero-sub">Встречи, свои проекты и обычные вечера с людьми, которым тоже не хочется быть одному. Участие бесплатное.</p>
-        <div class="hero-actions"><a class="b-btn" href="#join">Вступить</a><a class="b-btn beige" href="#afisha">Афиша</a></div>
+        <div class="hero-actions"><a class="b-btn" href="#join">Вступить</a><a class="b-btn beige" href="#afisha">Афиша</a><span class="b-note hide-m" data-a="l" data-side="before">это бесплатно</span></div>
       </div>
       <div class="count">
+        <span class="b-note hide-m" data-a="dr" style="left:4%;top:-62px">мы почти готовы</span>
         <div class="burst-badge" aria-hidden="true"><svg viewBox="0 0 100 100"><path fill="currentColor" d=""/></svg><span><b>1</b>ноября</span></div>
         <div class="count-top">До открытия</div>
         <div class="lcd" id="lcd"><div><b>--</b><span>дней</span></div><div><b>--</b><span>часов</span></div><div><b>--</b><span>минут</span></div><div><b>--</b><span>секунд</span></div></div>
@@ -221,8 +235,8 @@ a.band:hover{rotate:0deg;transform:scale(1.03)}
 <section class="b-sec b-dark b-zig why">
   <i class="b-st" data-s="star" style="--x:6%;--y:16%;--s:clamp(34px,4vw,56px);--c:var(--beige-3);--r:-12deg"></i>
   <i class="b-st" data-s="flower" style="--x:89%;--y:20%;--s:clamp(38px,4.4vw,62px);--c:var(--red);--d:6s"></i>
-  <i class="b-st hide-m" data-s="tri" style="--x:12%;--y:72%;--s:40px;--c:var(--green);--r:18deg;--d:4.4s"></i>
-  <i class="b-st hide-m" data-s="ring" style="--x:84%;--y:70%;--s:44px;--c:#4d6fc0;--d:5.2s"></i>
+  <i class="b-st hide-m" data-s="dheart" style="--x:11%;--y:70%;--s:50px;--c:#9cc35f;--r:-12deg;--d:4.4s"></i>
+  <i class="b-st hide-m" data-s="loop" style="--x:83%;--y:66%;--s:58px;--c:#7d9be0;--d:5.2s"></i>
   <div class="b-wrap">
     <h2 class="b-h2">Приходи, чтобы</h2>
     <ul class="cloud">
@@ -239,7 +253,7 @@ a.band:hover{rotate:0deg;transform:scale(1.03)}
         <span class="b-pill green p1">зал на 30 человек</span>
         <span class="b-pill red p2">5 вечеров в неделю</span>
         <span class="b-pill blue p3">вход бесплатный</span>
-        <h2 class="b-h2">Здесь знакомятся<br>и начинают делать</h2>
+        <h2 class="b-h2">Здесь знакомятся<br>и начинают <span class="b-ul">делать</span></h2>
       </div>
       <p class="b-lead">У «Вместе» есть свой зал в центре Перми, и вокруг него собираются люди. Сюда приходят на встречи, ищут команду для своих идей или просто проводят вечер не в одиночку.</p>
     </div>
@@ -269,7 +283,7 @@ a.band:hover{rotate:0deg;transform:scale(1.03)}
 
 <section id="days" class="b-sec" style="padding-top:0">
   <div class="b-wrap">
-    <div class="b-row"><div><h2 class="b-h2">Неделя во «Вместе»</h2><p class="b-lead">У каждого вечера свой повод прийти.</p></div><a class="b-more" href="directions.html">Подробнее</a></div>
+    <div class="b-row" style="position:relative"><span class="b-note hide-m" data-a="dl" data-side="before" style="right:220px;bottom:-40px">выбирай свой вечер</span><div><h2 class="b-h2">Неделя во «Вместе»</h2><p class="b-lead">У каждого вечера свой повод прийти.</p></div><a class="b-more" href="directions.html">Подробнее</a></div>
     <div class="week">
       <a class="day c1" data-d="ПН" href="directions.html"><img src="assets/img/prof.jpg" alt="" loading="lazy"><strong>Профориентация</strong><span>Пробуем профессии и разбираемся, что подходит</span></a>
       <a class="day c2" data-d="ВТ" href="directions.html"><img src="assets/img/cups.jpg" alt="" loading="lazy"><strong>Общение</strong><span>Чай и разговоры без обязательной программы</span></a>
@@ -284,8 +298,8 @@ a.band:hover{rotate:0deg;transform:scale(1.03)}
   <i class="b-st hide-m" data-s="logo" style="--x:81%;--y:56%;--s:clamp(110px,12vw,180px);--lb:var(--green);--lf:var(--beige);--r:-12deg;--d:6s"></i>
   <i class="b-st" data-s="spiky" style="--x:4%;--y:10%;--s:clamp(54px,7vw,104px);--c:var(--red);--r:8deg"></i>
   <i class="b-st hide-m" data-s="heart" style="--x:10%;--y:70%;--s:42px;--c:var(--beige-3);--r:-10deg;--d:4.2s"></i>
-  <i class="b-st" data-s="spark" style="--x:88%;--y:9%;--s:clamp(32px,3.6vw,52px);--c:#9cc35f;--d:3.6s"></i>
   <div class="b-wrap">
+    <span class="b-note hide-m" data-a="dl" data-side="before" style="right:1%;top:-64px;color:var(--beige-3)">да, правда</span>
     <h2>Можно <em>просто</em><br>прийти</h2>
     <p>Не нужно готовить проект или доказывать, что ты полезен. Выбери встречу в афише. Хочешь помогать с запуском, заходи в рабочий чат.</p>
     <div class="hero-actions"><a class="b-btn beige" href="afisha.html">Выбрать встречу</a><a class="b-btn" href="https://t.me/+Bs7x5h7SbtI4NWQy">Войти в чат</a></div>
@@ -313,7 +327,7 @@ a.band:hover{rotate:0deg;transform:scale(1.03)}
 <section class="b-sec social-sec" style="padding-top:0">
   <i class="b-st hide-m" data-s="burst" style="--x:8%;--y:14%;--s:84px;--c:var(--green);--r:14deg"></i>
   <i class="b-st hide-m" data-s="star" style="--x:86%;--y:12%;--s:52px;--c:var(--red);--d:4.4s"></i>
-  <i class="b-st hide-m" data-s="dot" style="--x:80%;--y:36%;--s:22px;--c:var(--blue);--d:3.4s"></i>
+  <i class="b-st hide-m" data-s="rays" style="--x:79%;--y:33%;--s:46px;--c:var(--blue);--d:3.4s"></i>
   <div class="b-wrap">
     <h2 class="b-h2">Мы в сети</h2>
     <p class="b-lead">Новости запуска, приглашения на встречи и жизнь пространства.</p>
