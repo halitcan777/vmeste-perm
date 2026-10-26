@@ -253,7 +253,8 @@ const EVENTS = /*EVENTS-START*/[
       "besfamilnaya"
     ],
     "image": "assets/img/events/besfamilnaya.jpg",
-    "imagePos": "50% 20%"
+    "imagePos": "28% 25%",
+    "textSide": "right"
   },
   {
     "id": "ameli-band",
