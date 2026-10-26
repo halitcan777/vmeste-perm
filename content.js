@@ -18,7 +18,7 @@ const TICKER = [
 // Визуализации зала (события, блог): false — убраны 26.10, пути в данных остаются. Настоящие фото людей показываются всегда.
 const SHOW_PHOTOS = true;
 // Готовые ассоциативные кадры в assets/img/people/assoc (обновляется скриптом при генерации)
-const ASSOC_FILES = ['design.jpg', 'edit.jpg', 'video.jpg', 'social.jpg', 'events.jpg', 'texts.jpg', 'partners.jpg', 'ops.jpg', 'marketing.jpg', 'creative.jpg', 'biz.jpg', 'outside.jpg', 'host.jpg'];   // ИИ-визуализации зала из данных убраны 26.10; теперь фото только настоящие
+const ASSOC_FILES = ['design.jpg', 'edit.jpg', 'video.jpg', 'social.jpg', 'events.jpg', 'texts.jpg', 'partners.jpg', 'ops.jpg', 'marketing.jpg', 'creative.jpg', 'biz.jpg', 'outside.jpg', 'host.jpg', 'vmeste.jpg'];   // ИИ-визуализации зала из данных убраны 26.10; теперь фото только настоящие
 
 // Форматы встреч. Какой формат в какой день — объявляем в афише, к дням недели не привязываем.
 const FORMATS = [
