@@ -411,19 +411,19 @@ function renderWhere(target){
   const el = document.getElementById(target);
   if (!el) return;
   const v = SITE.howToFindVideo || '';
-  const video = !v ? `<div class="where__video where__video--empty"><span>Видео</span><span>Как нас найти: от остановки до двери. Появится после открытия.</span></div>`
+  const video = !v ? `<div class="where__video where__video--empty"><span></span><span>Видео от остановки до двери появится после открытия.</span></div>`
     : /\.mp4(\?|$)/i.test(v) ? `<video class="where__video" controls preload="metadata" playsinline src="${v}"></video>`
     : /^https?:/i.test(v) ? `<iframe class="where__video" src="${v}" title="Как нас найти" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`
     : `<div class="where__video">${v}</div>`;
-  // подпись-указатель к видео: в строке адреса справа, стрелка смотрит на видео
+  // подпись-указатель прямо на видео: рукописный текст и стрелка вниз, в кадр
   const note = `<span class="where__note" aria-hidden="true"><span>как нас найти</span>
-    <svg viewBox="0 0 120 64" width="96" height="51" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14c26-4 54 2 74 18 8 7 14 13 18 20"/><path d="M83 50l13 4-4-13"/></svg></span>`;
+    <svg viewBox="0 0 64 120" width="40" height="75" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4c-4 26 2 54 18 74 7 8 13 14 20 18"/><path d="M40 86l12 10-14 2"/></svg></span>`;
   el.innerHTML = `<div class="where">
     <div class="where__map">
-      <div class="where__addr"><b>${esc(SITE.address)}</b><span>${esc(SITE.entrance || '')}</span>${note}</div>
+      <div class="where__addr"><b>${esc(SITE.address)}</b><span>${esc(SITE.entrance || '')}</span></div>
       <iframe src="${SITE.mapUrl}" title="Карта: ${esc(SITE.address)}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
-    <div class="where__right">${video}</div>
+    <div class="where__right">${note}${video}</div>
   </div>`;
 }
 

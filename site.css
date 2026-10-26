@@ -388,23 +388,26 @@ a.card:hover .card__name { color: var(--blue); }
 .where { display: grid; grid-template-columns: 7fr 5fr; gap: 24px; align-items: stretch; }
 .where__map { display: flex; flex-direction: column; border-radius: var(--radius); overflow: hidden; border: 2px solid var(--blue); background: var(--paper-2); }
 .section--alt .where__map { background: var(--paper); }
-.where__addr { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 24px; padding: 16px 24px; min-height: 72px; }
+.where__addr { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 24px; padding: 20px 24px; }
 .where__addr b { font: 600 24px/1.1 var(--f-display); text-transform: uppercase; }
 .where__addr span { font-size: 15px; color: var(--ink-2); }
 .where__map iframe { display: block; width: 100%; flex: 1; min-height: 360px; border: 0; }
-.where__right { display: flex; flex-direction: column; }
-.where__note { display: inline-flex; align-items: center; gap: 8px; margin-left: auto; color: var(--blue); transform: rotate(-4deg); }
-.where__note span { font: 600 26px/1 'Caveat', cursive; white-space: nowrap; }
-.where__note svg { flex: none; }
+.where__right { display: flex; flex-direction: column; position: relative; }
+.where__note { position: absolute; top: 16px; left: 20px; z-index: 2; display: flex; align-items: flex-start; gap: 8px; color: var(--green); pointer-events: none; transform: rotate(-6deg); }
+.where__note span { font: 600 28px/1 'Caveat', cursive; white-space: nowrap; }
+.where__video--empty .where__note, .where__right:has(.where__video--empty) .where__note { color: var(--green); }
+.where__right:has(video), .where__right:has(iframe) { --note: var(--paper); }
+.where__right:has(video) .where__note, .where__right:has(iframe) .where__note { color: var(--paper); }
 .where__video { display: block; width: 100%; min-height: 360px; flex: 1; border: 0; border-radius: var(--radius); background: var(--ink); object-fit: cover; }
 .where__video--empty { display: flex; flex-direction: column; justify-content: space-between; padding: 24px; background: var(--paper-2); border: 2px solid var(--green); color: var(--ink-2); font-size: 15px; }
 .section--alt .where__video--empty { background: var(--paper); }
-.where__video--empty span:first-child { font: 600 24px/1.1 var(--f-display); text-transform: uppercase; color: var(--green); }
+.where__video--empty span:first-child { display: none; }
 @media (max-width: 900px) {
   .where { grid-template-columns: 1fr; }
   .where__map iframe { min-height: 280px; }
   .where__video { min-height: 220px; aspect-ratio: 16 / 9; flex: none; }
-  .where__note { margin-left: 0; }
+  .where__note { top: 12px; left: 12px; }
+  .where__note span { font-size: 24px; }
 }
 
 /* ---------- Вступить ---------- */
