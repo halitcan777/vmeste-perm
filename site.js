@@ -107,7 +107,7 @@ function renderHero(){
   }
   const slides = list.map((ev, i) => {
     const d = nextDate(ev);
-    return `<article class="slide"${i ? ' hidden' : ''} aria-roledescription="слайд" aria-label="${i + 1} из ${list.length}">
+    return `<article class="slide${ev.textSide === 'right' ? ' slide--right' : ''}"${i ? ' hidden' : ''} aria-roledescription="слайд" aria-label="${i + 1} из ${list.length}">
       ${slideBg(ev, i)}
       <div class="container slide__in">
         <p class="slide__when"><span>${fmtDay(d)}, ${weekday(d)}</span><span>${esc(ev.time)}</span><span>${esc(ev.place || DEFAULT_PLACE)}</span></p>
