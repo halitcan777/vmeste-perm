@@ -336,7 +336,9 @@ const EVENTS = /*EVENTS-START*/[
     "color": "green",
     "people": [
       "didebashvili"
-    ]
+    ],
+    "image": "assets/img/people/didebashvili.jpg",
+    "imagePos": "50% 30%"
   },
   {
     "id": "yoga",
