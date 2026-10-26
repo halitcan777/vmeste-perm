@@ -72,7 +72,6 @@ function renderFoot(){
       <div><h3>Где мы</h3><ul><li>${esc(SITE.address)}</li><li>Вход со Старокирпичного переулка</li></ul></div>
       <div><h3>Связь</h3><ul>
         <li><a href="${SITE.channel}" target="_blank" rel="noopener">Канал в Телеграме</a></li>
-        <li><a href="${SITE.chat}" target="_blank" rel="noopener">Чат участников</a></li>
         <li><a href="${SITE.instagram}" target="_blank" rel="noopener">Инстаграм</a></li>
         <li><a href="${SITE.telegram}" target="_blank" rel="noopener">Написать Платону</a></li>
       </ul></div>

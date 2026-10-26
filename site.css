@@ -148,6 +148,7 @@ p { margin: 0; }
 .hero__frame { position: relative; border-radius: var(--radius); overflow: hidden; background: var(--paper-2); color: var(--ink); border: 2px solid var(--wine); --accent: var(--wine); }
 .hero__frame.blue { border-color: var(--blue); --accent: var(--blue); }
 .hero__frame.green { border-color: var(--green); --accent: var(--green); }
+.hero__frame.ink { border-color: var(--ink); --accent: var(--ink); }
 .hero__frame .btn { background: var(--accent); border-color: var(--accent); }
 .hero__frame .btn:hover { background: var(--ink); border-color: var(--ink); }
 .hero__frame .btn--line { background: transparent; color: var(--accent); }
