@@ -622,3 +622,19 @@ body[data-page="home"] .join h2 { font-size: 56px; }
   .sch__row { padding: 12px 14px; }
   .spot__about { font-size: 15px; }
 }
+
+/* ---------- Герой одной высоты на всех слайдах (26.10) ---------- */
+.hero__frame .slide { height: 520px; min-height: 0; }
+.slide__title { font-size: clamp(40px, 5.5vw, 80px); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.slide__text { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.slide__when { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+.slide__in { padding-top: 32px; }
+.hero--empty .slide__title { font-size: clamp(40px, 5.5vw, 80px); }
+@media (max-width: 1040px) { .slide__title { font-size: clamp(36px, 7vw, 64px); } }
+@media (max-width: 760px) {
+  .hero__frame .slide { height: 480px; }
+  .slide__title { font-size: 36px; -webkit-line-clamp: 3; }
+  .slide__when { -webkit-line-clamp: 2; }
+  .slide__in { padding-top: 24px; padding-bottom: 88px; }
+  .slide__actions { margin-top: 20px; }
+}
