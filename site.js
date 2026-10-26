@@ -16,6 +16,9 @@ const pad2 = n => String(n).padStart(2, '0');
 const page = document.body.dataset.page || '';
 const photo = src => (typeof SHOW_PHOTOS !== 'undefined' && SHOW_PHOTOS && src) ? src : '';
 const ROLE_NAME = { team: 'Команда', expert: 'Эксперт', guest: 'Гость встречи' };
+// какие ассоциативные кадры уже сгенерированы (список обновляется при генерации)
+const ASSOC_READY = typeof ASSOC_FILES !== 'undefined' ? ASSOC_FILES : [];
+const assocReady = src => ASSOC_READY.some(f => src.endsWith('/' + f));
 
 /* ---------- лента над шапкой: фразы из принципов ---------- */
 function renderTicker(){
@@ -297,7 +300,7 @@ function renderTeamMosaic(target, { count = 16 } = {}){
   const el = document.getElementById(target);
   if (!el) return;
   const list = PEOPLE.filter(p => p.role === 'team').slice(0, count);
-  el.innerHTML = `<div class="mosaic">${list.map((p, i) => `<a class="mosaic__item${p.photo ? '' : ' mosaic__item--empty'}" href="person.html?id=${encodeURIComponent(p.id)}" aria-label="${esc(p.name)}" title="${esc(p.name)}">${p.photo ? `<img src="${p.photo}" alt="" loading="lazy"${p.photoPos ? ` style="object-position:${p.photoPos}"` : ''}>` : ''}</a>`).join('')}</div>`;
+  el.innerHTML = `<div class="mosaic">${list.map((p, i) => { const src = p.photo || (p.assoc && assocReady(p.assoc) ? p.assoc : ''); return `<a class="mosaic__item${src ? '' : ' mosaic__item--empty'}" href="person.html?id=${encodeURIComponent(p.id)}" aria-label="${esc(p.name)}" title="${esc(p.name)}">${src ? `<img src="${src}" alt="" loading="lazy"${p.photo && p.photoPos ? ` style="object-position:${p.photoPos}"` : ''}>` : ''}</a>`; }).join('')}</div>`;
 }
 
 // Эксперты и гости встреч — одной сеткой, эксперты первыми; в конце приглашение стать экспертом
@@ -365,7 +368,7 @@ function renderPerson(target){
   document.title = `${p.name} — Вместе`;
   const role = p.position || ROLE_NAME[p.role];
   const shots = personShots(p);
-  const bg = p.photo || (shots[0] && shots[0].src) || '';
+  const bg = p.photo || (shots[0] && shots[0].src) || (p.assoc && assocReady(p.assoc) ? p.assoc : '');
   // 1. Кадр: размытое фото на фоне (ассоциация с человеком, не забирает фокус), имя крупно, текст расставлен по кадру
   const hero = `<section class="phero"><div class="container"><div class="phero__frame${bg ? '' : ' phero__frame--flat'} grain">
       ${bg ? `<img class="phero__bg" src="${bg}" alt=""${p.photoPos ? ` style="object-position:${p.photoPos}"` : ''}>` : ''}

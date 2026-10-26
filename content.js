@@ -16,7 +16,9 @@ const TICKER = [
 ];
 
 // Визуализации зала (события, блог): false — убраны 26.10, пути в данных остаются. Настоящие фото людей показываются всегда.
-const SHOW_PHOTOS = true;   // ИИ-визуализации зала из данных убраны 26.10; теперь фото только настоящие
+const SHOW_PHOTOS = true;
+// Готовые ассоциативные кадры в assets/img/people/assoc (обновляется скриптом при генерации)
+const ASSOC_FILES = ['design.jpg', 'edit.jpg', 'video.jpg', 'social.jpg', 'events.jpg'];   // ИИ-визуализации зала из данных убраны 26.10; теперь фото только настоящие
 
 // Форматы встреч. Какой формат в какой день — объявляем в афише, к дням недели не привязываем.
 const FORMATS = [
@@ -29,6 +31,7 @@ const FORMATS = [
 
 // Люди. role: 'team' — команда, 'expert' — эксперт, 'guest' — гость встречи.
 // Команда — список владельца от 26.10; роли из «Структура команды, вер. 3 от 20.10» (главная функция). Нет в документе = пусто.
+// assoc — ассоциативный кадр по роли (сгенерирован, без людей): идёт в мозаику и фон страницы, пока нет своего фото.
 // Страница человека берёт: about (абзацы), work (список дел во «Вместе»), talk (о чём поговорить), contact, since,
 // photos: [{src, note, pos}] — кадры человека (pos — точка фото, которую держим при обрезке); photo/photoPos — портрет для карточки.
 const PEOPLE = [
@@ -46,7 +49,7 @@ const PEOPLE = [
     talk: 'Запуск сообщества, поиск партнёров, первые шаги проекта и работа с неопределённостью.',
     contact: 'https://t.me/Paltus10'
   },
-  { id: 'roman', role: 'team', position: 'Внешние мероприятия', name: 'Роман Гильмутдинов' },
+  { id: 'roman', role: 'team', assoc: 'assets/img/people/assoc/outside.jpg', position: 'Внешние мероприятия', name: 'Роман Гильмутдинов' },
   {
     id: 'ilya', role: 'team', name: 'Илья Амиров', position: 'Основатель, операционное управление',
     photo: 'assets/img/w/ilya.jpg', photoPos: '50% 12%',
@@ -54,23 +57,23 @@ const PEOPLE = [
     talk: 'Продуктовое мышление, сбор команды, постановка задач и переход от идеи к первому результату.',
     contact: 'https://t.me/amirov_il'   // через Илью вступают в команду
   },
-  { id: 'tatyana', role: 'team', position: 'Дизайн', name: 'Татьяна' },
-  { id: 'polina', role: 'team', position: 'Соцсети', name: 'Полина' },
-  { id: 'agata', role: 'team', position: 'Соцсети', name: 'Агата' },
-  { id: 'dmitry-predein', role: 'team', name: 'Дмитрий Предеин', position: '' },
-  { id: 'irina', role: 'team', position: 'Видеомонтаж и дизайн', name: 'Ирина' },
-  { id: 'arina', role: 'team', position: 'Мероприятия, маркетинг и медиа', name: 'Арина Максимова' },
-  { id: 'ekaterina', role: 'team', position: 'Видеопроизводство', name: 'Екатерина' },
-  { id: 'eva', role: 'team', position: 'Мероприятия и креатив', name: 'Ева Коскова' },
-  { id: 'vika', role: 'team', position: 'Партнёрства и привлечение', name: 'Вика' },
-  { id: 'ksyusha', role: 'team', position: 'Тексты и соцсети', name: 'Ксюша' },
-  { id: 'adelina', role: 'team', position: 'Операционное управление', name: 'Аделина' },
-  { id: 'alexey', role: 'team', position: 'Маркетинг и медиа', name: 'Алексей' },
-  { id: 'vlada', role: 'team', position: 'Лицо основного аккаунта', name: 'Влада' },
-  { id: 'angelina', role: 'team', position: 'Бизнес-проекты', name: 'Ангелина' },
-  { id: 'kirill', role: 'team', position: 'Видеомонтаж', name: 'Кирилл Богданов' },
-  { id: 'dmitry-bazuev', role: 'team', name: 'Дмитрий Базуев', position: '' },
-  { id: 'anya', role: 'team', position: 'Маркетинг и медиа', name: 'Аня' },
+  { id: 'tatyana', role: 'team', assoc: 'assets/img/people/assoc/design.jpg', position: 'Дизайн', name: 'Татьяна' },
+  { id: 'polina', role: 'team', assoc: 'assets/img/people/assoc/social.jpg', position: 'Соцсети', name: 'Полина' },
+  { id: 'agata', role: 'team', assoc: 'assets/img/people/assoc/social.jpg', position: 'Соцсети', name: 'Агата' },
+  { id: 'dmitry-predein', role: 'team', assoc: 'assets/img/people/assoc/vmeste.jpg', name: 'Дмитрий Предеин', position: '' },
+  { id: 'irina', role: 'team', assoc: 'assets/img/people/assoc/edit.jpg', position: 'Видеомонтаж и дизайн', name: 'Ирина' },
+  { id: 'arina', role: 'team', assoc: 'assets/img/people/assoc/events.jpg', position: 'Мероприятия, маркетинг и медиа', name: 'Арина Максимова' },
+  { id: 'ekaterina', role: 'team', assoc: 'assets/img/people/assoc/video.jpg', position: 'Видеопроизводство', name: 'Екатерина' },
+  { id: 'eva', role: 'team', assoc: 'assets/img/people/assoc/creative.jpg', position: 'Мероприятия и креатив', name: 'Ева Коскова' },
+  { id: 'vika', role: 'team', assoc: 'assets/img/people/assoc/partners.jpg', position: 'Партнёрства и привлечение', name: 'Вика' },
+  { id: 'ksyusha', role: 'team', assoc: 'assets/img/people/assoc/texts.jpg', position: 'Тексты и соцсети', name: 'Ксюша' },
+  { id: 'adelina', role: 'team', assoc: 'assets/img/people/assoc/ops.jpg', position: 'Операционное управление', name: 'Аделина' },
+  { id: 'alexey', role: 'team', assoc: 'assets/img/people/assoc/marketing.jpg', position: 'Маркетинг и медиа', name: 'Алексей' },
+  { id: 'vlada', role: 'team', assoc: 'assets/img/people/assoc/host.jpg', position: 'Лицо основного аккаунта', name: 'Влада' },
+  { id: 'angelina', role: 'team', assoc: 'assets/img/people/assoc/biz.jpg', position: 'Бизнес-проекты', name: 'Ангелина' },
+  { id: 'kirill', role: 'team', assoc: 'assets/img/people/assoc/edit.jpg', position: 'Видеомонтаж', name: 'Кирилл Богданов' },
+  { id: 'dmitry-bazuev', role: 'team', assoc: 'assets/img/people/assoc/vmeste.jpg', name: 'Дмитрий Базуев', position: '' },
+  { id: 'anya', role: 'team', assoc: 'assets/img/people/assoc/marketing.jpg', position: 'Маркетинг и медиа', name: 'Аня' },
   // Эксперты и гости встреч — по открытым источникам (26.10): проверить с ними перед публикацией, фото запросить.
   { id: 'oshchepkov', role: 'expert', name: 'Олег Ощепков', position: 'Предприниматель, ресторатор, профессор ВШЭ в Перми',
     photo: 'assets/img/people/oshchepkov.jpg', photoPos: '50% 30%',
