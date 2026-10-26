@@ -640,6 +640,6 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 /* текст справа, когда человек на фото слева */
 @media (min-width: 901px) {
   .slide--right .slide__in { padding-left: calc(50% + 24px); }
-  .slide--right .slide__title { max-width: none; }
+  .slide--right .slide__title { max-width: none; font-size: clamp(36px, 4.4vw, 64px); -webkit-line-clamp: 3; }
   .slide--right .slide__bg::after { background: linear-gradient(to top, rgba(15,15,15,.85) 0%, rgba(15,15,15,.45) 40%, rgba(15,15,15,.1) 70%), linear-gradient(to left, rgba(15,15,15,.55), rgba(15,15,15,0) 55%); }
 }
