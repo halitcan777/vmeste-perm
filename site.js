@@ -17,13 +17,12 @@ const page = document.body.dataset.page || '';
 const photo = src => (typeof SHOW_PHOTOS !== 'undefined' && SHOW_PHOTOS && src) ? src : '';
 const ROLE_NAME = { team: 'Команда', expert: 'Эксперт', guest: 'Гость встречи' };
 
-/* ---------- лента событий над шапкой ---------- */
+/* ---------- лента над шапкой: фразы из принципов ---------- */
 function renderTicker(){
   const el = document.getElementById('tick');
   if (!el) return;
-  let items = upcomingEvents().map(ev => `<a class="tick__item" href="${eventUrl(ev)}"><b>${fmtDay(nextDate(ev))}</b>${esc(ev.title)}</a>`);
-  if (!items.length) items = [`<a class="tick__item" href="${SITE.channel}" target="_blank" rel="noopener"><b>Скоро</b>новые встречи, анонсы в канале</a>`];
-  while (items.length < 6) items = items.concat(items); // мало событий — повторяем, чтобы лента не была пустой
+  let items = TICKER.map(t => `<span class="tick__item">${esc(t)}</span>`);
+  while (items.length < 8) items = items.concat(items);
   // дорожка дублируется целиком, чтобы прокрутка шла без шва
   const once = items.join('');
   el.innerHTML = `<div class="tick__track">${once}<span aria-hidden="true">${once}</span></div>`;
@@ -80,7 +79,7 @@ function renderFoot(){
     </div>
     <div class="foot__bottom">
       <span>© ${new Date().getFullYear()} «Вместе», Пермь</span>
-      <nav aria-label="Документы"><a href="privacy.html">Политика обработки персональных данных</a><a href="consent.html">Согласие на обработку данных</a></nav>
+      <nav aria-label="Документы"><a href="privacy.html">Политика обработки персональных данных</a><a href="consent.html">Согласие на обработку данных</a><a href="offer.html">Оферта о пожертвовании</a></nav>
     </div>
   </div>`;
 }
@@ -206,7 +205,7 @@ function renderFormats(target){
 /* ---------- карточки: люди, партнёры, блог ----------
    Кадр карточки = фото; пока фото нет — плашка с текстом. */
 function personCard(p, i){
-  const src = photo(p.photo);
+  const src = p.photo || ''; // фото людей настоящие — показываем всегда
   const frame = src
     ? `<div class="card__img card__img--portrait grain"><img src="${src}" alt="${esc(p.name)}" loading="lazy"></div>`
     : `<div class="card__plate">${esc((p.about && p.about[0]) || p.talk || 'Кадр и рассказ скоро')}</div>`;
@@ -277,9 +276,9 @@ function renderPosts(target, { limit = 0 } = {}){
 
 /* ---------- страница человека: имя, кадры «в работе», текст, кадры «в жизни» ---------- */
 function gallery(list, title, note){
-  const items = (SHOW_PHOTOS && list && list.length)
-    ? list.map((g, i) => `<figure class="shot grain"><img src="${g.src}" alt="" loading="lazy"><figcaption><b>${pad2(i + 1)}</b>${esc(g.note || '')}</figcaption></figure>`)
-    : [0, 1, 2].map(i => `<div class="shot shot--empty"><span>${pad2(i + 1)}</span><span>${esc(note)}</span></div>`);
+  // настоящие кадры + пустые плашки до трёх, чтобы ряд был полным
+  const items = (list || []).map((g, i) => `<figure class="shot grain"><img src="${g.src}" alt="" loading="lazy"><figcaption><b>${pad2(i + 1)}</b>${esc(g.note || '')}</figcaption></figure>`);
+  for (let i = items.length; i < 3; i++) items.push(`<div class="shot shot--empty"><span>${pad2(i + 1)}</span><span>${esc(note)}</span></div>`);
   return `<div class="sec-head"><div><h2>${esc(title)}</h2></div></div><div class="shots">${items.join('')}</div>`;
 }
 
@@ -316,6 +315,27 @@ function renderPerson(target){
       </div>
     </div></section>
     <section class="section"><div class="container">${gallery(p.gallery && p.gallery.life, 'В жизни', 'Кадр из повседневной жизни')}</div></section>`;
+}
+
+/* ---------- как нас найти: адрес + карта слева, видео справа ---------- */
+function renderWhere(target){
+  const el = document.getElementById(target);
+  if (!el) return;
+  const v = SITE.howToFindVideo || '';
+  const video = !v ? `<div class="where__video where__video--empty"><span>Видео</span><span>Как нас найти: от остановки до двери. Появится после открытия.</span></div>`
+    : /\.mp4(\?|$)/i.test(v) ? `<video class="where__video" controls preload="metadata" playsinline src="${v}"></video>`
+    : /^https?:/i.test(v) ? `<iframe class="where__video" src="${v}" title="Как нас найти" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`
+    : `<div class="where__video">${v}</div>`;
+  // подпись-указатель к видео: рукописный текст и нарисованная стрелка
+  const note = `<div class="where__note" aria-hidden="true"><span>как нас найти</span>
+    <svg viewBox="0 0 120 64" width="120" height="64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10c26 0 54 8 74 24 8 7 14 13 18 20"/><path d="M83 50l13 4-4-13"/></svg></div>`;
+  el.innerHTML = `<div class="where">
+    <div class="where__map">
+      <div class="where__addr"><b>${esc(SITE.address)}</b><span>${esc(SITE.entrance || '')}</span></div>
+      <iframe src="${SITE.mapUrl}" title="Карта: ${esc(SITE.address)}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+    <div class="where__right">${note}${video}</div>
+  </div>`;
 }
 
 /* ---------- статичные блоки из данных ---------- */

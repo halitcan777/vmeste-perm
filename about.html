@@ -3,7 +3,7 @@
 <meta name="description" content="«Вместе» появилось в Перми осенью 2026 года. Свой зал на Ленина, 44, пять форматов встреч, вход для участников бесплатный.">
 <link rel="icon" href="assets/brand/avatar-blue.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Rubik:wght@600;700&family=Onest:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Rubik:wght@600;700&family=Onest:wght@400;500;600;700&family=Caveat:wght@600&display=swap">
 <link rel="stylesheet" href="site.css">
 </head><body data-page="about">
 <div class="tick" id="tick"></div>
@@ -30,9 +30,18 @@
   <div id="team"></div>
 </div></section>
 
+<!-- Как нас найти -->
+<section class="section" id="where"><div class="container">
+  <div class="sec-head">
+    <div><h2>Как нас найти</h2><p class="lead">Центр Перми, второй этаж. Если заблудился — пиши в чат, встретим.</p></div>
+    <a class="btn btn--line more" href="https://yandex.ru/maps/?text=%D0%9F%D0%B5%D1%80%D0%BC%D1%8C%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%9B%D0%B5%D0%BD%D0%B8%D0%BD%D0%B0%2C%2044" target="_blank" rel="noopener">Открыть в Яндекс Картах</a>
+  </div>
+  <div id="where-block"></div>
+</div></section>
+
 <section class="join" id="join"><div class="container"><div class="join__in">
   <div><h2>Приходи одному. Уйдёшь с друзьями</h2><p>Участие бесплатное. Вступай в чат: там анонсы встреч, вопросы и люди, которые тоже только что пришли.</p></div>
-  <div class="join__actions"><a class="btn btn--green" data-link="chat" target="_blank" rel="noopener">Вступить в чат</a><a class="btn btn--line green" data-link="channel" target="_blank" rel="noopener">Канал в Телеграме</a></div>
+  <div class="join__actions"><a class="btn btn--green" data-link="chat" target="_blank" rel="noopener">Вступить в чат</a><a class="btn btn--line green" data-link="channel" target="_blank" rel="noopener">Канал в Телеграме</a><a class="btn btn--line green" data-link="instagram" target="_blank" rel="noopener">Инстаграм</a></div>
 </div></div></section>
 
 </main>
@@ -43,6 +52,7 @@ document.getElementById('about-title').textContent = SITE.slogan;
 renderStory('story', 'principles');
 renderFormats('formats-grid');
 renderTeam('team', { limit: 8 });
+renderWhere('where-block');
 bindLinks();
 </script>
 </body></html>
