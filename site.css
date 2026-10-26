@@ -376,8 +376,8 @@ a.card:hover .card__name { color: var(--blue); }
 .month + .month { margin-top: 64px; }
 .month > h3 { font-size: 40px; margin-bottom: 24px; }
 @media (max-width: 640px) { .ev-card--big { grid-column: auto; } .ev-card--big .ev-card__title { font-size: 32px; } .ev-card--big .card__img img { aspect-ratio: 4 / 3; } .month > h3 { font-size: 32px; } }
-.card__plate--logo { justify-content: center; align-items: flex-start; }
-.card__plate--logo img { max-height: 56%; max-width: 85%; }
+.card__plate--logo { justify-content: center; align-items: center; text-align: center; }
+.card__plate--logo img { max-height: 44%; max-width: 68%; width: auto; height: auto; object-fit: contain; }
 .card__plate--logo img { max-height: 96px; max-width: 100%; width: auto; object-fit: contain; }
 /* приглашение стать экспертом/партнёром — та же сетка, плашка цветом бренда */
 .card__plate--call { border: 2px solid var(--wine); --accent: var(--wine); }
@@ -649,3 +649,7 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .sch__row:nth-child(odd) { margin-right: 10%; }
 .sch__row:nth-child(even) { margin-left: 10%; }
 @media (max-width: 760px) { .sch__row:nth-child(odd) { margin-right: 20px; } .sch__row:nth-child(even) { margin-left: 20px; } }
+
+/* партнёры: логотипы и названия по центру плашки, один масштаб */
+.card__plate--poster { justify-content: center; align-items: center; text-align: center; }
+.pstrip__item img { max-height: 44px; max-width: 72%; }
