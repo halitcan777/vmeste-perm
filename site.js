@@ -36,13 +36,13 @@ function renderHead(){
   el.innerHTML = `<div class="container head__in">
     <a class="head__logo" href="index.html" aria-label="Вместе — на главную"><img src="assets/brand/wordmark-blue.svg" alt="Вместе" width="122" height="28"></a>
     <nav class="head__nav" aria-label="Разделы">${links}</nav>
-    <a class="btn btn--sm head__cta" href="index.html#join">Вступить</a>
+    <a class="btn btn--sm head__cta" href="${SITE.channel}" target="_blank" rel="noopener">Вступить</a>
     <button class="head__burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="menu"><span></span></button>
   </div>
   <div class="menu on-dark" id="menu" hidden role="dialog" aria-modal="true" aria-label="Меню">
     <div class="menu__top"><img src="assets/brand/wordmark-paper.svg" alt="Вместе"><button class="menu__close" type="button" aria-label="Закрыть меню">×</button></div>
     <nav>${NAV.map(([href, label]) => `<a href="${href}">${label}</a>`).join('')}</nav>
-    <a class="btn btn--paper" href="index.html#join">Вступить</a>
+    <a class="btn btn--paper" href="${SITE.channel}" target="_blank" rel="noopener">Вступить</a>
   </div>`;
   const menu = el.querySelector('#menu'), burger = el.querySelector('.head__burger'), main = document.querySelector('main');
   const set = open => {
