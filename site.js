@@ -347,36 +347,53 @@ function renderPerson(target){
   document.title = `${p.name} — Вместе`;
   const role = p.position || ROLE_NAME[p.role];
   const shots = personShots(p);
-  // 1. Кадры сеткой, как в каталоге: подпись над кадром
-  const stills = shots.map((x, i) => `<figure class="still">
-      <figcaption class="card__top"><span class="card__num">${pad2(i + 1)}</span><span><span class="card__name">${esc(x.note || '')}</span></span></figcaption>
-      <div class="card__img grain"><img src="${x.src}" alt="${esc(x.note || p.name)}"${i ? ' loading="lazy"' : ''}${x.pos ? ` style="object-position:${x.pos}"` : ''}></div>
-    </figure>`).join('');
-  // 2. Текст колонкой рядом
-  const side = `<div class="person-side">
-      <dl class="person-facts">
-        <div><dt>Роль</dt><dd>${esc(role)}</dd></div>
-        <div><dt>Во «Вместе»</dt><dd>${esc(ROLE_NAME[p.role])}</dd></div>
-        ${p.since ? `<div><dt>С какого времени</dt><dd>${esc(p.since)}</dd></div>` : ''}
-      </dl>
-      <h2>О человеке</h2>
-      <div class="copy">${(p.about && p.about.length ? p.about : ['Рассказ появится после открытия.']).map(t => `<p>${esc(t)}</p>`).join('')}</div>
-      ${p.work && p.work.length ? `<h2>Чем занимается во «Вместе»</h2><ul class="list">${p.work.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
-      ${p.talk ? `<h2>О чём можно поговорить</h2><div class="copy"><p>${esc(p.talk)}</p></div>` : ''}
-      ${p.contact ? `<div class="actions"><a class="btn" href="${p.contact}" target="_blank" rel="noopener">Написать</a></div>` : ''}
-    </div>`;
-  // 3. Встречи с участием
+  const bg = p.photo || (shots[0] && shots[0].src) || '';
+  // 1. Кадр: размытое фото на фоне (ассоциация с человеком, не забирает фокус), имя крупно, текст расставлен по кадру
+  const hero = `<section class="phero"><div class="container"><div class="phero__frame${bg ? '' : ' phero__frame--flat'} grain">
+      ${bg ? `<img class="phero__bg" src="${bg}" alt=""${p.photoPos ? ` style="object-position:${p.photoPos}"` : ''}>` : ''}
+      <div class="phero__in">
+        <p class="phero__top"><a href="${back[0]}">${back[1]}</a><span>${esc(role)}</span></p>
+        <h1 class="phero__name">${esc(p.name)}</h1>
+        <div class="phero__cols">
+          <p class="phero__about">${esc((p.about && p.about[0]) || 'Рассказ появится после открытия.')}</p>
+          ${p.talk ? `<p class="phero__talk"><b>О чём поговорить</b>${esc(p.talk)}</p>` : '<span></span>'}
+        </div>
+        <p class="phero__foot"><span>Вместе</span><span>${esc(ROLE_NAME[p.role])}</span>${p.contact ? `<a class="btn btn--paper btn--sm" href="${p.contact}" target="_blank" rel="noopener">Написать</a>` : ''}</p>
+      </div>
+    </div></div></section>`;
+  // 2. Мозаика кадров: смотреть и открывать на весь экран
+  const grid = shots.length ? `<section class="section"><div class="container"><div class="grid9">${shots.map((x, i) => `<button type="button" class="grid9__item grain" data-lb="${i}" aria-label="Открыть кадр ${i + 1}"><img src="${x.src}" alt="${esc(x.note || p.name)}" loading="lazy"${x.pos ? ` style="object-position:${x.pos}"` : ''}></button>`).join('')}</div></div></section>` : '';
+  // 3. Остальной текст, если есть
+  const more = (p.about && p.about.length > 1) || (p.work && p.work.length) ? `<section class="section section--alt"><div class="container person-grid--text">
+      ${p.about && p.about.length > 1 ? `<div class="copy">${p.about.slice(1).map(t => `<p>${esc(t)}</p>`).join('')}</div>` : ''}
+      ${p.work && p.work.length ? `<h2 style="margin-top:32px;font-size:32px">Чем занимается во «Вместе»</h2><ul class="list" style="margin-top:12px">${p.work.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
+    </div></section>` : '';
+  // 4. Встречи с участием
   const evs = EVENTS.filter(e => (e.people || []).includes(p.id)).sort((x, y) => parseDay(x.dates[0]) - parseDay(y.dates[0]));
-  const meets = evs.length ? `<section class="section section--alt"><div class="container"><div class="sec-head"><div><h2>Встречи</h2></div></div><div class="reel">${evs.map(e => eventCard(e, {})).join('')}</div></div></section>` : '';
+  const meets = evs.length ? `<section class="section${more ? '' : ' section--alt'}"><div class="container"><div class="sec-head"><div><h2>Встречи</h2></div></div><div class="reel">${evs.map(e => eventCard(e, {})).join('')}</div></div></section>` : '';
+  el.innerHTML = hero + grid + more + meets;
+  initLightbox(el, shots.map(x => ({ src: x.src, note: x.note || '' })));
+}
 
-  el.innerHTML = `<section class="page-head"><div class="container">
-      <p class="crumbs"><a href="${back[0]}">${back[1]}</a><span>${esc(p.name)}</span></p>
-      <h1>${esc(p.name)}</h1><p class="lead">${esc(role)}</p>
-    </div></section>
-    <section class="section"><div class="container ${shots.length ? 'person-grid' : 'person-grid person-grid--text'}">
-      ${shots.length ? `<div class="reel reel--2 person-shots">${stills}</div>` : ''}
-      ${side}
-    </div></section>${meets}`;
+/* ---------- просмотр кадров на весь экран ---------- */
+function initLightbox(root, items){
+  if (!items.length) return;
+  let lb = document.getElementById('lb');
+  if (!lb) {
+    lb = document.createElement('div'); lb.id = 'lb'; lb.className = 'lb'; lb.hidden = true; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-modal', 'true'); lb.setAttribute('aria-label', 'Кадр');
+    lb.innerHTML = `<button type="button" class="lb__close" aria-label="Закрыть">×</button><button type="button" class="lb__prev" aria-label="Предыдущий">←</button><img class="lb__img" alt=""><button type="button" class="lb__next" aria-label="Следующий">→</button><p class="lb__cap"></p>`;
+    document.body.appendChild(lb);
+  }
+  let cur = 0;
+  const show = n => { cur = (n + items.length) % items.length; lb.querySelector('.lb__img').src = items[cur].src; lb.querySelector('.lb__cap').textContent = `${pad2(cur + 1)}/${pad2(items.length)}  ${items[cur].note}`; };
+  const open = n => { show(n); lb.hidden = false; document.body.style.overflow = 'hidden'; lb.querySelector('.lb__close').focus(); };
+  const close = () => { lb.hidden = true; document.body.style.overflow = ''; };
+  root.querySelectorAll('[data-lb]').forEach(b => b.addEventListener('click', () => open(Number(b.dataset.lb))));
+  lb.querySelector('.lb__close').onclick = close;
+  lb.querySelector('.lb__prev').onclick = () => show(cur - 1);
+  lb.querySelector('.lb__next').onclick = () => show(cur + 1);
+  lb.onclick = e => { if (e.target === lb) close(); };
+  document.addEventListener('keydown', e => { if (lb.hidden) return; if (e.key === 'Escape') close(); if (e.key === 'ArrowRight') show(cur + 1); if (e.key === 'ArrowLeft') show(cur - 1); });
 }
 
 /* ---------- как нас найти: адрес + карта слева, видео справа ---------- */
