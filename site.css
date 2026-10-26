@@ -117,7 +117,7 @@ p { margin: 0; }
 .head__in { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 32px; height: var(--head-h); }
 .head__logo { display: block; flex: none; }
 .head__logo img { height: 28px; width: auto; }
-.head__nav { display: flex; gap: 32px; justify-self: center; }
+.head__nav { display: flex; gap: 48px; justify-self: center; }
 .head__nav a { font: 600 15px/1 var(--f-text); text-decoration: none; padding: 8px 0; }
 .head__nav a:hover { color: var(--blue); }
 .head__nav a[aria-current="page"] { color: var(--blue); }
