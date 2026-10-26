@@ -292,6 +292,14 @@ function renderTeam(target, { limit = 0, invite = true } = {}){
   el.innerHTML = `<div class="reel reel--4" id="${target}-grid">${cards.join('')}</div>`;
 }
 
+// Команда на главной: 16 квадратов встык без подписей, фото всех участников; клик — страница человека
+function renderTeamMosaic(target, { count = 16 } = {}){
+  const el = document.getElementById(target);
+  if (!el) return;
+  const list = PEOPLE.filter(p => p.role === 'team').slice(0, count);
+  el.innerHTML = `<div class="mosaic">${list.map((p, i) => `<a class="mosaic__item${p.photo ? '' : ' mosaic__item--empty'}" href="person.html?id=${encodeURIComponent(p.id)}" aria-label="${esc(p.name)}" title="${esc(p.name)}">${p.photo ? `<img src="${p.photo}" alt="" loading="lazy"${p.photoPos ? ` style="object-position:${p.photoPos}"` : ''}>` : ''}</a>`).join('')}</div>`;
+}
+
 // Эксперты и гости встреч — одной сеткой, эксперты первыми; в конце приглашение стать экспертом
 function renderPeople(target, { roles = ['expert', 'guest'], invite = true, limit = 0, compact = false } = {}){
   const el = document.getElementById(target);

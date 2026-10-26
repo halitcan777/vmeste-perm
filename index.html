@@ -42,8 +42,8 @@
 <!-- Команда -->
 <section class="section" id="team"><div class="container">
   <div class="sec-head">
-    <div><h2>Команда</h2><p class="lead">Те, кто делает «Вместе». У каждого своя страница: чем занимается, кадры с встреч и из жизни.</p></div>
-    <a class="btn btn--line more" href="team.html">Вся команда</a>
+    <div><h2>Команда</h2><p class="lead">Те, кто делает «Вместе». Нажми на кадр — откроется страница человека.</p></div>
+    <div class="actions" style="margin:0"><a class="btn btn--line more" href="team.html">Вся команда</a><a class="btn btn--line green" data-link="ilya" href="https://t.me/amirov_il" target="_blank" rel="noopener">Вступить в команду</a></div>
   </div>
   <div id="home-team"></div>
 </div></section>
@@ -83,7 +83,7 @@ renderSchedule('home-events', { limit: 4 });
 renderFormats('formats-grid');
 document.getElementById('about-title').textContent = SITE.slogan;
 renderStory('about-story', null, { short: true });
-renderTeam('home-team', { limit: 4 });
+renderTeamMosaic('home-team', { count: 16 });
 renderPeople('home-people', { limit: 5, compact: true });
 renderPartnerStrip('home-partners', { limit: 4 });
 renderWhere('where-block');
