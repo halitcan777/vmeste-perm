@@ -329,11 +329,15 @@ function renderPerson(target){
       </div>
     </div></section>`;
 
+  // 4. Встречи с участием человека
+  const evs = EVENTS.filter(e => (e.people || []).includes(p.id)).sort((x, y) => parseDay(x.dates[0]) - parseDay(y.dates[0]));
+  const meets = evs.length ? `<section class="section"><div class="container"><div class="sec-head"><div><h2>Встречи</h2></div></div><ul class="events">${evs.map(e => eventRow(e, {})).join('')}</ul></div></section>` : '';
+
   el.innerHTML = `<section class="person"><div class="container">
       <p class="crumbs"><a href="${back[0]}">${back[1]}</a><span>${esc(p.name)}</span></p>
       ${shots.length ? '' : `<p class="lead" style="margin:-8px 0 24px">${esc(role)}</p>`}
       ${frame}${reel}
-    </div></section>${text}`;
+    </div></section>${text}${meets}`;
 
   if (shots.length < 2) return;
   let cur = 0;

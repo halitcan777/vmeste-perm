@@ -119,6 +119,9 @@ async function init(){
   const facts = [['Когда', `${fmtRange(ev)}, ${ev.time.toLowerCase()}`], ['Где', ev.place || DEFAULT_PLACE], ['Вход', 'Бесплатно']];
   if (ev.capacity) facts.push(['Мест', `${ev.capacity}${ev.dates.length > 1 ? ' в день' : ''}`]);
   $('ev-facts').innerHTML = facts.map(([k, v]) => `<div class="fact"><strong>${k}</strong><p>${esc(v)}</p></div>`).join('');
+  // гости встречи — ссылкой на их страницы
+  const guests = (ev.people || []).map(id => PEOPLE.find(p => p.id === id)).filter(Boolean);
+  if (guests.length) $('ev-facts').insertAdjacentHTML('beforeend', `<div class="fact fact--wide"><strong>${guests.length > 1 ? 'Гости' : 'Гость'}</strong><p>${guests.map(g => `<a class="link" href="person.html?id=${encodeURIComponent(g.id)}">${esc(g.name)}</a>`).join(', ')}</p></div>`);
   $('ev-about').innerHTML = (ev.about || []).map(p => `<p>${esc(p)}</p>`).join('');
 
   const days = openDates(ev);

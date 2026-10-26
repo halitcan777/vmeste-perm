@@ -350,6 +350,7 @@ a.card:hover .card__name { color: var(--blue); }
 .event-body { display: grid; grid-template-columns: 7fr 5fr; gap: 56px; align-items: start; }
 .facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .fact { padding: 16px 20px; border-radius: var(--radius); background: var(--paper-2); }
+.fact--wide { grid-column: 1 / -1; }
 .fact strong { display: block; font-size: 14px; font-weight: 600; color: var(--ink-2); }
 .fact p { margin-top: 4px; font-size: 17px; font-weight: 600; }
 .event-body .copy { margin-top: 32px; }
