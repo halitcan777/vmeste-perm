@@ -299,8 +299,11 @@ function renderTeam(target, { limit = 0, invite = true } = {}){
 function renderTeamMosaic(target, { count = 16 } = {}){
   const el = document.getElementById(target);
   if (!el) return;
-  const list = PEOPLE.filter(p => p.role === 'team').slice(0, count);
-  el.innerHTML = `<div class="mosaic">${list.map((p, i) => { const src = p.photo || (p.assoc && assocReady(p.assoc) ? p.assoc : ''); return `<a class="mosaic__item${src ? '' : ' mosaic__item--empty'}" href="person.html?id=${encodeURIComponent(p.id)}" aria-label="${esc(p.name)}" title="${esc(p.name)}">${src ? `<img src="${src}" alt="" loading="lazy"${p.photo && p.photoPos ? ` style="object-position:${p.photoPos}"` : ''}>` : ''}</a>`; }).join('')}</div>`;
+  // только настоящие фото (без ассоциативных кадров): Илья первым, Платон вторым, дальше пустые квадраты
+  const team = PEOPLE.filter(p => p.role === 'team');
+  const first = ['ilya', 'platon'].map(id => team.find(p => p.id === id)).filter(Boolean);
+  const list = [...first, ...team.filter(p => !first.includes(p))].slice(0, count);
+  el.innerHTML = `<div class="mosaic">${list.map(p => `<a class="mosaic__item${p.photo ? '' : ' mosaic__item--empty'}" href="person.html?id=${encodeURIComponent(p.id)}" aria-label="${esc(p.name)}" title="${esc(p.name)}">${p.photo ? `<img src="${p.photo}" alt="" loading="lazy"${p.photoPos ? ` style="object-position:${p.photoPos}"` : ''}>` : ''}</a>`).join('')}</div>`;
 }
 
 // Эксперты и гости встреч — одной сеткой, эксперты первыми; в конце приглашение стать экспертом
