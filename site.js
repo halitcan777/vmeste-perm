@@ -136,7 +136,17 @@ function renderHero(){
     el.querySelector('#hero-num').textContent = `${pad2(cur + 1)}/${pad2(list.length)}`;
     el.querySelector('#hero-name').textContent = list[cur].type || 'Встреча';
   };
-  el.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => show(cur + Number(b.dataset.step))));
+  el.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => { show(cur + Number(b.dataset.step)); restart(); }));
+  // автопрокрутка по кругу каждые 3 секунды; пауза при наведении/фокусе и при «уменьшить движение»
+  let timer = null;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const start = () => { if (!reduce && !timer) timer = setInterval(() => show(cur + 1), 3000); };
+  const stop = () => { clearInterval(timer); timer = null; };
+  const restart = () => { stop(); start(); };
+  frame.addEventListener('mouseenter', stop); frame.addEventListener('mouseleave', start);
+  frame.addEventListener('focusin', stop); frame.addEventListener('focusout', start);
+  document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+  start();
 }
 
 /* ---------- афиша: месяцы и карточки ---------- */
