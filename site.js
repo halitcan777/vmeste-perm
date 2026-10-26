@@ -171,12 +171,24 @@ async function renderAfisha(target, { limit = 0, big = false, months = false } =
   if (!el) return;
   const list = upcomingEvents().slice(0, limit || undefined);
   const seats = await loadSeats();
-  if (!list.length) { el.innerHTML = `<p class="events__empty">Новых встреч пока нет. Анонсы сначала выходят в <a class="link" href="${SITE.channel}" target="_blank" rel="noopener">канале</a>.</p>`; return; }
-  if (!months) { el.innerHTML = `<div class="reel">${list.map((ev, i) => eventCard(ev, seats, { big: big && i === 0 })).join('')}</div>`; return; }
-  // по месяцам: заголовок месяца и сетка под ним; первая карточка первого месяца крупнее
-  const groups = new Map();
-  list.forEach(ev => { const dt = parseDay(nextDate(ev)); const k = `${dt.getFullYear()}-${dt.getMonth()}`; if (!groups.has(k)) groups.set(k, { m: dt.getMonth(), items: [] }); groups.get(k).items.push(ev); });
-  el.innerHTML = [...groups.values()].map((g, gi) => `<section class="month"><h3>${MONTHS_NOM[g.m]}</h3><div class="reel">${g.items.map((ev, i) => eventCard(ev, seats, { big: big && gi === 0 && i === 0 })).join('')}</div></section>`).join('');
+  const key = dt => `${dt.getFullYear()}-${dt.getMonth()}`;
+  const draw = items => items.length
+    ? `<div class="reel">${items.map((ev, i) => eventCard(ev, seats, { big: big && i === 0 })).join('')}</div>`
+    : `<p class="events__empty">В этом месяце встреч пока нет. Анонсы сначала выходят в <a class="link" href="${SITE.channel}" target="_blank" rel="noopener">канале</a>.</p>`;
+  const tabs = document.getElementById(target + '-months');
+  if (!months || !tabs) { el.innerHTML = draw(list); return; }
+  // ряд месяцев как у Триумфа: текущий и шесть следующих; активен первый с встречами
+  const now = new Date(), first = list.length ? parseDay(nextDate(list[0])) : now;
+  const seq = [...Array(7)].map((_, i) => new Date(now.getFullYear(), now.getMonth() + i, 1));
+  const has = k => list.some(ev => key(parseDay(nextDate(ev))) === k);
+  let cur = key(first);
+  if (!seq.some(d => key(d) === cur)) seq.unshift(new Date(first.getFullYear(), first.getMonth(), 1));
+  const render = () => {
+    tabs.innerHTML = seq.map(d => `<button type="button" data-m="${key(d)}" aria-pressed="${key(d) === cur}"${has(key(d)) ? '' : ' disabled'}>${MONTHS_NOM[d.getMonth()]}</button>`).join('');
+    el.innerHTML = draw(list.filter(ev => key(parseDay(nextDate(ev))) === cur));
+  };
+  tabs.addEventListener('click', e => { const b = e.target.closest('button'); if (!b || b.disabled) return; cur = b.dataset.m; render(); });
+  render();
 }
 
 // Прошедшие встречи
@@ -185,6 +197,49 @@ function renderPast(target){
   if (!el) return;
   const list = pastEvents();
   el.innerHTML = list.length ? `<div class="reel">${list.map(ev => eventCard(ev, {})).join('')}</div>` : `<p class="events__empty">Пока ничего не прошло: мы только открываемся.</p>`;
+}
+
+// Программа: типографский список ближайших встреч без картинок (для главной)
+async function renderSchedule(target, { limit = 5 } = {}){
+  const el = document.getElementById(target);
+  if (!el) return;
+  const list = upcomingEvents().slice(0, limit);
+  if (!list.length) { el.innerHTML = `<p class="events__empty">Новых встреч пока нет. Анонсы сначала выходят в <a class="link" href="${SITE.channel}" target="_blank" rel="noopener">канале</a>.</p>`; return; }
+  el.innerHTML = `<div class="sch">${list.map(ev => { const d = nextDate(ev), dt = parseDay(d); return `<a class="sch__row" href="${eventUrl(ev)}">
+    <span class="sch__date">${pad2(dt.getDate())}.${pad2(dt.getMonth() + 1)}</span>
+    <span class="sch__day">${weekday(d)}, ${esc(ev.time.toLowerCase())}</span>
+    <span class="sch__title">${esc(ev.title)}</span>
+    <span class="sch__type">${esc(ev.type || 'Встреча')}</span>
+  </a>`; }).join('')}</div>`;
+}
+
+// Эксперт крупно: фото слева, текст справа; остальные — строкой имён
+function renderSpotlight(target){
+  const el = document.getElementById(target);
+  if (!el) return;
+  const all = PEOPLE.filter(p => p.role === 'expert' || p.role === 'guest').sort((a, b) => (a.role === 'expert' ? 0 : 1) - (b.role === 'expert' ? 0 : 1));
+  const main = all.find(p => p.photo) || all[0];
+  if (!main) { el.innerHTML = ''; return; }
+  const rest = all.filter(p => p !== main);
+  el.innerHTML = `<div class="spot">
+    ${main.photo ? `<a class="spot__img grain" href="person.html?id=${encodeURIComponent(main.id)}"><img src="${main.photo}" alt="${esc(main.name)}" loading="lazy"${main.photoPos ? ` style="object-position:${main.photoPos}"` : ''}></a>` : ''}
+    <div class="spot__text">
+      <h3>${esc(main.name)}</h3>
+      <p class="spot__role">${esc(main.position || ROLE_NAME[main.role])}</p>
+      <p class="spot__about">${esc((main.about && main.about[0]) || '')}</p>
+      ${main.talk ? `<p class="spot__talk"><b>О чём поговорить</b>${esc(main.talk)}</p>` : ''}
+      <div class="actions"><a class="btn btn--line" href="person.html?id=${encodeURIComponent(main.id)}">Страница эксперта</a></div>
+    </div>
+  </div>
+  ${rest.length ? `<p class="spot__rest"><span>Также</span>${rest.map(p => `<a href="person.html?id=${encodeURIComponent(p.id)}">${esc(p.name)}</a>`).join('')}</p>` : ''}`;
+}
+
+// Лента партнёров: компактные плашки без номеров
+function renderPartnerStrip(target){
+  const el = document.getElementById(target);
+  if (!el) return;
+  el.innerHTML = `<div class="pstrip">${PARTNERS.map(p => { const tag = p.url ? 'a' : 'span'; return `<${tag} class="pstrip__item"${p.url ? ` href="${p.url}" target="_blank" rel="noopener"` : ''}>${p.logo ? `<img src="${p.logo}" alt="${esc(p.name)}" loading="lazy">` : `<b>${esc(p.name)}</b>`}</${tag}>`; }).join('')}
+    <a class="pstrip__item pstrip__item--call" href="partners.html"><b>Стать партнёром</b></a></div>`;
 }
 
 /* ---------- форматы встреч ---------- */
@@ -333,15 +388,15 @@ function renderWhere(target){
     : /\.mp4(\?|$)/i.test(v) ? `<video class="where__video" controls preload="metadata" playsinline src="${v}"></video>`
     : /^https?:/i.test(v) ? `<iframe class="where__video" src="${v}" title="Как нас найти" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`
     : `<div class="where__video">${v}</div>`;
-  // подпись-указатель к видео: рукописный текст и нарисованная стрелка
-  const note = `<div class="where__note" aria-hidden="true"><span>как нас найти</span>
-    <svg viewBox="0 0 120 64" width="120" height="64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10c26 0 54 8 74 24 8 7 14 13 18 20"/><path d="M83 50l13 4-4-13"/></svg></div>`;
+  // подпись-указатель к видео: в строке адреса справа, стрелка смотрит на видео
+  const note = `<span class="where__note" aria-hidden="true"><span>как нас найти</span>
+    <svg viewBox="0 0 120 64" width="96" height="51" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14c26-4 54 2 74 18 8 7 14 13 18 20"/><path d="M83 50l13 4-4-13"/></svg></span>`;
   el.innerHTML = `<div class="where">
     <div class="where__map">
-      <div class="where__addr"><b>${esc(SITE.address)}</b><span>${esc(SITE.entrance || '')}</span></div>
+      <div class="where__addr"><b>${esc(SITE.address)}</b><span>${esc(SITE.entrance || '')}</span>${note}</div>
       <iframe src="${SITE.mapUrl}" title="Карта: ${esc(SITE.address)}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
-    <div class="where__right">${note}${video}</div>
+    <div class="where__right">${video}</div>
   </div>`;
 }
 

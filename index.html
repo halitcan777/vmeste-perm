@@ -37,7 +37,6 @@
     <div class="copy" id="about-story"></div>
     <div class="actions"><a class="btn btn--line" href="about.html">Подробнее о нас</a></div>
   </div>
-  <ul class="principles principles--compact" id="about-principles"></ul>
 </div></section>
 
 <!-- Команда -->
@@ -62,21 +61,10 @@
 <section class="section" id="partners"><div class="container">
   <div class="sec-head">
     <div><h2>Партнёры</h2><p class="lead">Компании и объединения, которые помогают «Вместе» со стартом и ведут встречи для участников.</p></div>
-    <a class="btn btn--line more" href="partners.html">Стать партнёром</a>
   </div>
   <div id="home-partners"></div>
 </div></section>
 
-<!-- Блог -->
-<section class="section section--alt" id="blog"><div class="container">
-  <div class="sec-head">
-    <div><h2>Блог</h2><p class="lead">Как прошли встречи, что получилось и что дальше.</p></div>
-    <a class="btn btn--line more" href="blog.html">Все записи</a>
-  </div>
-  <div id="home-posts"></div>
-</div></section>
-
-<!-- Вступить -->
 <!-- Как нас найти -->
 <section class="section" id="where"><div class="container">
   <div class="sec-head">
@@ -99,14 +87,13 @@
 <script src="events.js"></script><script src="content.js"></script><script src="site.js"></script>
 <script>
 renderHero();
-renderAfisha('home-events', { limit: 3 });
+renderSchedule('home-events', { limit: 5 });
 renderFormats('formats-grid');
 document.getElementById('about-title').textContent = SITE.slogan;
-renderStory('about-story', 'about-principles', { short: true });
+renderStory('about-story', null, { short: true });
 renderTeam('home-team', { limit: 4 });
-renderPeople('home-people', { limit: 2 });
-renderPartners('home-partners', { limit: 2 });
-renderPosts('home-posts', { limit: 3 });
+renderSpotlight('home-people');
+renderPartnerStrip('home-partners');
 renderWhere('where-block');
 bindLinks();
 </script>
