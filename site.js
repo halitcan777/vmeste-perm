@@ -237,14 +237,20 @@ function renderPeople(target, { roles = ['expert', 'guest'], invite = true, limi
   el.innerHTML = `<div class="reel">${cards.join('')}</div>`;
 }
 
-function renderPartners(target, { invite = true } = {}){
+function renderPartners(target, { invite = true, limit = 0 } = {}){
   const el = document.getElementById(target);
   if (!el) return;
-  const cards = PARTNERS.map((p, i) => `<a class="card" href="${p.url}" target="_blank" rel="noopener">
-    <div class="card__top"><span class="card__num">${pad2(i + 1)}</span><span><span class="card__name">${esc(p.name)}</span><br><span class="card__role">${esc(p.note || 'Партнёр')}</span></span></div>
-    <div class="card__plate card__plate--logo"><img src="${p.logo}" alt="${esc(p.name)}" loading="lazy"></div>
-  </a>`);
-  if (invite) cards.push(callCard(PARTNERS.length, 'Стать партнёром', 'Помочь со стартом, провести встречу для ребят или дать задачу компании для практики.', SITE.telegram, 'Ваша компания', 'Напишите нам в Телеграм', 'blue'));
+  const list = PARTNERS.slice(0, limit || undefined);
+  const cards = list.map((p, i) => {
+    const frame = p.logo ? `<div class="card__plate card__plate--logo"><img src="${p.logo}" alt="${esc(p.name)}" loading="lazy"></div>`
+      : `<div class="card__plate card__plate--poster"><b>${esc(p.name)}</b></div>`;
+    const tag = p.url ? 'a' : 'div';
+    return `<${tag} class="card"${p.url ? ` href="${p.url}" target="_blank" rel="noopener"` : ''}>
+      <div class="card__top"><span class="card__num">${pad2(i + 1)}</span><span><span class="card__name">${esc(p.name)}</span><br><span class="card__role">${esc(p.note || 'Партнёр')}</span></span></div>
+      ${frame}
+    </${tag}>`;
+  });
+  if (invite) cards.push(callCard(list.length, 'Стать партнёром', 'Помочь со стартом, провести встречу для ребят или дать задачу компании для практики.', SITE.telegram, 'Ваша компания', 'Напишите нам в Телеграм', 'blue'));
   el.innerHTML = `<div class="reel">${cards.join('')}</div>`;
 }
 

@@ -95,8 +95,16 @@ const PEOPLE = [
 
 // Партнёры. status: 'partner' — подтверждённое сотрудничество.
 const PARTNERS = [
-  { name: 'Деловая Россия, Пермское отделение', logo: 'assets/logos/deloros_original.png', url: 'https://deloros.ru', status: 'partner',
-    note: 'Встречи с предпринимателями по средам' },
+  // 26.10: список владельца «навскидку», с кем есть договорённости. Логотипы (logo) подставить, когда появятся; без логотипа — плашка с названием.
+  { name: 'Деловая Россия, Пермское отделение', logo: 'assets/logos/deloros_original.png', url: 'https://deloros.ru', status: 'partner', note: 'Встречи с предпринимателями' },
+  { name: 'Частная филармония «Триумф»', logo: '', url: 'https://triumphmusic.ru', status: 'talks', note: 'Соседи по Ленина, 44' },
+  { name: 'Манки Гриндер', logo: '', url: '', status: 'talks', note: 'Кофейня' },
+  { name: 'Red Cup', logo: '', url: '', status: 'talks', note: 'Кофейня' },
+  { name: 'Дринкит', logo: '', url: '', status: 'talks', note: 'Кофейни' },
+  { name: 'Курорт «Губаха»', logo: '', url: '', status: 'talks', note: 'Горнолыжный курорт' },
+  { name: 'Йога-клуб', logo: '', url: '', status: 'talks', note: 'Название уточняется' },
+  { name: 'Студия звука «Ленком»', logo: '', url: '', status: 'talks', note: 'Звук и запись' },
+  { name: 'Даниил Снег', logo: '', url: '', status: 'talks', note: 'Личный бренд' },
 ];
 
 // Блог: отчёты о прошедших встречах и заметки.
