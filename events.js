@@ -8,7 +8,9 @@
      dates      — дни, "ГГГГ-ММ-ДД"; несколько = в форме выбор дня
      capacity   — мест на один день (null = без ограничения)
      regOpens   — когда открывается запись, "ГГГГ-ММ-ДДTЧЧ:ММ" по Перми (null = уже открыта)
-     action     — текст кнопки: "Записаться" или "Помочь" */
+     action     — текст кнопки: "Записаться" или "Помочь"
+     type       — формат одной-двумя словами («Встреча», «Открытие»)
+     image      — картинка для афиши и шапки, imageNote — подпись к ней */
 
 // URL веб-приложения Google Apps Script (см. 03_Запись_на_мероприятия.md). Пусто = запись через Телеграм.
 const REG_ENDPOINT = '';
@@ -23,7 +25,19 @@ const EVENTS = /*EVENTS-START*/[
   {
     "id": "obustroystvo",
     "title": "Обустраиваем зал",
-    "dates": ["2026-10-08","2026-10-09","2026-10-10","2026-10-11","2026-10-12","2026-10-13","2026-10-14","2026-10-15","2026-10-16","2026-10-17","2026-10-18"],
+    "dates": [
+      "2026-10-08",
+      "2026-10-09",
+      "2026-10-10",
+      "2026-10-11",
+      "2026-10-12",
+      "2026-10-13",
+      "2026-10-14",
+      "2026-10-15",
+      "2026-10-16",
+      "2026-10-17",
+      "2026-10-18"
+    ],
     "time": "Время уточняется",
     "text": "Красим, реставрируем мебель, раскладываем ковёр и собираем пространство своими руками.",
     "about": [
@@ -32,12 +46,17 @@ const EVENTS = /*EVENTS-START*/[
     ],
     "action": "Помочь",
     "capacity": 12,
-    "regOpens": null
+    "regOpens": null,
+    "type": "Своими руками",
+    "image": "assets/img/w/real_empty.jpg",
+    "imageNote": "Зал до обустройства"
   },
   {
     "id": "znakomstvo",
     "title": "Знакомство с командой",
-    "dates": ["2026-10-24"],
+    "dates": [
+      "2026-10-24"
+    ],
     "time": "19:00",
     "text": "Неофициальная встреча перед открытием.",
     "about": [
@@ -46,12 +65,17 @@ const EVENTS = /*EVENTS-START*/[
     ],
     "action": "Записаться",
     "capacity": 30,
-    "regOpens": null
+    "regOpens": null,
+    "type": "Встреча",
+    "image": "assets/img/w/16_1925.jpg",
+    "imageNote": "Визуализация зала"
   },
   {
     "id": "otkrytie",
     "title": "Открытие «Вместе»",
-    "dates": ["2026-11-01"],
+    "dates": [
+      "2026-11-01"
+    ],
     "time": "Время уточняется",
     "text": "Первый официальный вечер движения.",
     "about": [
@@ -59,7 +83,10 @@ const EVENTS = /*EVENTS-START*/[
     ],
     "action": "Записаться",
     "capacity": 30,
-    "regOpens": "2026-10-20T12:00"
+    "regOpens": "2026-10-20T12:00",
+    "type": "Открытие",
+    "image": "assets/img/w/18_1928.jpg",
+    "imageNote": "Визуализация зала"
   }
 ]/*EVENTS-END*/;
 
@@ -125,3 +152,22 @@ function seatLine(ev, day, seats){
   if (!left) return `Мест нет · можно в лист ожидания`;
   return `Записались ${s.taken} · ${plural(left,'осталось','осталось','осталось')} ${left} из ${ev.capacity}`;
 }
+
+/* ---------- для главной и афиши ---------- */
+const MONTHS_NOM = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+const WEEKDAYS = ['вс','пн','вт','ср','чт','пт','сб'];
+
+// Ближайший день события, который ещё не прошёл (или null)
+function nextDate(ev){ return openDates(ev)[0] || null; }
+
+// Предстоящие события по ближайшей дате
+function upcomingEvents(){
+  return EVENTS.filter(nextDate).sort((a, b) => parseDay(nextDate(a)) - parseDay(nextDate(b)));
+}
+
+// Прошедшие события, свежие первыми
+function pastEvents(){
+  return EVENTS.filter(e => !nextDate(e)).sort((a, b) => parseDay(b.dates[b.dates.length - 1]) - parseDay(a.dates[a.dates.length - 1]));
+}
+
+function weekday(iso){ return WEEKDAYS[parseDay(iso).getDay()]; }

@@ -1,11 +1,48 @@
-<!doctype html><html lang="ru"><head><meta name="robots" content="noindex,nofollow"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>О нас — Вместе</title><meta name="description" content="Как появилось молодёжное движение «Вместе» в Перми, его пространство и принципы."><link rel="stylesheet" href="pages.css"><link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="brand.css?v=20261026a"></head><body class="y-inner">
-<header class="site-head"><div class="wrap"><a class="logo" href="index.html">Вместе</a><nav><a href="about.html" aria-current="page">О нас</a><a href="afisha.html">Афиша</a><a href="directions.html">Направления</a><a href="experts.html">Эксперты</a><a href="news.html">Новости</a></nav><a class="button" href="index.html#join">Вступить</a></div></header>
+<!doctype html><html lang="ru"><head><meta name="robots" content="noindex,nofollow"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>О нас — Вместе</title>
+<meta name="description" content="«Вместе» появилось в Перми осенью 2026 года. Свой зал на Ленина, 44, пять форматов встреч, вход для участников бесплатный.">
+<link rel="icon" href="assets/brand/avatar-blue.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Rubik:wght@600;700&family=Onest:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="site.css">
+</head><body data-page="about">
+<div class="tick" id="tick"></div>
+<header class="head" id="head"></header>
 <main>
-<section class="page-hero"><div class="wrap"><h1>Мы сняли зал и собираем вокруг него людей</h1><p class="intro">«Вместе» появилось в Перми осенью 2026 года. Здесь встречаются, пробуют новое и запускают свои проекты.</p></div></section>
-<section class="section"><div class="wrap"><div class="facts"><div class="fact"><strong>Своё пространство</strong><p>Зал на 30 человек в центре Перми. Собираем и обустраиваем его сами.</p></div><div class="fact"><strong>Пять направлений</strong><p>Профориентация, общение, бизнес, проекты и пятница для своих.</p></div><div class="fact"><strong>Вход свободный</strong><p>Участие бесплатно. Пространство держится на партнёрах и благодарности.</p></div></div></div></section>
-<section class="section soft"><div class="wrap split"><div class="copy"><h2>Сначала нас было двое</h2><p>Мы с Ильёй много говорили о том, почему людям всё труднее находить своих. Из разговоров появилась простая идея: сделать место, куда можно прийти, познакомиться и начать что-то вместе.</p><p>Первым шагом стало помещение в центре Перми. Потом появились мебель, первые помощники, встречи и планы на неделю.</p></div><div class="placeholder" aria-hidden="true"></div></div></section>
-<section class="section dark"><div class="wrap"><div class="section-head"><h2>Принципы</h2><p>Это основа, по которой мы принимаем решения и выбираем, с кем идти дальше.</p></div><div class="principles"><div class="principle"><h3>Каждый что-то приносит</h3><p>Вещь, книгу, идею, опыт или время. Пространство складывается из вклада людей.</p></div><div class="principle"><h3>Мы полезны всем</h3><p>Движение не становится инструментом одного человека или одной организации.</p></div><div class="principle"><h3>Дела важнее статуса</h3><p>Здесь можно проявиться через реальную работу и ответственность.</p></div><div class="principle"><h3>Сначала вместе</h3><p>Мы помогаем друг другу сделать первый шаг, а дальше растём через общее дело.</p></div></div></div></section>
-<section class="section"><div class="wrap"><div class="section-head"><h2>Пространство</h2><p>Днём здесь работают команды, вечером проходят встречи до 30 человек.</p></div><div class="placeholder" aria-hidden="true"></div></div></section>
+
+<section class="page-head"><div class="container">
+  <h1 id="about-title"></h1>
+  <p class="lead">«Вместе» появилось в Перми осенью 2026 года. Здесь встречаются, пробуют новое и запускают свои проекты. Свой зал в центре города, пять форматов встреч, вход для участников бесплатный.</p>
+</div></section>
+
+<section class="section section--alt"><div class="container spread">
+  <div><h2>Сначала нас было двое</h2><div class="copy" id="story"></div></div>
+  <ul class="principles" id="principles"></ul>
+</div></section>
+
+<section class="section"><div class="container">
+  <div class="sec-head"><div><h2>Форматы встреч</h2><p class="lead">Пять форматов, у каждого свой характер. Какой формат в какой день — смотри в афише.</p></div><a class="btn btn--line more" href="afisha.html">Афиша</a></div>
+  <div class="formats" id="formats-grid"></div>
+</div></section>
+
+<section class="section section--alt"><div class="container">
+  <div class="sec-head"><div><h2>Команда</h2><p class="lead">Те, кто делает «Вместе».</p></div><a class="btn btn--line more" href="team.html">Вся команда</a></div>
+  <div id="team"></div>
+</div></section>
+
+<section class="join" id="join"><div class="container"><div class="join__in">
+  <div><h2>Приходи одному. Уйдёшь с друзьями</h2><p>Участие бесплатное. Вступай в чат: там анонсы встреч, вопросы и люди, которые тоже только что пришли.</p></div>
+  <div class="join__actions"><a class="btn btn--green" data-link="chat" target="_blank" rel="noopener">Вступить в чат</a><a class="btn btn--line green" data-link="channel" target="_blank" rel="noopener">Канал в Телеграме</a></div>
+</div></div></section>
+
 </main>
-<footer><div class="wrap"><div class="grid"><div><div class="logo">Вместе</div><p style="margin-top:16px">Молодёжное движение в Перми</p></div><div class="col"><p class="title">Разделы</p><a href="afisha.html">Афиша</a><a href="directions.html">Направления</a><a href="news.html">Новости</a></div><div class="col"><p class="title">Контакты</p><a href="https://t.me/Paltus10">Телеграм</a><p>Пермь, ул. Ленина, 44</p></div></div><div class="copyline">© 2026 «Вместе»</div></div></footer>
-<script src="brand.js?v=20261026a"></script></body></html>
+<footer class="foot" id="foot"></footer>
+<script src="events.js"></script><script src="content.js"></script><script src="site.js"></script>
+<script>
+document.getElementById('about-title').textContent = SITE.slogan;
+renderStory('story', 'principles');
+renderFormats('formats-grid');
+renderTeam('team', { limit: 8 });
+bindLinks();
+</script>
+</body></html>
