@@ -86,7 +86,7 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": "2026-10-20T12:00",
     "type": "Открытие",
     "color": "wine",
-    "image": "assets/img/events/otkrytie.jpg",
+    "image": "assets/img/events/otkrytie.webp",
     "imagePos": "50% 50%"
   },
   {
@@ -106,7 +106,7 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Вечер для своих",
     "color": "wine",
-    "image": "assets/img/events/kino-1.jpg",
+    "image": "assets/img/events/kino-1.webp",
     "imagePos": "50% 50%"
   },
   {
@@ -126,7 +126,7 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Профориентация",
     "color": "blue",
-    "image": "assets/img/events/tattoo.jpg",
+    "image": "assets/img/events/tattoo.webp",
     "imagePos": "50% 40%"
   },
   {
@@ -145,7 +145,7 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Общение",
     "color": "wine",
-    "image": "assets/img/events/psiholog-1.jpg",
+    "image": "assets/img/events/psiholog-1.webp",
     "imagePos": "50% 50%",
     "people": [
       "baranov"
@@ -171,7 +171,7 @@ const EVENTS = /*EVENTS-START*/[
     "people": [
       "oshchepkov"
     ],
-    "image": "assets/img/events/oshchepkov.jpg",
+    "image": "assets/img/events/oshchepkov.webp",
     "imagePos": "35% 30%",
     "textSide": "right"
   },
@@ -191,7 +191,7 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Проекты",
     "color": "ink",
-    "image": "assets/img/events/m-perm.jpg",
+    "image": "assets/img/events/m-perm.webp",
     "imagePos": "50% 50%"
   },
   {
@@ -210,7 +210,7 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Профориентация",
     "color": "blue",
-    "image": "assets/img/events/haircut.jpg",
+    "image": "assets/img/events/haircut.webp",
     "imagePos": "50% 50%"
   },
   {
@@ -229,7 +229,7 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Общение",
     "color": "wine",
-    "image": "assets/img/events/art-terapiya.jpg",
+    "image": "assets/img/events/art-terapiya.webp",
     "imagePos": "50% 50%"
   },
   {
@@ -252,7 +252,7 @@ const EVENTS = /*EVENTS-START*/[
     "people": [
       "besfamilnaya"
     ],
-    "image": "assets/img/events/besfamilnaya.jpg",
+    "image": "assets/img/events/besfamilnaya.webp",
     "imagePos": "28% 25%",
     "textSide": "right"
   },
@@ -272,7 +272,7 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Вечер для своих",
     "color": "wine",
-    "image": "assets/img/events/ameli-band.jpg",
+    "image": "assets/img/events/ameli-band.webp",
     "imagePos": "50% 50%"
   },
   {
@@ -292,7 +292,7 @@ const EVENTS = /*EVENTS-START*/[
     "type": "Профориентация",
     "color": "blue",
     "place": "Площадка уточняется",
-    "image": "assets/img/events/vshe-lekciya.jpg",
+    "image": "assets/img/events/vshe-lekciya.webp",
     "imagePos": "50% 50%"
   },
   {
@@ -311,7 +311,7 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Общение",
     "color": "wine",
-    "image": "assets/img/events/psiholog-2.jpg",
+    "image": "assets/img/events/psiholog-2.webp",
     "imagePos": "50% 50%",
     "people": [
       "sotnikov"
@@ -337,7 +337,7 @@ const EVENTS = /*EVENTS-START*/[
     "people": [
       "didebashvili"
     ],
-    "image": "assets/img/people/didebashvili.jpg",
+    "image": "assets/img/people/didebashvili.webp",
     "imagePos": "50% 30%"
   },
   {
@@ -356,7 +356,7 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Вечер для своих",
     "color": "wine",
-    "image": "assets/img/events/yoga.jpg",
+    "image": "assets/img/events/yoga.webp",
     "imagePos": "50% 50%"
   }
 ]/*EVENTS-END*/;
