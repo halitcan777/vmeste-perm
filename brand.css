@@ -121,8 +121,9 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--red);outline-offset
   .b-head-r .b-btn{padding:0 16px}
   .b-foot .copy{flex-direction:column}
 }
+/* при «уменьшить движение» в системе гасим всё, кроме мягкого покачивания гирлянды на первом экране */
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation:none!important;transition:none!important}
+  *:not(.hang-l),*::before,*::after{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
 }
 
