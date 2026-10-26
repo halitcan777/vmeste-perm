@@ -377,7 +377,7 @@ a.card:hover .card__name { color: var(--blue); }
 .month > h3 { font-size: 40px; margin-bottom: 24px; }
 @media (max-width: 640px) { .ev-card--big { grid-column: auto; } .ev-card--big .ev-card__title { font-size: 32px; } .ev-card--big .card__img img { aspect-ratio: 4 / 3; } .month > h3 { font-size: 32px; } }
 .card__plate--logo { justify-content: center; align-items: flex-start; }
-.card__plate--logo img { max-height: 40%; }
+.card__plate--logo img { max-height: 56%; max-width: 85%; }
 .card__plate--logo img { max-height: 96px; max-width: 100%; width: auto; object-fit: contain; }
 /* приглашение стать экспертом/партнёром — та же сетка, плашка цветом бренда */
 .card__plate--call { border: 2px solid var(--wine); --accent: var(--wine); }
