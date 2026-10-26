@@ -50,9 +50,7 @@ const EVENTS = /*EVENTS-START*/[
     "action": "Помочь",
     "capacity": 12,
     "regOpens": null,
-    "type": "Своими руками",
-    "image": "assets/img/w/real_empty.jpg",
-    "imageNote": "Зал до обустройства"
+    "type": "Своими руками"
   },
   {
     "id": "znakomstvo",
@@ -69,9 +67,7 @@ const EVENTS = /*EVENTS-START*/[
     "action": "Записаться",
     "capacity": 30,
     "regOpens": null,
-    "type": "Встреча",
-    "image": "assets/img/w/16_1925.jpg",
-    "imageNote": "Визуализация зала"
+    "type": "Встреча"
   },
   {
     "id": "otkrytie",
@@ -88,9 +84,9 @@ const EVENTS = /*EVENTS-START*/[
     "capacity": 30,
     "regOpens": "2026-10-20T12:00",
     "type": "Открытие",
-    "image": "assets/img/w/18_1928.jpg",
-    "imageNote": "Визуализация зала",
-    "color": "wine"
+    "color": "wine",
+    "image": "assets/img/events/otkrytie.jpg",
+    "imagePos": "50% 50%"
   },
   {
     "id": "kino-1",
@@ -108,7 +104,9 @@ const EVENTS = /*EVENTS-START*/[
     "capacity": 30,
     "regOpens": null,
     "type": "Вечер для своих",
-    "color": "wine"
+    "color": "wine",
+    "image": "assets/img/events/kino-1.jpg",
+    "imagePos": "50% 50%"
   },
   {
     "id": "tattoo",
@@ -126,16 +124,18 @@ const EVENTS = /*EVENTS-START*/[
     "capacity": 30,
     "regOpens": null,
     "type": "Профориентация",
-    "color": "blue"
+    "color": "blue",
+    "image": "assets/img/events/tattoo.jpg",
+    "imagePos": "50% 40%"
   },
   {
     "id": "psiholog-1",
-    "title": "Тренинг с психологом",
+    "title": "Тренинг с психологом Николаем Барановым",
     "dates": [
       "2026-11-10"
     ],
     "time": "19:00",
-    "text": "Первый из двух тренингов с психологом. Тема и ведущий уточняются.",
+    "text": "Клинический психолог и системный терапевт: практика в кругу про отношения и то, как не терять себя рядом с другими. Тема уточняется.",
     "about": [
       "Формат «Общение»: практика в кругу, без оценок и спешки. Мест немного, чтобы каждый успел поучаствовать."
     ],
@@ -143,7 +143,12 @@ const EVENTS = /*EVENTS-START*/[
     "capacity": 20,
     "regOpens": null,
     "type": "Общение",
-    "color": "wine"
+    "color": "wine",
+    "image": "assets/img/events/psiholog-1.jpg",
+    "imagePos": "50% 50%",
+    "people": [
+      "baranov"
+    ]
   },
   {
     "id": "oshchepkov",
@@ -164,7 +169,9 @@ const EVENTS = /*EVENTS-START*/[
     "color": "green",
     "people": [
       "oshchepkov"
-    ]
+    ],
+    "image": "assets/img/events/oshchepkov.jpg",
+    "imagePos": "50% 30%"
   },
   {
     "id": "m-perm",
@@ -181,7 +188,9 @@ const EVENTS = /*EVENTS-START*/[
     "capacity": 30,
     "regOpens": null,
     "type": "Проекты",
-    "color": "ink"
+    "color": "ink",
+    "image": "assets/img/events/m-perm.jpg",
+    "imagePos": "50% 50%"
   },
   {
     "id": "haircut",
@@ -198,7 +207,9 @@ const EVENTS = /*EVENTS-START*/[
     "capacity": 30,
     "regOpens": null,
     "type": "Профориентация",
-    "color": "blue"
+    "color": "blue",
+    "image": "assets/img/events/haircut.jpg",
+    "imagePos": "50% 50%"
   },
   {
     "id": "art-terapiya",
@@ -215,7 +226,9 @@ const EVENTS = /*EVENTS-START*/[
     "capacity": 20,
     "regOpens": null,
     "type": "Общение",
-    "color": "wine"
+    "color": "wine",
+    "image": "assets/img/events/art-terapiya.jpg",
+    "imagePos": "50% 50%"
   },
   {
     "id": "besfamilnaya",
@@ -236,7 +249,9 @@ const EVENTS = /*EVENTS-START*/[
     "color": "green",
     "people": [
       "besfamilnaya"
-    ]
+    ],
+    "image": "assets/img/events/besfamilnaya.jpg",
+    "imagePos": "50% 20%"
   },
   {
     "id": "ameli-band",
@@ -253,7 +268,9 @@ const EVENTS = /*EVENTS-START*/[
     "capacity": 30,
     "regOpens": null,
     "type": "Вечер для своих",
-    "color": "wine"
+    "color": "wine",
+    "image": "assets/img/events/ameli-band.jpg",
+    "imagePos": "50% 50%"
   },
   {
     "id": "vshe-lekciya",
@@ -271,16 +288,18 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Профориентация",
     "color": "blue",
-    "place": "Площадка уточняется"
+    "place": "Площадка уточняется",
+    "image": "assets/img/events/vshe-lekciya.jpg",
+    "imagePos": "50% 50%"
   },
   {
     "id": "psiholog-2",
-    "title": "Тренинг с психологом, второй",
+    "title": "Тренинг с Александром Сотниковым",
     "dates": [
       "2026-11-24"
     ],
     "time": "19:00",
-    "text": "Второй тренинг с психологом. Тема и ведущий уточняются.",
+    "text": "Бизнес-психолог, гештальт-подход: как принимать решения без паники и не выгорать в своём деле. Тема уточняется.",
     "about": [
       "Формат «Общение»: практика в кругу. Можно прийти, даже если не был на первом."
     ],
@@ -288,7 +307,12 @@ const EVENTS = /*EVENTS-START*/[
     "capacity": 20,
     "regOpens": null,
     "type": "Общение",
-    "color": "wine"
+    "color": "wine",
+    "image": "assets/img/events/psiholog-2.jpg",
+    "imagePos": "50% 50%",
+    "people": [
+      "sotnikov"
+    ]
   },
   {
     "id": "didebashvili",
@@ -326,7 +350,9 @@ const EVENTS = /*EVENTS-START*/[
     "capacity": 16,
     "regOpens": null,
     "type": "Вечер для своих",
-    "color": "wine"
+    "color": "wine",
+    "image": "assets/img/events/yoga.jpg",
+    "imagePos": "50% 50%"
   }
 ]/*EVENTS-END*/;
 

@@ -5,7 +5,7 @@
 const NAV = [
   ['afisha.html', 'Афиша', 'afisha'],
   ['team.html', 'Команда', 'team'],
-  ['people.html', 'Гости и эксперты', 'people'],
+  ['people.html', 'Эксперты', 'people'],
   ['partners.html', 'Партнёры', 'partners'],
   ['blog.html', 'Блог', 'blog'],
   ['about.html', 'О нас', 'about'],
@@ -86,7 +86,7 @@ function renderFoot(){
 /* ---------- главный кадр: ближайшие события ---------- */
 function slideBg(ev, i){
   const src = photo(ev.image);
-  return src ? `<figure class="slide__bg"><img src="${src}" alt=""${i ? ' loading="lazy"' : ''}></figure>` : '';
+  return src ? `<figure class="slide__bg"><img src="${src}" alt=""${i ? ' loading="lazy"' : ''}${ev.imagePos ? ` style="object-position:${ev.imagePos}"` : ''}></figure>` : '';
 }
 
 function renderHero(){
@@ -117,7 +117,7 @@ function renderHero(){
       </div>
     </article>`;
   }).join('');
-  const flat = photo(list[0].image) ? '' : 'hero__frame--flat';
+  const flat = photo(list[0].image) ? 'hero__frame--photo' : 'hero__frame--flat';
   el.innerHTML = `<div class="container"><div class="hero__frame grain ${flat} ${list[0].color || ''}">
     <div class="hero__slides">${slides}</div>
     <div class="hero__bar"><div class="container">
@@ -132,7 +132,7 @@ function renderHero(){
   const show = n => {
     cur = (n + list.length) % list.length;
     all.forEach((s, i) => s.hidden = i !== cur);
-    frame.className = `hero__frame grain ${photo(list[cur].image) ? '' : 'hero__frame--flat'} ${list[cur].color || ''}`;
+    frame.className = `hero__frame grain ${photo(list[cur].image) ? 'hero__frame--photo' : 'hero__frame--flat'} ${list[cur].color || ''}`;
     el.querySelector('#hero-num').textContent = `${pad2(cur + 1)}/${pad2(list.length)}`;
     el.querySelector('#hero-name').textContent = list[cur].type || 'Встреча';
   };
@@ -143,47 +143,40 @@ function renderHero(){
 // Куда вести с прошедшей встречи: на запись в блоге, если она есть
 function pastUrl(ev){ const post = POSTS.find(p => p.event === ev.id); return post ? `post.html?id=${encodeURIComponent(post.id)}` : eventUrl(ev); }
 
-function eventRow(ev, seats){
+// Карточка встречи как в кинокаталоге: дата сверху, кадр, название. Вся карточка — ссылка.
+function eventCard(ev, seats, { big = false } = {}){
   const d = nextDate(ev) || ev.dates[ev.dates.length - 1];
   const future = !!nextDate(ev);
   const url = future ? eventUrl(ev) : pastUrl(ev);
   const multi = ev.dates.length > 1;
   const line = future ? seatLine(ev, d, seats || {}) : '';
-  return `<li class="ev">
-    <p class="ev__date">${multi ? fmtRange(ev) : fmtDay(d)}<small>${multi ? 'любой день' : weekday(d)}, ${esc(ev.time.toLowerCase())}<br>${esc(ev.place || DEFAULT_PLACE)}</small></p>
-    <div>
-      <p class="ev__meta"><span>${esc(ev.type || 'Встреча')}</span><span>Вход бесплатный</span></p>
-      <h3 class="ev__title"><a href="${url}">${esc(ev.title)}</a></h3>
-      <p class="ev__text">${esc(ev.text)}</p>
-      ${line ? `<p class="ev__seats">${esc(line)}</p>` : ''}
-    </div>
-    <a class="btn ${future ? '' : 'btn--line'}" href="${url}">${future ? (regNotOpenYet(ev) ? 'Подробнее' : esc(ev.action)) : 'Как прошло'}</a>
-  </li>`;
+  const dd = parseDay(d);
+  const pic = photo(ev.image);
+  const frame = pic
+    ? `<div class="card__img grain"><img src="${pic}" alt="" loading="lazy"${ev.imagePos ? ` style="object-position:${ev.imagePos}"` : ''}></div>`
+    : `<div class="card__plate card__plate--poster"><b>${esc(ev.type || 'Встреча')}</b></div>`;
+  const where = ev.place && ev.place !== DEFAULT_PLACE ? `, ${esc(ev.place)}` : '';
+  return `<a class="ev-card${big ? ' ev-card--big' : ''}${future ? '' : ' ev-card--past'}" href="${url}">
+    <div class="card__top"><span class="card__num">${pad2(dd.getDate())}.${pad2(dd.getMonth() + 1)}</span><span><span class="card__name">${multi ? 'любой день' : weekday(d)}, ${esc(ev.time.toLowerCase())}</span><br><span class="card__role">${esc(ev.type || 'Встреча')}${where}</span></span></div>
+    ${frame}
+    <h3 class="ev-card__title">${esc(ev.title)}</h3>
+    <p class="ev-card__text">${esc(ev.text)}</p>
+    ${line ? `<p class="ev-card__seats">${esc(line)}</p>` : future ? '' : `<p class="ev-card__seats">Уже прошло</p>`}
+  </a>`;
 }
+const eventRow = eventCard; // старое имя
 
-async function renderAfisha(target, { limit = 0 } = {}){
+async function renderAfisha(target, { limit = 0, big = false, months = false } = {}){
   const el = document.getElementById(target);
   if (!el) return;
-  const list = upcomingEvents();
-  const tabs = document.getElementById(target + '-months');
+  const list = upcomingEvents().slice(0, limit || undefined);
   const seats = await loadSeats();
-  const monthKey = ev => { const d = parseDay(nextDate(ev)); return `${d.getFullYear()}-${d.getMonth()}`; };
-  const months = [...new Map(list.map(ev => [monthKey(ev), parseDay(nextDate(ev))])).entries()];
-  const draw = key => {
-    const rows = list.filter(ev => !key || monthKey(ev) === key).slice(0, limit || undefined);
-    el.innerHTML = rows.length ? rows.map(ev => eventRow(ev, seats)).join('')
-      : `<li class="events__empty">Новых встреч пока нет. Анонсы сначала выходят в <a class="link" href="${SITE.channel}" target="_blank" rel="noopener">канале</a>.</li>`;
-  };
-  if (tabs && months.length > 1) {
-    tabs.innerHTML = `<button type="button" aria-pressed="true" data-m="">Все</button>` +
-      months.map(([k, d]) => `<button type="button" aria-pressed="false" data-m="${k}">${MONTHS_NOM[d.getMonth()]}</button>`).join('');
-    tabs.addEventListener('click', e => {
-      const b = e.target.closest('button'); if (!b) return;
-      tabs.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-      draw(b.dataset.m);
-    });
-  } else if (tabs) tabs.hidden = true;
-  draw('');
+  if (!list.length) { el.innerHTML = `<p class="events__empty">Новых встреч пока нет. Анонсы сначала выходят в <a class="link" href="${SITE.channel}" target="_blank" rel="noopener">канале</a>.</p>`; return; }
+  if (!months) { el.innerHTML = `<div class="reel">${list.map((ev, i) => eventCard(ev, seats, { big: big && i === 0 })).join('')}</div>`; return; }
+  // по месяцам: заголовок месяца и сетка под ним; первая карточка первого месяца крупнее
+  const groups = new Map();
+  list.forEach(ev => { const dt = parseDay(nextDate(ev)); const k = `${dt.getFullYear()}-${dt.getMonth()}`; if (!groups.has(k)) groups.set(k, { m: dt.getMonth(), items: [] }); groups.get(k).items.push(ev); });
+  el.innerHTML = [...groups.values()].map((g, gi) => `<section class="month"><h3>${MONTHS_NOM[g.m]}</h3><div class="reel">${g.items.map((ev, i) => eventCard(ev, seats, { big: big && gi === 0 && i === 0 })).join('')}</div></section>`).join('');
 }
 
 // Прошедшие встречи
@@ -191,7 +184,7 @@ function renderPast(target){
   const el = document.getElementById(target);
   if (!el) return;
   const list = pastEvents();
-  el.innerHTML = list.length ? list.map(ev => eventRow(ev, {})).join('') : `<li class="events__empty">Пока ничего не прошло: мы только открываемся.</li>`;
+  el.innerHTML = list.length ? `<div class="reel">${list.map(ev => eventCard(ev, {})).join('')}</div>` : `<p class="events__empty">Пока ничего не прошло: мы только открываемся.</p>`;
 }
 
 /* ---------- форматы встреч ---------- */
@@ -229,23 +222,19 @@ function renderTeam(target, { limit = 0, invite = true } = {}){
   const cards = list.map(personCard);
   if (invite) {
     const ilya = PEOPLE.find(p => p.id === 'ilya');
-    cards.push(callCard(list.length, 'Вступить в команду', 'Хочешь делать «Вместе» с нами? Напиши Илье: кто ты и чем хочешь заниматься.', (ilya && ilya.contact) || SITE.telegram, 'Место в команде', 'Напиши Илье Амирову'));
+    cards.push(callCard(list.length, 'Вступить в команду', 'Хочешь делать «Вместе» с нами? Напиши Илье: кто ты и чем хочешь заниматься.', (ilya && ilya.contact) || SITE.telegram, 'Место в команде', 'Напиши Илье Амирову', 'green'));
   }
   el.innerHTML = `<div class="reel reel--4" id="${target}-grid">${cards.join('')}</div>`;
 }
 
-// Гости и эксперты — группами, с приглашением стать экспертом
-function renderPeople(target, { roles = ['expert', 'guest'], invite = true } = {}){
+// Эксперты и гости встреч — одной сеткой, эксперты первыми; в конце приглашение стать экспертом
+function renderPeople(target, { roles = ['expert', 'guest'], invite = true, limit = 0 } = {}){
   const el = document.getElementById(target);
   if (!el) return;
-  const groups = [['expert', 'Эксперты'], ['guest', 'Гости встреч']].filter(([r]) => roles.includes(r));
-  el.innerHTML = groups.map(([role, title]) => {
-    const list = PEOPLE.filter(p => p.role === role);
-    const cards = list.map(personCard);
-    if (role === 'expert' && invite) cards.push(callCard(list.length, 'Стать экспертом', 'Поделись опытом на встрече: профессия, своё дело, путь. Формат подберём вместе.', SITE.telegram, 'Место для тебя', 'Напиши нам в Телеграм'));
-    if (!cards.length) return '';
-    return `<section class="people-group">${groups.length > 1 ? `<h3>${title}</h3>` : ''}<div class="reel">${cards.join('')}</div></section>`;
-  }).join('');
+  const list = PEOPLE.filter(p => roles.includes(p.role)).sort((a, b) => roles.indexOf(a.role) - roles.indexOf(b.role)).slice(0, limit || undefined);
+  const cards = list.map(personCard);
+  if (invite) cards.push(callCard(list.length, 'Стать экспертом', 'Поделись опытом на встрече: профессия, своё дело, путь. Формат подберём вместе.', SITE.telegram, 'Место для тебя', 'Напиши нам в Телеграм'));
+  el.innerHTML = `<div class="reel">${cards.join('')}</div>`;
 }
 
 function renderPartners(target, { invite = true } = {}){
@@ -289,69 +278,44 @@ function renderPerson(target){
   const el = document.getElementById(target);
   if (!el) return;
   const p = PEOPLE.find(x => x.id === new URLSearchParams(location.search).get('id'));
-  const back = p && p.role === 'team' ? ['team.html', 'Команда'] : ['people.html', 'Гости и эксперты'];
+  const back = p && p.role === 'team' ? ['team.html', 'Команда'] : ['people.html', 'Эксперты'];
   if (!p) {
-    el.innerHTML = `<section class="page-head"><div class="container"><p class="crumbs"><a href="people.html">Гости и эксперты</a></p><h1>Страница не найдена</h1><p class="lead">Возможно, ссылка устарела.</p><div class="actions"><a class="btn" href="team.html">Команда</a><a class="btn btn--line" href="people.html">Гости и эксперты</a></div></div></section>`;
+    el.innerHTML = `<section class="page-head"><div class="container"><p class="crumbs"><a href="people.html">Эксперты</a></p><h1>Страница не найдена</h1><p class="lead">Возможно, ссылка устарела.</p><div class="actions"><a class="btn" href="team.html">Команда</a><a class="btn btn--line" href="people.html">Эксперты</a></div></div></section>`;
     return;
   }
   document.title = `${p.name} — Вместе`;
   const role = p.position || ROLE_NAME[p.role];
   const shots = personShots(p);
-  const img = (x, i, lazy) => `<img src="${x.src}" alt="${esc(x.note || p.name)}"${lazy ? ' loading="lazy"' : ''}${x.pos ? ` style="object-position:${x.pos}"` : ''}>`;
-
-  // 1. Кадр: один большой, листается по всем фото человека; строка внизу как титры
-  const frame = shots.length ? `<div class="fs grain" id="fs">
-      ${shots.map((x, i) => `<figure class="fs__slide"${i ? ' hidden' : ''}>${img(x, i, i > 0)}</figure>`).join('')}
-      <div class="fs__bar">
-        <span class="num" id="fs-num">${pad2(1)}/${pad2(shots.length)}</span>
-        <h1 class="fs__title">${esc(p.name)}</h1>
-        <span class="fs__cap" id="fs-cap">${esc(shots[0].note || '')}</span>
-        <div class="hero__ctrl"${shots.length < 2 ? ' hidden' : ''}><button type="button" data-step="-1" aria-label="Предыдущий кадр">←</button><button type="button" data-step="1" aria-label="Следующий кадр">→</button></div>
-      </div>
-    </div>` : `<h1 class="person__title">${esc(p.name)}</h1>`;
-
-  // 2. Лента миниатюр под кадром: клик переключает большой кадр
-  const reel = shots.length > 1 ? `<div class="strip" id="strip">${shots.map((x, i) => `<button type="button" class="strip__item${i ? '' : ' is-on'}" data-go="${i}" aria-label="Кадр ${i + 1}: ${esc(x.note || '')}">${img(x, i, true)}</button>`).join('')}</div>` : '';
-
-  // 3. Текст: коротко, две колонки
-  const text = `<section class="section section--alt"><div class="container person-body">
+  // 1. Кадры сеткой, как в каталоге: подпись над кадром
+  const stills = shots.map((x, i) => `<figure class="still">
+      <figcaption class="card__top"><span class="card__num">${pad2(i + 1)}</span><span><span class="card__name">${esc(x.note || '')}</span></span></figcaption>
+      <div class="card__img grain"><img src="${x.src}" alt="${esc(x.note || p.name)}"${i ? ' loading="lazy"' : ''}${x.pos ? ` style="object-position:${x.pos}"` : ''}></div>
+    </figure>`).join('');
+  // 2. Текст колонкой рядом
+  const side = `<div class="person-side">
       <dl class="person-facts">
         <div><dt>Роль</dt><dd>${esc(role)}</dd></div>
         <div><dt>Во «Вместе»</dt><dd>${esc(ROLE_NAME[p.role])}</dd></div>
         ${p.since ? `<div><dt>С какого времени</dt><dd>${esc(p.since)}</dd></div>` : ''}
-        ${p.contact ? `<div><a class="btn" href="${p.contact}" target="_blank" rel="noopener">Написать</a></div>` : ''}
       </dl>
-      <div class="person-text">
-        <h2>О человеке</h2>
-        <div class="copy">${(p.about && p.about.length ? p.about : ['Рассказ появится после открытия.']).map(t => `<p>${esc(t)}</p>`).join('')}</div>
-        ${p.work && p.work.length ? `<h2>Чем занимается во «Вместе»</h2><ul class="list">${p.work.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
-        ${p.talk ? `<h2>О чём можно поговорить</h2><div class="copy"><p>${esc(p.talk)}</p></div>` : ''}
-      </div>
-    </div></section>`;
-
-  // 4. Встречи с участием человека
+      <h2>О человеке</h2>
+      <div class="copy">${(p.about && p.about.length ? p.about : ['Рассказ появится после открытия.']).map(t => `<p>${esc(t)}</p>`).join('')}</div>
+      ${p.work && p.work.length ? `<h2>Чем занимается во «Вместе»</h2><ul class="list">${p.work.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
+      ${p.talk ? `<h2>О чём можно поговорить</h2><div class="copy"><p>${esc(p.talk)}</p></div>` : ''}
+      ${p.contact ? `<div class="actions"><a class="btn" href="${p.contact}" target="_blank" rel="noopener">Написать</a></div>` : ''}
+    </div>`;
+  // 3. Встречи с участием
   const evs = EVENTS.filter(e => (e.people || []).includes(p.id)).sort((x, y) => parseDay(x.dates[0]) - parseDay(y.dates[0]));
-  const meets = evs.length ? `<section class="section"><div class="container"><div class="sec-head"><div><h2>Встречи</h2></div></div><ul class="events">${evs.map(e => eventRow(e, {})).join('')}</ul></div></section>` : '';
+  const meets = evs.length ? `<section class="section section--alt"><div class="container"><div class="sec-head"><div><h2>Встречи</h2></div></div><div class="reel">${evs.map(e => eventCard(e, {})).join('')}</div></div></section>` : '';
 
-  el.innerHTML = `<section class="person"><div class="container">
+  el.innerHTML = `<section class="page-head"><div class="container">
       <p class="crumbs"><a href="${back[0]}">${back[1]}</a><span>${esc(p.name)}</span></p>
-      ${shots.length ? '' : `<p class="lead" style="margin:-8px 0 24px">${esc(role)}</p>`}
-      ${frame}${reel}
-    </div></section>${text}${meets}`;
-
-  if (shots.length < 2) return;
-  let cur = 0;
-  const slides = el.querySelectorAll('.fs__slide');
-  const show = n => {
-    cur = (n + shots.length) % shots.length;
-    slides.forEach((s, i) => s.hidden = i !== cur);
-    el.querySelector('#fs-num').textContent = `${pad2(cur + 1)}/${pad2(shots.length)}`;
-    el.querySelector('#fs-cap').textContent = shots[cur].note || '';
-    el.querySelectorAll('.strip__item').forEach((b, i) => b.classList.toggle('is-on', i === cur));
-  };
-  el.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => show(Number(b.dataset.go))));
-  el.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => show(cur + Number(b.dataset.step))));
-  document.addEventListener('keydown', e => { if (e.key === 'ArrowRight') show(cur + 1); if (e.key === 'ArrowLeft') show(cur - 1); });
+      <h1>${esc(p.name)}</h1><p class="lead">${esc(role)}</p>
+    </div></section>
+    <section class="section"><div class="container ${shots.length ? 'person-grid' : 'person-grid person-grid--text'}">
+      ${shots.length ? `<div class="reel reel--2 person-shots">${stills}</div>` : ''}
+      ${side}
+    </div></section>${meets}`;
 }
 
 /* ---------- как нас найти: адрес + карта слева, видео справа ---------- */

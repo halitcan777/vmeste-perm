@@ -19,7 +19,7 @@
     <div><h2>Афиша</h2><p class="lead">Ближайшие встречи. Приходи, даже если никого не знаешь: познакомим на месте.</p></div>
     <a class="btn btn--line more" href="afisha.html">Вся афиша</a>
   </div>
-  <ul class="events" id="home-events"></ul>
+  <div id="home-events"></div>
 </div></section>
 
 <!-- Форматы встреч -->
@@ -52,7 +52,7 @@
 <!-- Гости и эксперты -->
 <section class="section section--alt" id="people"><div class="container">
   <div class="sec-head">
-    <div><h2>Гости и эксперты</h2><p class="lead">Люди, которые ведут встречи и делятся опытом. Рядом с каждым — о чём с ним можно поговорить.</p></div>
+    <div><h2>Эксперты</h2><p class="lead">Эксперты и гости встреч: кто ведёт вечера и делится опытом. У каждого — о чём с ним можно поговорить.</p></div>
     <a class="btn btn--line more" href="people.html">Все люди</a>
   </div>
   <div id="home-people"></div>
@@ -99,12 +99,12 @@
 <script src="events.js"></script><script src="content.js"></script><script src="site.js"></script>
 <script>
 renderHero();
-renderAfisha('home-events', { limit: 4 });
+renderAfisha('home-events', { limit: 6 });
 renderFormats('formats-grid');
 document.getElementById('about-title').textContent = SITE.slogan;
 renderStory('about-story', 'about-principles');
 renderTeam('home-team', { limit: 8 });
-renderPeople('home-people');
+renderPeople('home-people', { limit: 5 });
 renderPartners('home-partners');
 renderPosts('home-posts', { limit: 3 });
 renderWhere('where-block');

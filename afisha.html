@@ -16,20 +16,19 @@
 </div></section>
 
 <section class="section section--alt"><div class="container">
-  <div class="months" id="afisha-months" role="group" aria-label="Месяц"></div>
-  <ul class="events" id="afisha"></ul>
+  <div id="afisha"></div>
 </div></section>
 
 <section class="section" id="past"><div class="container">
   <div class="sec-head"><div><h2>Уже прошло</h2><p class="lead">Как это было: записи и фотоотчёты в блоге.</p></div><a class="btn btn--line more" href="blog.html">В блог</a></div>
-  <ul class="events" id="past-events"></ul>
+  <div id="past-events"></div>
 </div></section>
 
 </main>
 <footer class="foot" id="foot"></footer>
 <script src="events.js"></script><script src="content.js"></script><script src="site.js"></script>
 <script>
-renderAfisha('afisha');
+renderAfisha('afisha', { big: true, months: true });
 renderPast('past-events');
 </script>
 </body></html>
