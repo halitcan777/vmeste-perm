@@ -226,7 +226,7 @@ function renderSpotlight(target){
     <div class="spot__text">
       <h3>${esc(main.name)}</h3>
       <p class="spot__role">${esc(main.position || ROLE_NAME[main.role])}</p>
-      <p class="spot__about">${esc((main.about && main.about[0]) || '')}</p>
+      <p class="spot__about">${esc(((main.about && main.about[0]) || '').split(/(?<=\.)\s/)[0])}</p>
       ${main.talk ? `<p class="spot__talk"><b>О чём поговорить</b>${esc(main.talk)}</p>` : ''}
       <div class="actions"><a class="btn btn--line" href="person.html?id=${encodeURIComponent(main.id)}">Страница эксперта</a></div>
     </div>
@@ -235,10 +235,10 @@ function renderSpotlight(target){
 }
 
 // Лента партнёров: компактные плашки без номеров
-function renderPartnerStrip(target){
+function renderPartnerStrip(target, { limit = 0 } = {}){
   const el = document.getElementById(target);
   if (!el) return;
-  el.innerHTML = `<div class="pstrip">${PARTNERS.map(p => { const tag = p.url ? 'a' : 'span'; return `<${tag} class="pstrip__item"${p.url ? ` href="${p.url}" target="_blank" rel="noopener"` : ''}>${p.logo ? `<img src="${p.logo}" alt="${esc(p.name)}" loading="lazy">` : `<b>${esc(p.name)}</b>`}</${tag}>`; }).join('')}
+  el.innerHTML = `<div class="pstrip">${PARTNERS.slice(0, limit || undefined).map(p => { const tag = p.url ? 'a' : 'span'; return `<${tag} class="pstrip__item"${p.url ? ` href="${p.url}" target="_blank" rel="noopener"` : ''}>${p.logo ? `<img src="${p.logo}" alt="${esc(p.name)}" loading="lazy">` : `<b>${esc(p.name)}</b>`}</${tag}>`; }).join('')}
     <a class="pstrip__item pstrip__item--call" href="partners.html"><b>Стать партнёром</b></a></div>`;
 }
 

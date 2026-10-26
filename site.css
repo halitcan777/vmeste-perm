@@ -561,3 +561,34 @@ a.card:hover .card__name { color: var(--blue); }
 .person-grid--text { max-width: 760px; }
 .list { margin: 0; padding: 0 0 0 20px; font-size: 17px; }
 .list li + li { margin-top: 8px; }
+
+/* ---------- Главная компактнее (26.10): меньше воздуха, короче блоки ---------- */
+body[data-page="home"] { --section: 64px; }
+body[data-page="home"] .sec-head { margin-bottom: 24px; }
+body[data-page="home"] .sec-head h2 { font-size: 48px; }
+body[data-page="home"] .sec-head .lead { margin-top: 12px; font-size: 17px; }
+body[data-page="home"] .slide { min-height: min(70vh, 600px); }
+body[data-page="home"] .hero { padding-bottom: 64px; }
+body[data-page="home"] .spread h2 { font-size: 48px; }
+body[data-page="home"] .join { padding: 64px 0; }
+body[data-page="home"] .join__in { padding: 40px; }
+body[data-page="home"] .join h2 { font-size: 56px; }
+.sch__row { padding: 14px 20px; }
+.sch__title { font-size: 20px; }
+.sch__date { font-size: 24px; }
+.fmt { min-height: 0; gap: 24px; padding: 16px; }
+.fmt h3 { font-size: 24px; }
+.fmt p { font-size: 14px; }
+@media (max-width: 760px) {
+  body[data-page="home"] { --section: 40px; }
+  body[data-page="home"] .sec-head h2 { font-size: 36px; }
+  body[data-page="home"] .join { padding: 40px 0; }
+  body[data-page="home"] .join__in { padding: 20px; }
+  body[data-page="home"] .join h2 { font-size: 36px; }
+  body[data-page="home"] .slide { min-height: min(70svh, 520px); }
+  /* форматы на телефоне — лента вбок, а не шесть карточек столбиком */
+  body[data-page="home"] .formats { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; scrollbar-width: thin; }
+  body[data-page="home"] .fmt { flex: 0 0 68%; scroll-snap-align: start; }
+  .sch__row { padding: 12px 14px; }
+  .spot__about { font-size: 15px; }
+}
