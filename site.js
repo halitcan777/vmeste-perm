@@ -386,7 +386,10 @@ function renderPerson(target){
       </div>
     </div></div></section>`;
   // 2. Мозаика кадров: смотреть и открывать на весь экран
-  const grid = shots.length ? `<section class="section"><div class="container"><div class="grid9">${shots.map((x, i) => `<button type="button" class="grid9__item grain" data-lb="${i}" aria-label="Открыть кадр ${i + 1}"><img src="${x.src}" alt="${esc(x.note || p.name)}" loading="lazy"${x.pos ? ` style="object-position:${x.pos}"` : ''}></button>`).join('')}</div></div></section>` : '';
+  // 2. Мозаика 3×3 слитно: есть кадры — заполняем, остальные клетки пустые (под будущие фото)
+  const cells = shots.slice(0, 9).map((x, i) => `<button type="button" class="grid9__item grain" data-lb="${i}" aria-label="Открыть кадр ${i + 1}"><img src="${x.src}" alt="${esc(x.note || p.name)}" loading="lazy"${x.pos ? ` style="object-position:${x.pos}"` : ''}></button>`);
+  while (cells.length < 9) cells.push(`<div class="grid9__item grid9__item--empty" aria-hidden="true"></div>`);
+  const grid = `<section class="section"><div class="container"><div class="grid9">${cells.join('')}</div></div></section>`;
   // 3. Остальной текст, если есть
   const more = (p.about && p.about.length > 1) || (p.work && p.work.length) ? `<section class="section section--alt"><div class="container person-grid--text">
       ${p.about && p.about.length > 1 ? `<div class="copy">${p.about.slice(1).map(t => `<p>${esc(t)}</p>`).join('')}</div>` : ''}
