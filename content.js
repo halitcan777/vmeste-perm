@@ -18,7 +18,7 @@ const TICKER = [
 // Визуализации зала (события, блог): false — убраны 26.10, пути в данных остаются. Настоящие фото людей показываются всегда.
 const SHOW_PHOTOS = true;
 // Готовые ассоциативные кадры в assets/img/people/assoc (обновляется скриптом при генерации)
-const ASSOC_FILES = ['design.jpg', 'edit.jpg', 'video.jpg', 'social.jpg', 'events.jpg', 'texts.jpg', 'partners.jpg', 'ops.jpg', 'marketing.jpg', 'creative.jpg', 'biz.jpg'];   // ИИ-визуализации зала из данных убраны 26.10; теперь фото только настоящие
+const ASSOC_FILES = ['design.jpg', 'edit.jpg', 'video.jpg', 'social.jpg', 'events.jpg', 'texts.jpg', 'partners.jpg', 'ops.jpg', 'marketing.jpg', 'creative.jpg', 'biz.jpg', 'outside.jpg', 'host.jpg'];   // ИИ-визуализации зала из данных убраны 26.10; теперь фото только настоящие
 
 // Форматы встреч. Какой формат в какой день — объявляем в афише, к дням недели не привязываем.
 const FORMATS = [
@@ -103,9 +103,9 @@ const PARTNERS = [
   // 26.10: список владельца «навскидку», с кем есть договорённости. Логотипы (logo) подставить, когда появятся; без логотипа — плашка с названием.
   { name: 'Деловая Россия, Пермское отделение', logo: 'assets/logos/deloros_original.png', url: 'https://deloros.ru', status: 'partner', note: 'Встречи с предпринимателями' },
   { name: 'Частная филармония «Триумф»', logo: '', url: 'https://triumphmusic.ru', status: 'talks', note: 'Соседи по Ленина, 44' },
-  { name: 'Манки Гриндер', logo: '', url: '', status: 'talks', note: 'Кофейня' },
+  { name: 'Monkey Grinder', logo: 'assets/logos/monkey-grinder.png', url: 'https://monkey-grinder.ru', status: 'talks', note: 'Кофейни' },
   { name: 'Red Cup', logo: '', url: '', status: 'talks', note: 'Кофейня' },
-  { name: 'Дринкит', logo: '', url: '', status: 'talks', note: 'Кофейни' },
+  { name: 'Дринкит', logo: 'assets/logos/drinkit.svg', url: 'https://drinkit.ru', status: 'talks', note: 'Кофейни' },
   { name: 'Курорт «Губаха»', logo: '', url: '', status: 'talks', note: 'Горнолыжный курорт' },
   { name: 'Йога-клуб', logo: '', url: '', status: 'talks', note: 'Название уточняется' },
   { name: 'Студия звука «Ленком»', logo: '', url: '', status: 'talks', note: 'Звук и запись' },
