@@ -643,3 +643,8 @@ body[data-page="home"] .join h2 { font-size: 56px; }
   .slide--right .slide__title { max-width: none; font-size: clamp(36px, 4.4vw, 64px); -webkit-line-clamp: 3; }
   .slide--right .slide__bg::after { background: linear-gradient(to top, rgba(15,15,15,.85) 0%, rgba(15,15,15,.45) 40%, rgba(15,15,15,.1) 70%), linear-gradient(to left, rgba(15,15,15,.55), rgba(15,15,15,0) 55%); }
 }
+
+/* программа «шахматкой»: строки по очереди сдвинуты влево и вправо */
+.sch__row:nth-child(odd) { margin-right: 10%; }
+.sch__row:nth-child(even) { margin-left: 10%; }
+@media (max-width: 760px) { .sch__row:nth-child(odd) { margin-right: 20px; } .sch__row:nth-child(even) { margin-left: 20px; } }
