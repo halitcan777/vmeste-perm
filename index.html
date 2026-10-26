@@ -51,7 +51,7 @@
 <!-- Гости и эксперты -->
 <section class="section section--alt" id="people"><div class="container">
   <div class="sec-head">
-    <div><h2>Эксперты</h2><p class="lead">Эксперты и гости встреч: кто ведёт вечера и делится опытом. У каждого — о чём с ним можно поговорить.</p></div>
+    <div><h2>Эксперты</h2><p class="lead">Кто ведёт вечера и делится опытом. У каждого своя страница.</p></div>
     <a class="btn btn--line more" href="people.html">Все люди</a>
   </div>
   <div id="home-people"></div>
@@ -84,7 +84,7 @@ renderFormats('formats-grid');
 document.getElementById('about-title').textContent = SITE.slogan;
 renderStory('about-story', null, { short: true });
 renderTeam('home-team', { limit: 4 });
-renderSpotlight('home-people');
+renderPeople('home-people', { limit: 5, compact: true });
 renderPartnerStrip('home-partners', { limit: 5 });
 renderWhere('where-block');
 bindLinks();

@@ -293,13 +293,13 @@ function renderTeam(target, { limit = 0, invite = true } = {}){
 }
 
 // Эксперты и гости встреч — одной сеткой, эксперты первыми; в конце приглашение стать экспертом
-function renderPeople(target, { roles = ['expert', 'guest'], invite = true, limit = 0 } = {}){
+function renderPeople(target, { roles = ['expert', 'guest'], invite = true, limit = 0, compact = false } = {}){
   const el = document.getElementById(target);
   if (!el) return;
   const list = PEOPLE.filter(p => roles.includes(p.role)).sort((a, b) => roles.indexOf(a.role) - roles.indexOf(b.role)).slice(0, limit || undefined);
   const cards = list.map(personCard);
-  if (invite) cards.push(callCard(list.length, 'Стать экспертом', 'Поделись опытом на встрече: профессия, своё дело, путь. Формат подберём вместе.', SITE.telegram, 'Место для тебя', 'Напиши нам в Телеграм'));
-  el.innerHTML = `<div class="reel">${cards.join('')}</div>`;
+  if (invite) cards.push(callCard(list.length, 'Стать экспертом', compact ? 'Напиши нам' : 'Поделись опытом на встрече: профессия, своё дело, путь. Формат подберём вместе.', SITE.telegram, 'Место для тебя', 'Напиши нам в Телеграм'));
+  el.innerHTML = `<div class="reel${compact ? ' reel--6' : ''}">${cards.join('')}</div>`;
 }
 
 function renderPartners(target, { invite = true, limit = 0 } = {}){
