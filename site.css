@@ -419,7 +419,7 @@ a.card:hover .card__name { color: var(--blue); }
 .where__right:has(video), .where__right:has(iframe) { --note: var(--paper); }
 .where__right:has(video) .where__note, .where__right:has(iframe) .where__note { color: var(--paper); }
 .where__video { display: block; width: 100%; min-height: 360px; flex: 1; border: 0; border-radius: var(--radius); background: var(--ink); object-fit: cover; }
-.where__video--empty { display: flex; flex-direction: column; justify-content: space-between; padding: 24px; background: var(--paper-2); border: 2px solid var(--green); color: var(--ink-2); font-size: 15px; }
+.where__video--empty { display: flex; flex-direction: column; justify-content: flex-end; padding: 24px; background: var(--paper-2); border: 2px solid var(--green); color: var(--ink-2); font-size: 15px; }
 .section--alt .where__video--empty { background: var(--paper); }
 .where__video--empty span:first-child { display: none; }
 @media (max-width: 900px) {
