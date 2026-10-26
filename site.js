@@ -346,9 +346,9 @@ function renderWhere(target){
 }
 
 /* ---------- статичные блоки из данных ---------- */
-function renderStory(storyId, principlesId){
+function renderStory(storyId, principlesId, { short = false } = {}){
   const s = document.getElementById(storyId), p = document.getElementById(principlesId);
-  if (s) s.innerHTML = STORY.map(t => `<p>${esc(t)}</p>`).join('');
+  if (s) s.innerHTML = (short ? STORY.slice(0, 1) : STORY).map(t => `<p>${esc(t)}</p>`).join('');
   if (p) p.innerHTML = PRINCIPLES.map(x => `<li><b>${esc(x.title)}</b><span>${esc(x.text)}</span></li>`).join('');
 }
 

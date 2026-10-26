@@ -37,7 +37,7 @@
     <div class="copy" id="about-story"></div>
     <div class="actions"><a class="btn btn--line" href="about.html">Подробнее о нас</a></div>
   </div>
-  <ul class="principles" id="about-principles"></ul>
+  <ul class="principles principles--compact" id="about-principles"></ul>
 </div></section>
 
 <!-- Команда -->
@@ -99,13 +99,13 @@
 <script src="events.js"></script><script src="content.js"></script><script src="site.js"></script>
 <script>
 renderHero();
-renderAfisha('home-events', { limit: 6 });
+renderAfisha('home-events', { limit: 3 });
 renderFormats('formats-grid');
 document.getElementById('about-title').textContent = SITE.slogan;
-renderStory('about-story', 'about-principles');
-renderTeam('home-team', { limit: 8 });
-renderPeople('home-people', { limit: 5 });
-renderPartners('home-partners', { limit: 5 });
+renderStory('about-story', 'about-principles', { short: true });
+renderTeam('home-team', { limit: 4 });
+renderPeople('home-people', { limit: 2 });
+renderPartners('home-partners', { limit: 2 });
 renderPosts('home-posts', { limit: 3 });
 renderWhere('where-block');
 bindLinks();
