@@ -222,11 +222,17 @@ function callCard(i, title, text, href, label, note, color){
 }
 
 // Команда — сетка на 4 колонки
-function renderTeam(target, { limit = 0 } = {}){
+// В команду вступают только через личные сообщения Илье (общего чата пока нет) — последняя карточка сетки.
+function renderTeam(target, { limit = 0, invite = true } = {}){
   const el = document.getElementById(target);
   if (!el) return;
-  const list = PEOPLE.filter(p => p.role === 'team').slice(0, limit || undefined);
-  el.innerHTML = `<div class="reel reel--4">${list.map(personCard).join('')}</div>`;
+  const list = PEOPLE.filter(p => p.role === 'team').slice(0, limit ? limit - (invite ? 1 : 0) : undefined);
+  const cards = list.map(personCard);
+  if (invite) {
+    const ilya = PEOPLE.find(p => p.id === 'ilya');
+    cards.push(callCard(list.length, 'Вступить в команду', 'Хочешь делать «Вместе» с нами? Напиши Илье: кто ты и чем хочешь заниматься.', (ilya && ilya.contact) || SITE.telegram, 'Место в команде', 'Напиши Илье Амирову'));
+  }
+  el.innerHTML = `<div class="reel reel--4" id="${target}-grid">${cards.join('')}</div>`;
 }
 
 // Гости и эксперты — группами, с приглашением стать экспертом
