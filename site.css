@@ -270,13 +270,13 @@ p { margin: 0; }
 .card__name { font: 600 17px/1.3 var(--f-text); }
 .card__role { font-size: 15px; color: var(--ink-2); }
 .card__img { position: relative; overflow: hidden; border-radius: var(--radius); background: var(--paper-2); flex: 1; }
-.card__img img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; transition: transform .4s ease; }
-.card__img--portrait img { aspect-ratio: 4 / 5; }
+.card__img img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; transition: transform .4s ease; }
 a.card:hover .card__img img { transform: scale(1.03); }
 a.card:hover .card__name { color: var(--blue); }
 /* плашка вместо фото */
 .card__plate { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; flex: 1; min-height: 216px; padding: 24px; border-radius: var(--radius); background: var(--paper-2); font-size: 16px; color: var(--ink-2); }
 .section--alt .card__plate { background: var(--paper); }
+.card__plate--empty { aspect-ratio: 4 / 3; min-height: 0; justify-content: flex-end; font-size: 13px; }
 .card__plate--logo { justify-content: center; align-items: flex-start; }
 .card__plate--logo img { max-height: 96px; max-width: 100%; width: auto; object-fit: contain; }
 /* приглашение стать экспертом/партнёром — та же сетка, плашка цветом бренда */
@@ -288,6 +288,7 @@ a.card:hover .card__name { color: var(--blue); }
 .card__text { margin-top: 16px; font-size: 16px; color: var(--ink-2); max-width: 420px; }
 @media (max-width: 1040px) { .reel, .reel--4 { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px) { .reel, .reel--4 { grid-template-columns: 1fr; gap: 32px; } .card__plate { min-height: 0; } }
+.still { margin: 0; display: flex; flex-direction: column; }
 
 .people-group + .people-group { margin-top: 80px; }
 .people-group > h3 { font-size: 32px; margin-bottom: 32px; }
@@ -421,27 +422,41 @@ a.card:hover .card__name { color: var(--blue); }
   .foot__bottom { margin-top: 56px; }
 }
 
-/* ---------- Страница человека: кадры «в работе» и «в жизни» ---------- */
-.shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.shot { margin: 0; border-radius: var(--radius); overflow: hidden; background: var(--paper-2); }
-.section--alt .shot { background: var(--paper); }
-.shot img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
-.shot figcaption { padding: 12px 16px; font-size: 14px; color: var(--ink-2); }
-.shot figcaption b { margin-right: 12px; color: var(--wine); }
-.shot--empty { display: flex; flex-direction: column; justify-content: space-between; aspect-ratio: 16 / 10; padding: 20px; font-size: 15px; color: var(--ink-2); }
-.shot--empty span:first-child { font-weight: 600; color: var(--wine); }
+/* ---------- Страница человека: кадр-слайдер, каталог кадров, текст ---------- */
+.person { padding: 24px 0 0; }
+.person__title { font-size: 104px; margin-top: 8px; }
+/* кадр на чёрном, как кинокадр; строка снизу — титры */
+.fs { border-radius: var(--radius); overflow: hidden; background: var(--ink); color: var(--paper); }
+.fs__slide { margin: 0; }
+.fs__slide[hidden] { display: none; }
+.fs__slide img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.fs__bar { display: grid; grid-template-columns: 1fr 3fr 3fr auto; gap: 24px; align-items: center; padding: 16px 24px; font-size: 15px; position: relative; z-index: 2; }
+.fs__bar .num { font-variant-numeric: tabular-nums; color: var(--on-dark-2); }
+.fs__title { font: 600 17px/1.3 var(--f-text); text-transform: none; letter-spacing: 0; }
+.fs__cap { color: var(--on-dark-2); }
+.fs .hero__ctrl button { background: var(--plate-dark); color: var(--paper); }
+.fs .hero__ctrl button:hover { background: var(--paper); color: var(--ink); }
+.strip { display: flex; gap: 8px; margin-top: 8px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: thin; }
+.strip__item { flex: none; width: 120px; padding: 0; border: 2px solid transparent; border-radius: 4px; overflow: hidden; background: var(--paper-2); cursor: pointer; opacity: .7; transition: opacity .15s, border-color .15s; }
+.strip__item img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.strip__item:hover, .strip__item.is-on { opacity: 1; border-color: var(--wine); }
+.person { padding-bottom: var(--section); }
 .person-body { display: grid; grid-template-columns: 5fr 7fr; gap: 56px; align-items: start; }
-.facts--col { grid-template-columns: 1fr; position: sticky; top: calc(var(--head-h) + 24px); }
-.facts--col .btn { margin-top: 16px; justify-self: start; }
+.person-facts { margin: 0; display: grid; gap: 24px; align-content: start; position: sticky; top: calc(var(--head-h) + 24px); }
+.person-facts dt { font-size: 14px; color: var(--ink-2); }
+.person-facts dd { margin: 4px 0 0; font-size: 17px; font-weight: 600; }
 .person-text h2 { font-size: 40px; margin-bottom: 16px; }
 .person-text .copy + h2, .person-text .list + h2 { margin-top: 40px; }
 .list { margin: 0; padding: 0 0 0 20px; font-size: 19px; }
 .list li + li { margin-top: 8px; }
 @media (max-width: 900px) {
-  .shots { grid-template-columns: 1fr; gap: 8px; }
-  .shot--empty { aspect-ratio: auto; min-height: 120px; }
+  .person__title { font-size: 48px; }
+  .fs__slide img { aspect-ratio: 4 / 3; }
+  .strip__item { width: 88px; }
+  .fs__bar { grid-template-columns: auto 1fr auto; padding: 12px 16px; font-size: 14px; }
+  .fs__cap { display: none; }
   .person-body { grid-template-columns: 1fr; gap: 32px; }
-  .facts--col { position: static; }
+  .person-facts { position: static; }
   .person-text h2 { font-size: 32px; }
   .list { font-size: 17px; }
 }

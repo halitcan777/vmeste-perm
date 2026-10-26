@@ -30,20 +30,18 @@ const FORMATS = [
 // Люди. role: 'team' — команда, 'expert' — эксперт, 'guest' — гость встречи.
 // Команда — список владельца от 26.10; роли из «Структура команды, вер. 3 от 20.10» (главная функция). Нет в документе = пусто.
 // Страница человека берёт: about (абзацы), work (список дел во «Вместе»), talk (о чём поговорить), contact, since,
-// gallery: { work: [{src, note}], life: [{src, note}] } — кадры «в работе» и «в жизни» (показываются при SHOW_PHOTOS).
+// photos: [{src, note, pos}] — кадры человека (pos — точка фото, которую держим при обрезке); photo/photoPos — портрет для карточки.
 const PEOPLE = [
   {
     id: 'platon', role: 'team', name: 'Платон Трутнев', position: 'Основатель, партнёрства и сообщество',
-    photo: 'assets/img/people/platon/p03.jpg',
-    gallery: {
-      work: [{ src: 'assets/img/people/platon/p01.jpg', note: 'Офис' }],
-      life: [
-        { src: 'assets/img/people/platon/p02.jpg', note: 'Лес' },
-        { src: 'assets/img/people/platon/p04.jpg', note: 'Мост' },
-        { src: 'assets/img/people/platon/p05.jpg', note: 'Зима' },
-        { src: 'assets/img/people/platon/p06.jpg', note: 'Сноуборд' },
-      ],
-    },
+    photo: 'assets/img/people/platon/p03.jpg', photoPos: '50% 45%',   // pos — какую точку фото держать в кадре при обрезке
+    photos: [   // кадры человека без деления; первый — портрет из карточки добавляется сам
+      { src: 'assets/img/people/platon/p01.jpg', note: 'Офис', pos: '50% 60%' },
+      { src: 'assets/img/people/platon/p02.jpg', note: 'Лес', pos: '65% 55%' },
+      { src: 'assets/img/people/platon/p04.jpg', note: 'Мост', pos: '50% 25%' },
+      { src: 'assets/img/people/platon/p05.jpg', note: 'Зима', pos: '55% 45%' },
+      { src: 'assets/img/people/platon/p06.jpg', note: 'Сноуборд', pos: '60% 50%' },
+    ],
     about: ['Отвечает за запуск движения, партнёрства и пространство на Ленина, 44. Собирает вокруг «Вместе» людей, партнёров и первые форматы.'],
     talk: 'Запуск сообщества, поиск партнёров, первые шаги проекта и работа с неопределённостью.',
     contact: 'https://t.me/Paltus10'

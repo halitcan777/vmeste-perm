@@ -204,10 +204,9 @@ function renderFormats(target){
 /* ---------- карточки: люди, партнёры, блог ----------
    Кадр карточки = фото; пока фото нет — плашка с текстом. */
 function personCard(p, i){
-  const src = p.photo || ''; // фото людей настоящие — показываем всегда
-  const frame = src
-    ? `<div class="card__img card__img--portrait grain"><img src="${src}" alt="${esc(p.name)}" loading="lazy"></div>`
-    : `<div class="card__plate">${esc((p.about && p.about[0]) || p.talk || 'Кадр и рассказ скоро')}</div>`;
+  const frame = p.photo
+    ? `<div class="card__img grain"><img src="${p.photo}" alt="${esc(p.name)}" loading="lazy"${p.photoPos ? ` style="object-position:${p.photoPos}"` : ''}></div>`
+    : `<div class="card__plate card__plate--empty"><span>Кадр скоро</span></div>`;
   return `<a class="card" href="person.html?id=${encodeURIComponent(p.id)}">
     <div class="card__top"><span class="card__num">${pad2(i + 1)}</span><span><span class="card__name">${esc(p.name)}</span><br><span class="card__role">${esc(p.position || ROLE_NAME[p.role] || '')}</span></span></div>
     ${frame}
@@ -279,12 +278,11 @@ function renderPosts(target, { limit = 0 } = {}){
   }).join('')}</div>`;
 }
 
-/* ---------- страница человека: имя, кадры «в работе», текст, кадры «в жизни» ---------- */
-function gallery(list, title, note){
-  // настоящие кадры + пустые плашки до трёх, чтобы ряд был полным
-  const items = (list || []).map((g, i) => `<figure class="shot grain"><img src="${g.src}" alt="" loading="lazy"><figcaption><b>${pad2(i + 1)}</b>${esc(g.note || '')}</figcaption></figure>`);
-  for (let i = items.length; i < 3; i++) items.push(`<div class="shot shot--empty"><span>${pad2(i + 1)}</span><span>${esc(note)}</span></div>`);
-  return `<div class="sec-head"><div><h2>${esc(title)}</h2></div></div><div class="shots">${items.join('')}</div>`;
+/* ---------- страница человека: кадр-слайдер, каталог кадров, короткий текст ---------- */
+function personShots(p){
+  const shots = [...(p.photos || [])];
+  if (p.photo && !shots.some(x => x.src === p.photo)) shots.unshift({ src: p.photo, pos: p.photoPos, note: 'Портрет' });
+  return shots;
 }
 
 function renderPerson(target){
@@ -297,29 +295,59 @@ function renderPerson(target){
     return;
   }
   document.title = `${p.name} — Вместе`;
-  const facts = [['Роль', p.position || ROLE_NAME[p.role]], ['Во «Вместе»', ROLE_NAME[p.role]]];
-  if (p.since) facts.push(['С какого времени', p.since]);
-  if (p.city) facts.push(['Город', p.city]);
-  el.innerHTML = `
-    <section class="page-head"><div class="container">
-      <p class="crumbs"><a href="${back[0]}">${back[1]}</a><span>${esc(p.name)}</span></p>
-      <h1>${esc(p.name)}</h1>
-      <p class="lead">${esc(p.position || ROLE_NAME[p.role])}</p>
-    </div></section>
-    <section class="section"><div class="container">${gallery(p.gallery && p.gallery.work, 'В работе', 'Кадр с встречи или из работы')}</div></section>
-    <section class="section section--alt"><div class="container person-body">
-      <div class="facts facts--col">
-        ${facts.map(([k, v]) => `<div class="fact"><strong>${esc(k)}</strong><p>${esc(v)}</p></div>`).join('')}
-        ${p.contact ? `<a class="btn" href="${p.contact}" target="_blank" rel="noopener">Написать</a>` : ''}
+  const role = p.position || ROLE_NAME[p.role];
+  const shots = personShots(p);
+  const img = (x, i, lazy) => `<img src="${x.src}" alt="${esc(x.note || p.name)}"${lazy ? ' loading="lazy"' : ''}${x.pos ? ` style="object-position:${x.pos}"` : ''}>`;
+
+  // 1. Кадр: один большой, листается по всем фото человека; строка внизу как титры
+  const frame = shots.length ? `<div class="fs grain" id="fs">
+      ${shots.map((x, i) => `<figure class="fs__slide"${i ? ' hidden' : ''}>${img(x, i, i > 0)}</figure>`).join('')}
+      <div class="fs__bar">
+        <span class="num" id="fs-num">${pad2(1)}/${pad2(shots.length)}</span>
+        <h1 class="fs__title">${esc(p.name)}</h1>
+        <span class="fs__cap" id="fs-cap">${esc(shots[0].note || '')}</span>
+        <div class="hero__ctrl"${shots.length < 2 ? ' hidden' : ''}><button type="button" data-step="-1" aria-label="Предыдущий кадр">←</button><button type="button" data-step="1" aria-label="Следующий кадр">→</button></div>
       </div>
+    </div>` : `<h1 class="person__title">${esc(p.name)}</h1>`;
+
+  // 2. Лента миниатюр под кадром: клик переключает большой кадр
+  const reel = shots.length > 1 ? `<div class="strip" id="strip">${shots.map((x, i) => `<button type="button" class="strip__item${i ? '' : ' is-on'}" data-go="${i}" aria-label="Кадр ${i + 1}: ${esc(x.note || '')}">${img(x, i, true)}</button>`).join('')}</div>` : '';
+
+  // 3. Текст: коротко, две колонки
+  const text = `<section class="section section--alt"><div class="container person-body">
+      <dl class="person-facts">
+        <div><dt>Роль</dt><dd>${esc(role)}</dd></div>
+        <div><dt>Во «Вместе»</dt><dd>${esc(ROLE_NAME[p.role])}</dd></div>
+        ${p.since ? `<div><dt>С какого времени</dt><dd>${esc(p.since)}</dd></div>` : ''}
+        ${p.contact ? `<div><a class="btn" href="${p.contact}" target="_blank" rel="noopener">Написать</a></div>` : ''}
+      </dl>
       <div class="person-text">
         <h2>О человеке</h2>
         <div class="copy">${(p.about && p.about.length ? p.about : ['Рассказ появится после открытия.']).map(t => `<p>${esc(t)}</p>`).join('')}</div>
         ${p.work && p.work.length ? `<h2>Чем занимается во «Вместе»</h2><ul class="list">${p.work.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
         ${p.talk ? `<h2>О чём можно поговорить</h2><div class="copy"><p>${esc(p.talk)}</p></div>` : ''}
       </div>
-    </div></section>
-    <section class="section"><div class="container">${gallery(p.gallery && p.gallery.life, 'В жизни', 'Кадр из повседневной жизни')}</div></section>`;
+    </div></section>`;
+
+  el.innerHTML = `<section class="person"><div class="container">
+      <p class="crumbs"><a href="${back[0]}">${back[1]}</a><span>${esc(p.name)}</span></p>
+      ${shots.length ? '' : `<p class="lead" style="margin:-8px 0 24px">${esc(role)}</p>`}
+      ${frame}${reel}
+    </div></section>${text}`;
+
+  if (shots.length < 2) return;
+  let cur = 0;
+  const slides = el.querySelectorAll('.fs__slide');
+  const show = n => {
+    cur = (n + shots.length) % shots.length;
+    slides.forEach((s, i) => s.hidden = i !== cur);
+    el.querySelector('#fs-num').textContent = `${pad2(cur + 1)}/${pad2(shots.length)}`;
+    el.querySelector('#fs-cap').textContent = shots[cur].note || '';
+    el.querySelectorAll('.strip__item').forEach((b, i) => b.classList.toggle('is-on', i === cur));
+  };
+  el.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => show(Number(b.dataset.go))));
+  el.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => show(cur + Number(b.dataset.step))));
+  document.addEventListener('keydown', e => { if (e.key === 'ArrowRight') show(cur + 1); if (e.key === 'ArrowLeft') show(cur - 1); });
 }
 
 /* ---------- как нас найти: адрес + карта слева, видео справа ---------- */
