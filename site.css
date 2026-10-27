@@ -557,7 +557,7 @@ a.card:hover .card__name { color: var(--blue); }
   .phero { padding-top: 16px; }
   .phero__frame { min-height: 0; }
   .phero__in { padding: 20px 16px; }
-  .phero__name { font-size: 56px; padding: 40px 0 32px; text-align: left; }
+  .phero__name { font-size: clamp(36px, 12.5vw, 56px); padding: 40px 0 32px; text-align: left; }   /* длинная фамилия (Бесфамильная) влезает на 390 */
   .phero__cols { grid-template-columns: 1fr; gap: 20px; }
   .phero__talk { text-align: left; justify-self: start; }
   .phero__foot { flex-wrap: wrap; gap: 12px 16px; margin-top: 32px; }
