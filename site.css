@@ -241,7 +241,7 @@ p { margin: 0; }
 .sch__title { font: 600 24px/1.1 var(--f-display); text-transform: uppercase; }
 .sch__type { font-size: 15px; color: var(--ink-2); text-align: right; }
 .sch__row:hover .sch__title { color: var(--blue); }
-@media (max-width: 760px) {
+@media (max-width: 1040px) {
   .sch__row { grid-template-columns: 72px 1fr; gap: 4px 16px; padding: 16px; }
   .sch__date { font-size: 24px; grid-row: span 2; align-self: start; }
   .sch__day { order: 3; }
@@ -330,11 +330,11 @@ a.pstrip__item:hover b { color: var(--blue); }
 
 /* ---------- Карточки: команда, гости, партнёры, блог ----------
    Как в кинокаталоге: строка «номер, имя, роль» над кадром. Кадр = фото, а пока его нет — плашка с заливкой. */
-.reel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px 24px; align-items: stretch; }
-.reel--4 { grid-template-columns: repeat(4, 1fr); }
-.reel--2 { grid-template-columns: repeat(2, 1fr); }
+.reel { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 24px; align-items: stretch; }
+.reel--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.reel--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 /* компактный ряд из шести: квадратные кадры, имя и роль мелко, без номеров */
-.reel--6 { grid-template-columns: repeat(6, 1fr); gap: 16px; }
+.reel--6 { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
 .reel--6 .card__img img, .reel--6 .card__plate { aspect-ratio: 1 / 1; }
 .reel--6 .card__plate { padding: 12px; font-size: 13px; }
 .reel--6 .card__plate--call b { font-size: 20px; }
@@ -386,18 +386,10 @@ a.card:hover .card__name { color: var(--blue); }
 .card__plate--call b { font: 600 32px/1 var(--f-display); text-transform: uppercase; color: var(--accent); }
 .card__plate--call span { font-size: 15px; color: var(--ink-2); max-width: 320px; }
 .card__text { margin-top: 16px; font-size: 16px; color: var(--ink-2); max-width: 420px; }
-@media (max-width: 1040px) { .reel, .reel--4, .reel--2 { grid-template-columns: repeat(2, 1fr); }
-/* компактный ряд из шести: квадратные кадры, имя и роль мелко, без номеров */
-.reel--6 { grid-template-columns: repeat(6, 1fr); gap: 16px; }
-.reel--6 .card__img img, .reel--6 .card__plate { aspect-ratio: 1 / 1; }
-.reel--6 .card__plate { padding: 12px; font-size: 13px; }
-.reel--6 .card__plate--call b { font-size: 20px; }
-.reel--6 .card__plate--call span { font-size: 12px; }
-.reel--6 .card__top { grid-template-columns: 1fr; margin-top: 8px; }
-.reel--6 .card__num { display: none; }
-.reel--6 .card__name { font-size: 15px; }
-.reel--6 .card__role { font-size: 13px; } }
-@media (max-width: 640px) { .reel, .reel--2 { grid-template-columns: 1fr; gap: 32px; } .reel--4 { grid-template-columns: 1fr 1fr; gap: 24px 12px; } .reel--6 { grid-template-columns: repeat(3, 1fr); gap: 16px 8px; } .reel--6 .card__plate--empty { display: flex; } .reel--4 .card__plate--call b { font-size: 24px; } .reel--4 .card__plate--call span { font-size: 13px; } .card__plate { min-height: 0; } .card__plate--empty { display: none; } .card:has(.card__plate--empty) .card__top { margin-top: 0; } .reel--4 .card__plate--empty { display: flex; } .reel--4 .card:has(.card__plate--empty) .card__top { margin-top: 12px; } .card__plate--call { aspect-ratio: auto; min-height: 160px; } }
+@media (max-width: 1040px) { .reel, .reel--4, .reel--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* компактный ряд из шести на планшете — три в ряд */
+  .reel--6 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 16px; } }
+@media (max-width: 640px) { .reel, .reel--2 { grid-template-columns: 1fr; gap: 32px; } .reel--4 { grid-template-columns: 1fr 1fr; gap: 24px 12px; } .reel--6 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; } .reel--6 .card__plate--empty { display: flex; } .reel--4 .card__plate--call b { font-size: 24px; } .reel--4 .card__plate--call span { font-size: 13px; } .card__plate { min-height: 0; } .card__plate--empty { display: none; } .card:has(.card__plate--empty) .card__top { margin-top: 0; } .reel--4 .card__plate--empty { display: flex; } .reel--4 .card:has(.card__plate--empty) .card__top { margin-top: 12px; } .card__plate--call { aspect-ratio: auto; min-height: 160px; } }
 .still { margin: 0; display: flex; flex-direction: column; }
 .still .card__top { margin-top: 8px; }
 
