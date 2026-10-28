@@ -991,3 +991,6 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 @media (max-width: 1040px) { .fmt { grid-template-columns: 220px minmax(0, 1fr); } .fmt__name { font-size: 24px; } }
 @media (max-width: 760px) { .fmt { grid-template-columns: 1fr; } }
 section[hidden] { display: none !important; }
+
+/* адрес над картой — на подложке-плашке, отделён от карты */
+.where__addr { margin: 12px; padding: 16px 20px; border-radius: var(--radius); background: var(--paper-2); }
