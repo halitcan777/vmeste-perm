@@ -984,3 +984,10 @@ body[data-page="home"] .join h2 { font-size: 56px; }
   .post-row { grid-template-columns: 112px 1fr; gap: 14px; padding: 8px; }
   .post-row h3 { font-size: 20px; } .post-row p { display: none; }
 }
+
+/* форматы в Fredoka шире: колонка названия шире, кегль меньше */
+.fmt { grid-template-columns: 320px minmax(0, 1fr) 240px; }
+.fmt__name { font-size: 28px; line-height: 1.05; }
+@media (max-width: 1040px) { .fmt { grid-template-columns: 220px minmax(0, 1fr); } .fmt__name { font-size: 24px; } }
+@media (max-width: 760px) { .fmt { grid-template-columns: 1fr; } }
+section[hidden] { display: none !important; }

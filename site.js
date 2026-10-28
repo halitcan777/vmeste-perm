@@ -184,7 +184,9 @@ function renderPast(target){
   const el = document.getElementById(target);
   if (!el) return;
   const list = pastEvents();
-  el.innerHTML = list.length ? `<div class="reel">${list.map(ev => eventCard(ev, {})).join('')}</div>` : `<p class="events__empty">Пока ничего не прошло: мы только открываемся.</p>`;
+  // пока прошедших нет — блок «Уже прошло» не показываем
+  if (!list.length) { const sec = el.closest('section'); if (sec) sec.hidden = true; return; }
+  el.innerHTML = `<div class="pfeed">${list.map(ev => posterHTML(ev)).join('')}</div>`;
 }
 
 /* ---------- постеры событий ---------- */
@@ -395,7 +397,7 @@ function renderTeamMosaic(target, { count = 16 } = {}){
   if (!el) return;
   // только настоящие фото (без ассоциативных кадров): Илья первым, Платон вторым, дальше пустые квадраты
   const team = PEOPLE.filter(p => p.role === 'team');
-  const first = ['ilya', 'platon'].map(id => team.find(p => p.id === id)).filter(Boolean);
+  const first = ['platon', 'ilya'].map(id => team.find(p => p.id === id)).filter(Boolean);
   const rest = team.filter(p => !first.includes(p));
   // люди с фото вперёд, без фото — в конец (пустые клетки только если фото меньше, чем клеток)
   const list = [...first, ...rest.filter(p => p.photo), ...rest.filter(p => !p.photo)].slice(0, count);
@@ -535,7 +537,7 @@ function renderPerson(target){
     </div></section>` : '';
   // 4. Встречи с участием
   const evs = EVENTS.filter(e => (e.people || []).includes(p.id)).sort((x, y) => parseDay(x.dates[0]) - parseDay(y.dates[0]));
-  const meets = evs.length ? `<section class="section${more ? '' : ' section--alt'}"><div class="container"><div class="sec-head"><div><h2>Встречи</h2></div></div><div class="reel">${evs.map(e => eventCard(e, {})).join('')}</div></div></section>` : '';
+  const meets = evs.length ? `<section class="section${more ? '' : ' section--alt'}"><div class="container"><div class="sec-head"><div><h2>Встречи</h2></div></div><div class="pfeed">${evs.map(e => posterHTML(e)).join('')}</div></div></section>` : '';
   el.innerHTML = hero + grid + more + meets;
   initLightbox(el, shots.map(x => ({ src: x.src, note: x.note || '' })));
 }
