@@ -64,7 +64,7 @@ p { margin: 0; }
 .sec-head .more { flex: none; }
 @media (max-width: 760px) {
   .sec-head { flex-direction: column; align-items: flex-start; margin-bottom: 24px; }
-  .sec-head--tabs { align-items: flex-start; gap: 16px; }
+  .sec-head.sec-head--tabs { align-items: flex-start; gap: 16px; }   /* специфичнее базового правила ниже */
   .sec-head h2 { font-size: 40px; }
   .sec-head .lead { margin-top: 16px; font-size: 17px; }
 }
