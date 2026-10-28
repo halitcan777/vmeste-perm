@@ -268,21 +268,27 @@ a.pstrip__item:hover b { color: var(--blue); }
 .months button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
 .months button[disabled] { opacity: .45; cursor: default; }
 
-/* ---------- Форматы встреч: цветные карточки ---------- */
-.formats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
-.fmt { display: flex; flex-direction: column; gap: 32px; min-height: 200px; padding: 20px; border-radius: var(--radius); background: var(--paper-2); border: 2px solid var(--blue); --accent: var(--blue); }
+/* ---------- Форматы встреч: строки «формат, что это, ближайшая встреча» ---------- */
+.fmts { display: flex; flex-direction: column; gap: 8px; }
+.fmt { display: grid; grid-template-columns: 280px minmax(0, 1fr) 280px; gap: 40px; align-items: center; padding: 24px 32px; border-radius: var(--radius); background: var(--paper-2); color: var(--ink); text-decoration: none; --accent: var(--blue); transition: background-color .15s; }
 .section--alt .fmt { background: var(--paper); }
-.fmt--wine { border-color: var(--wine); --accent: var(--wine); }
-.fmt--green { border-color: var(--green); --accent: var(--green); }
-.fmt--ink { border-color: var(--ink); --accent: var(--ink); }
-.fmt h3 { font-size: 28px; color: var(--accent); }
-.fmt p { margin-top: auto; font-size: 15px; color: var(--ink-2); }
-@media (max-width: 1040px) { .formats { grid-template-columns: repeat(3, 1fr); } }
+.fmt:hover { background: #EBE3D4; }
+.fmt--wine { --accent: var(--wine); } .fmt--green { --accent: var(--green); } .fmt--ink { --accent: var(--ink); } .fmt--blue { --accent: var(--blue); }
+.fmt__name { font: 600 36px/1 var(--f-display); text-transform: uppercase; color: var(--accent); }
+.fmt__text { font-size: 16px; line-height: 1.5; color: var(--ink-2); }
+.fmt__next { font-size: 16px; font-weight: 600; line-height: 1.3; text-align: right; }
+.fmt__next small { display: block; margin-bottom: 4px; font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.fmt__next em { display: block; margin-top: 2px; font-style: normal; font-weight: 500; color: var(--ink-2); }
+@media (max-width: 1040px) {
+  .fmt { grid-template-columns: 200px minmax(0, 1fr); gap: 16px 24px; padding: 20px 24px; }
+  .fmt__name { font-size: 28px; }
+  .fmt__next { grid-column: 2; text-align: left; }
+}
 @media (max-width: 760px) {
-  .formats { grid-template-columns: 1fr 1fr; gap: 8px; }
-  .fmt { min-height: 0; gap: 24px; padding: 16px; }
-  .fmt h3 { font-size: 24px; }
-  .fmt p { font-size: 14px; }
+  .fmt { grid-template-columns: 1fr; gap: 8px; padding: 16px; }
+  .fmt__name { font-size: 26px; }
+  .fmt__text { font-size: 15px; }
+  .fmt__next { grid-column: 1; margin-top: 4px; }
 }
 
 /* ---------- О нас: цветной блок с разворотом 7/5 ---------- */
@@ -436,14 +442,10 @@ a.card:hover .card__name { color: var(--blue); }
 @media (max-width: 760px) { .page-head { padding: 32px 0; } .page-head h1 { font-size: 56px; } .page-head .lead { font-size: 17px; } .page-head + .section { padding-top: 32px; } }
 
 /* Страница встречи */
-.event-head { background: var(--paper-2); padding: 56px 0; }
-.event-head__grid { display: grid; grid-template-columns: 7fr 5fr; gap: 48px; align-items: center; }
-.event-head__grid.single { grid-template-columns: 1fr; }
-.event-head h1 { margin-top: 16px; font-size: 96px; }
-.event-head .lead { margin-top: 24px; font-size: 19px; color: var(--ink-2); }
-.event-head figure { margin: 0; }
-.event-head figure img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); }
-.event-head figcaption { margin-top: 8px; font-size: 13px; color: var(--ink-2); }
+.event-head { background: var(--paper-2); padding: 24px 0 56px; }
+.event-poster { margin: 0 0 40px; }
+.event-head h1 { margin-top: 16px; font-size: 72px; max-width: 900px; }
+.event-head .lead { margin-top: 24px; font-size: 19px; color: var(--ink-2); max-width: 720px; }
 .event-body { display: grid; grid-template-columns: 7fr 5fr; gap: 56px; align-items: start; }
 .facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .fact { padding: 16px 20px; border-radius: var(--radius); background: var(--paper-2); }
@@ -469,9 +471,10 @@ a.card:hover .card__name { color: var(--blue); }
 .done-actions { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 24px; }
 .reg .intro { margin-top: 16px; font-size: 17px; }
 @media (max-width: 900px) {
-  .event-head__grid, .event-body { grid-template-columns: 1fr; gap: 32px; }
-  .event-head h1 { font-size: 52px; }
-  .event-head figure { order: -1; }
+  .event-body { grid-template-columns: 1fr; gap: 32px; }
+  .event-head { padding: 16px 0 40px; }
+  .event-poster { margin-bottom: 24px; }
+  .event-head h1 { font-size: 40px; }
   .reg { position: static; padding: 24px; }
 }
 
@@ -580,9 +583,6 @@ body[data-page="home"] .spread h2 { font-size: 48px; }
 body[data-page="home"] .join { padding: 64px 0; }
 body[data-page="home"] .join__in { padding: 40px; }
 body[data-page="home"] .join h2 { font-size: 56px; }
-.fmt { min-height: 0; gap: 24px; padding: 16px; }
-.fmt h3 { font-size: 24px; }
-.fmt p { font-size: 14px; }
 @media (max-width: 760px) {
   body[data-page="home"] { --section: 40px; }
   body[data-page="home"] .sec-head h2 { font-size: 36px; }
@@ -590,9 +590,6 @@ body[data-page="home"] .join h2 { font-size: 56px; }
   body[data-page="home"] .join__in { padding: 20px; }
   body[data-page="home"] .join h2 { font-size: 36px; }
   body[data-page="home"] .slide { min-height: min(60svh, 440px); }
-  /* форматы на телефоне — лента вбок, а не шесть карточек столбиком */
-  body[data-page="home"] .formats { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; scrollbar-width: thin; }
-  body[data-page="home"] .fmt { flex: 0 0 68%; scroll-snap-align: start; }
   .spot__about { font-size: 15px; }
 }
 
@@ -644,10 +641,12 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .p-white .poster__ph::before { display: none; }   /* вырезанный портрет на кремовом: растр выдал бы границу кадра */
 .poster:hover .poster__ph img { transform: scale(1.03); }
 .poster__title { font-family: var(--f-display); font-weight: 600; text-transform: uppercase; line-height: .9; }
-.poster__k { font: 600 2.3cqw/1.3 var(--f-text); letter-spacing: .08em; text-transform: uppercase; }
-.poster__meta { font: 500 2.4cqw/1.35 var(--f-text); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.poster__k { font: 600 2.3cqw/1.35 var(--f-text); letter-spacing: .08em; text-transform: uppercase; }
+.poster__meta { font: 500 2.3cqw/1.35 var(--f-text); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
 .poster__big { font: 600 7cqw/1 var(--f-display); text-transform: uppercase; color: var(--pc); }
 .poster__marq { left: 0; right: 0; white-space: nowrap; overflow: hidden; font: 600 2.1cqw/1.5 var(--f-text); letter-spacing: .08em; text-transform: uppercase; opacity: .9; }
+.poster__marq span { margin-right: 4cqw; }
+.poster__vert span + span { margin-top: 4cqw; }
 .poster__sq { width: 3cqw; height: 3cqw; background: var(--pc); }
 .poster__stars { fill: none; stroke: var(--paper); stroke-width: .7; stroke-linejoin: round; stroke-linecap: round; }
 .poster__ring { left: 0; top: 0; width: 100%; height: 100%; fill: none; stroke: var(--paper); stroke-width: .9; stroke-linecap: round; z-index: 3; }
@@ -664,9 +663,9 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 
 /* дуотон: цветной кадр справа, строчный заголовок цветом слева */
 .p-duo { background: var(--paper); }
-.p-duo .poster__ph { left: 42cqw; background: var(--pc); }
+.p-duo .poster__ph { left: 42cqw; background: color-mix(in srgb, var(--pc) 55%, var(--ink)); }
 .p-duo .poster__ph img { mix-blend-mode: screen; }
-.p-duo .poster__ph::after { content: ''; position: absolute; inset: 0; z-index: 2; background: var(--paper); mix-blend-mode: multiply; }
+.p-duo .poster__ph::after { content: ''; position: absolute; inset: 0; z-index: 2; background: var(--paper); mix-blend-mode: multiply; opacity: .85; }
 .p-duo .poster__title { left: 4cqw; top: 3.5cqw; width: 36cqw; text-transform: none; color: var(--pc); }
 .p-duo .poster__foot { left: 4cqw; bottom: 4cqw; width: 36cqw; }
 .p-duo .poster__meta { color: var(--ink-2); }
@@ -677,7 +676,7 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .p-night .poster__ph::after { content: ''; position: absolute; inset: 0; z-index: 2; background: var(--pc); mix-blend-mode: multiply; opacity: .9; }
 .p-night .poster__marq { top: 3cqw; } .p-night .poster__marq + .poster__marq { top: 6.4cqw; opacity: .5; }
 .p-night .poster__title { left: 4cqw; bottom: 4cqw; width: 64cqw; }
-.p-night .poster__meta { right: 4cqw; bottom: 4.5cqw; width: 26cqw; text-align: right; opacity: .9; }
+.p-night .poster__k { right: 4cqw; bottom: 4cqw; width: 26cqw; text-align: right; }
 .p-night .poster__stamp { top: 11cqw; }
 
 /* кислота: светлый ч/б кадр, огромный цветной заголовок с точкой, квадраты по углам */
@@ -720,7 +719,7 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .p-circle { background: var(--ink); color: var(--paper); }
 .p-circle .poster__ph img { filter: grayscale(1) contrast(1.15) brightness(.92); }
 .p-circle .poster__ph::after { content: ''; position: absolute; inset: 0; z-index: 2; background: linear-gradient(to top, rgba(15,15,15,.85) 0, rgba(15,15,15,.25) 42%, rgba(15,15,15,0) 70%); }
-.p-circle .poster__k { left: 4cqw; top: 4cqw; width: 50cqw; }
+.p-circle .poster__k { left: 4cqw; top: 4cqw; width: 60cqw; }
 .p-circle .poster__title { left: 4cqw; bottom: 4cqw; width: 62cqw; }
 
 /* швейцарская сетка: крем, линейки, заголовок со сдвигом, кадр или портреты ведущих справа, таблица фактов внизу */
@@ -763,7 +762,7 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .p-boxes .poster__boxes span { display: inline-block; padding: .6cqw 1.6cqw .2cqw; background: var(--paper); color: var(--ink); }
 .p-boxes .poster__boxes span:nth-child(even) { background: var(--pc); color: var(--paper); margin-left: 6cqw; }
 .p-boxes .poster__k { left: 4cqw; bottom: 4cqw; width: 50cqw; }
-.p-boxes .poster__meta { right: 4cqw; bottom: 4.5cqw; width: 34cqw; text-align: right; opacity: .9; }
+.p-boxes .poster__meta { right: 4cqw; bottom: 4cqw; width: 34cqw; text-align: right; opacity: .9; }
 
 /* ризограф: кадр в одном цвете бренда, заголовок во втором со сдвигом печати, бумага */
 .p-riso { background: var(--paper-2); --pc2: var(--blue); }
@@ -785,10 +784,14 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .p-vertical .poster__meta { display: none; }   /* подпись не влезает рядом с широким заголовком */
 .p-vertical .poster__stamp { right: 9cqw; top: 4cqw; }
 
-/* постер на странице встречи — не ссылка, без зерна фигуры; правила фигуры для <img> на постер не распространяются */
-.event-head figure .poster img { aspect-ratio: auto; border-radius: 0; }
-.event-head figure .poster .poster__stamp { width: 11cqw; height: auto; }
-.event-head figure .poster .poster__face img { width: 100%; height: 25cqw; }
+/* программа вечера и ведущие на странице встречи */
+.h-sub { margin-top: 48px; font-size: 32px; }
+.program { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+.step { display: grid; grid-template-columns: 220px 1fr; gap: 24px; align-items: start; padding: 16px 20px; border-radius: var(--radius); background: var(--paper-2); }
+.step b { font: 600 20px/1.2 var(--f-display); text-transform: uppercase; }
+.step p { margin: 0; font-size: 16px; color: var(--ink-2); }
+.event-guests { margin-top: 16px; }
+@media (max-width: 760px) { .h-sub { margin-top: 40px; font-size: 28px; } .step { grid-template-columns: 1fr; gap: 6px; } }
 
 /* главная на телефоне: только афиша и команда (как у Триумфа) */
 @media (max-width: 760px) { .home-desk { display: none; } }

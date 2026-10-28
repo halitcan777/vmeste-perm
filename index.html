@@ -29,18 +29,9 @@
 <!-- Форматы встреч -->
 <section class="section home-desk" id="formats"><div class="container">
   <div class="sec-head">
-    <div><h2>Форматы встреч</h2><p class="lead">Пять форматов, у каждого свой характер. Какой формат в какой день — смотри в афише.</p></div>
+    <div><h2>Форматы встреч</h2><p class="lead">Пять форматов, у каждого свой характер. Нажми на формат, откроется ближайшая встреча.</p></div>
   </div>
-  <div class="formats" id="formats-grid"></div>
-</div></section>
-
-<!-- О нас -->
-<section class="section section--alt home-desk" id="about"><div class="container spread">
-  <div>
-    <h2 id="about-title"></h2>
-    <div class="copy" id="about-story"></div>
-    <div class="actions"><a class="btn btn--line" href="about.html">Подробнее о нас</a></div>
-  </div>
+  <div id="formats-grid"></div>
 </div></section>
 
 <!-- Команда -->
@@ -85,8 +76,6 @@
 renderHero();
 renderPosters('home-events', { months: true });
 renderFormats('formats-grid');
-document.getElementById('about-title').textContent = SITE.slogan;
-renderStory('about-story', null, { short: true });
 renderTeamMosaic('home-team', { count: 16 });
 renderPeople('home-people', { limit: 5, compact: true });
 renderPartnerStrip('home-partners', { limit: 4 });

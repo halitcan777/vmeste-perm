@@ -17,14 +17,10 @@
 <!-- 1. Шапка события -->
 <section class="event-head"><div class="container">
   <p class="crumbs"><a href="afisha.html">Афиша</a><span id="ev-type">Встреча</span></p>
-  <div class="event-head__grid">
-    <div>
-      <p class="slide__when" id="ev-when"></p>
-      <h1 id="ev-title">Встреча</h1>
-      <p class="lead" id="ev-text"></p>
-    </div>
-    <figure class="grain" id="ev-figure" hidden><img id="ev-img" alt=""><figcaption id="ev-cap"></figcaption></figure>
-  </div>
+  <div class="event-poster" id="ev-figure"></div>
+  <p class="slide__when" id="ev-when"></p>
+  <h1 id="ev-title">Встреча</h1>
+  <p class="lead" id="ev-text"></p>
 </div></section>
 
 <!-- 2. Подробности слева, запись справа -->
@@ -32,7 +28,9 @@
   <div>
     <div class="facts" id="ev-facts"></div>
     <div class="copy" id="ev-about"></div>
-    <p style="margin-top:32px"><a class="btn btn--line" href="afisha.html">Вся афиша</a></p>
+    <div id="ev-program"></div>
+    <div id="ev-guests"></div>
+    <p style="margin-top:40px"><a class="btn btn--line" href="afisha.html">Вся афиша</a></p>
   </div>
 
   <div class="reg" id="reg">
@@ -120,7 +118,7 @@ async function init(){
   $('ev-title').textContent = ev.title;
   $('ev-text').textContent = ev.text;
   // шапка встречи — её постер (как в афише), без ссылки
-  const fig = $('ev-figure'); fig.hidden = false; fig.classList.remove('grain'); fig.innerHTML = posterHTML(ev, { link: false });
+  $('ev-figure').innerHTML = posterHTML(ev, { link: false });
   $('reg-title').textContent = ev.action === 'Помочь' ? 'Записаться помогать' : 'Записаться';
 
   const facts = [['Когда', whenText], ['Где', ev.place || DEFAULT_PLACE], ['Вход', 'Бесплатно']];
@@ -128,8 +126,11 @@ async function init(){
   $('ev-facts').innerHTML = facts.map(([k, v]) => `<div class="fact"><strong>${k}</strong><p>${esc(v)}</p></div>`).join('');
   // гости встречи — ссылкой на их страницы
   const guests = (ev.people || []).map(id => PEOPLE.find(p => p.id === id)).filter(Boolean);
-  if (guests.length) $('ev-facts').insertAdjacentHTML('beforeend', `<div class="fact fact--wide"><strong>${guests.length > 1 ? 'Гости' : 'Гость'}</strong><p>${guests.map(g => `<a class="link" href="person.html?id=${encodeURIComponent(g.id)}">${esc(g.name)}</a>`).join(', ')}</p></div>`);
   $('ev-about').innerHTML = (ev.about || []).map(p => `<p>${esc(p)}</p>`).join('');
+  // как пройдёт вечер — шаги без времени (program в events.js)
+  if (ev.program && ev.program.length) $('ev-program').innerHTML = `<h2 class="h-sub">Как пройдёт вечер</h2><div class="program">${ev.program.map(([t, d]) => `<div class="step"><b>${esc(t)}</b><p>${esc(d)}</p></div>`).join('')}</div>`;
+  // ведущие и гости — карточками со ссылкой на страницу человека
+  if (guests.length) $('ev-guests').innerHTML = `<h2 class="h-sub">${ev.type === 'Общение' || ev.type === 'Тренинг' ? 'Кто ведёт' : guests.length > 1 ? 'Гости' : 'Гость'}</h2><div class="reel reel--2 event-guests">${guests.map((g, i) => personCard(g, i)).join('')}</div>`;
 
   const days = openDates(ev);
   if (!days.length) return closed('Эта встреча уже прошла. Посмотри ближайшие в афише.');

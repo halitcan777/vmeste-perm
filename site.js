@@ -267,7 +267,7 @@ function posterHTML(ev, { link = true } = {}){
   const [base, width] = POSTER_FIT[x.variant], lower = x.variant === 'duo' || x.variant === 'stars';
   const size = Math.min(base, width / ((lower ? .5 : .54) * longest)).toFixed(2);
   const title = `<h3 class="poster__title" style="font-size:${size}cqw">${lines.map(esc).join('<br>')}${x.variant === 'acid' ? '.' : ''}</h3>`;
-  const marq = () => `<p class="poster__marq" aria-hidden="true">${`${esc(x.kicker)} · Вместе · ${esc(x.place)} · `.repeat(6)}</p>`;
+  const marq = () => `<p class="poster__marq" aria-hidden="true">${`<span>${esc(x.kicker)}</span><span>Вместе</span><span>${esc(x.place)}</span>`.repeat(6)}</p>`;
   const k = text => `<p class="poster__k">${text}</p>`;
   const meta = text => `<p class="poster__meta">${esc(text)}</p>`;
   const foot = (...parts) => `<div class="poster__foot">${parts.join('')}</div>`;
@@ -280,18 +280,18 @@ function posterHTML(ev, { link = true } = {}){
   const grid = `<div class="poster__grid"><span><b>Формат</b>${esc(x.kicker)}</span><span><b>Когда</b>${esc(x.when)}</span><span><b>Где</b>${esc(x.place)}</span></div>`;
   const body = {
     paper:  `${ph}${k(esc(x.kicker))}${title}${foot(meta(x.sub), `<p class="poster__big">${esc(x.when)}</p>`)}${stamp}`,
-    duo:    `${ph}${title}${foot(k(`${esc(x.kicker)} · ${esc(x.when)}`), meta(x.sub))}${stamp}`,
-    night:  `${ph}${marq()}${marq()}${title}${meta(`${x.kicker} · ${x.when} · ${x.place}`)}${stamp}`,
+    duo:    `${ph}${title}${foot(k(`${esc(x.kicker)}<br>${esc(x.when)}`), meta(x.sub))}${stamp}`,
+    night:  `${ph}${marq()}${marq()}${title}${k(`${esc(x.when)}<br>${esc(x.place)}`)}${stamp}`,
     acid:   `${ph}<span class="poster__sq poster__sq--tl"></span><span class="poster__sq poster__sq--bl"></span>${k(`${esc(x.kicker)}<br>${esc(x.place)}`)}${title}<p class="poster__big">${esc(x.when)}</p>${stamp}`,
     frame:  `${ph}${k(`<span>${esc(x.kicker)}</span><span>${esc(x.when)}</span>`)}${foot(title, meta(x.sub))}${stamp}`,
     stars:  `${ph}${POSTER_STARS}${k(`${esc(x.kicker)}<br>${esc(x.when)}`)}${title}${meta(x.sub)}${stamp}`,
     white:  `${ph}${k(`${esc(x.kicker)}`)}${meta(x.sub)}<p class="poster__big">${esc(x.when)}</p>${title}${stamp}`,
-    circle: `${ph}${POSTER_RING}${k(`${esc(x.kicker)}<br>${esc(x.when)} · ${esc(x.place)}`)}${title}${stamp}`,
+    circle: `${ph}${POSTER_RING}${k(`${esc(x.kicker)}<br>${esc(x.when)}, ${esc(x.place)}`)}${title}${stamp}`,
     numeral: `${ph}${k(esc(x.kicker))}<p class="poster__num">${esc(x.num)}</p>${foot(title, meta(x.sub))}${stamp}`,
-    strips: `${[0, 1, 2].map(i => `<div class="poster__ph poster__strip" style="left:${i * 34}cqw">${x.photo ? `<img src="${x.photo}" alt="" loading="lazy" style="object-position:${x.pos};margin-left:${-i * 34}cqw">` : ''}</div>`).join('')}${k(`${esc(x.kicker)} · ${esc(x.when)}`)}${title}${meta(x.sub)}${stamp}`,
-    boxes:  `${ph}<h3 class="poster__title poster__boxes" style="font-size:${size}cqw">${lines.map(l => `<span>${esc(l)}</span>`).join('')}</h3>${k(`${esc(x.kicker)}<br>${esc(x.when)} · ${esc(x.place)}`)}${meta(x.sub)}${stamp}`,
-    riso:   `${ph}${k(`${esc(x.kicker)} · ${esc(x.when)}`)}${title}${meta(x.sub)}${stamp}`,
-    vertical: `${ph}<p class="poster__vert">${esc(x.kicker)} · ${esc(x.place)}</p><p class="poster__box">${esc(x.when)}</p>${title}${meta(x.sub)}${stamp}`,
+    strips: `${[0, 1, 2].map(i => `<div class="poster__ph poster__strip" style="left:${i * 34}cqw">${x.photo ? `<img src="${x.photo}" alt="" loading="lazy" style="object-position:${x.pos};margin-left:${-i * 34}cqw">` : ''}</div>`).join('')}${k(`${esc(x.kicker)}<br>${esc(x.when)}`)}${title}${meta(x.sub)}${stamp}`,
+    boxes:  `${ph}<h3 class="poster__title poster__boxes" style="font-size:${size}cqw">${lines.map(l => `<span>${esc(l)}</span>`).join('')}</h3>${k(`${esc(x.kicker)}<br>${esc(x.when)}, ${esc(x.place)}`)}${meta(x.sub)}${stamp}`,
+    riso:   `${ph}${k(`${esc(x.kicker)}<br>${esc(x.when)}`)}${title}${meta(x.sub)}${stamp}`,
+    vertical: `${ph}<p class="poster__vert"><span>${esc(x.kicker)}</span><span>${esc(x.place)}</span></p><p class="poster__box">${esc(x.when)}</p>${title}${meta(x.sub)}${stamp}`,
     swiss:  `${faces}${k(esc(x.guests.length > 1 ? 'Ведут ' + x.guests.map(g => g.name.split(' ')[0]).join(' и ') : x.kicker))}${title}${grid}${stamp}`,
   }[x.variant];
   const tag = link ? 'a' : 'div';
@@ -349,10 +349,20 @@ function renderPartnerStrip(target, { limit = 0 } = {}){
 }
 
 /* ---------- форматы встреч ---------- */
+// Форматы строками: название в своём цвете, что это, ближайшая встреча этого формата (по type в афише)
 function renderFormats(target){
   const el = document.getElementById(target);
   if (!el) return;
-  el.innerHTML = FORMATS.map(f => `<article class="fmt fmt--${f.color}"><h3>${esc(f.name)}</h3><p>${esc(f.text)}</p></article>`).join('');
+  const up = upcomingEvents();
+  el.innerHTML = `<div class="fmts">${FORMATS.map(f => {
+    const ev = up.find(e => e.type === f.name);
+    const next = ev ? `<span class="fmt__next"><small>Ближайшая</small>${esc(ev.title)}<em>${esc(whenLine(ev) || MONTHS_NOM[parseDay(nextDate(ev)).getMonth()])}</em></span>`
+                    : `<span class="fmt__next"><small>Ближайшая</small>Скоро в афише</span>`;
+    return `<a class="fmt fmt--${f.color}" href="${ev ? eventUrl(ev) : 'afisha.html'}">
+      <span class="fmt__name">${esc(f.name)}</span>
+      <span class="fmt__text">${esc(f.text)}</span>
+      ${next}
+    </a>`; }).join('')}</div>`;
 }
 
 /* ---------- карточки: люди, партнёры, блог ----------
