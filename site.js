@@ -107,10 +107,12 @@ function renderHero(){
   const btns = (h.actions || []).map(a => `<a class="btn${a.line ? ' btn--line' : ''}" href="${a.href}"${/^https?:/.test(a.href) ? ' target="_blank" rel="noopener"' : ''}>${esc(a.label)}</a>`).join('');
   const canvas = f.image
     ? `<img class="hang__img" src="${f.image}" alt="${esc(f.title || '')}" width="1800" height="1166">`
-    : `<div class="hang__canvas grain">${f.kicker ? `<p class="hang__kicker">${esc(f.kicker)}</p>` : ''}<h1 class="hang__title">${esc(f.title || SITE.slogan)}</h1>${f.sub ? `<p class="hang__sub">${esc(f.sub)}</p>` : ''}</div>`;
+    : f.title
+      ? `<div class="hang__canvas grain">${f.kicker ? `<p class="hang__kicker">${esc(f.kicker)}</p>` : ''}<h1 class="hang__title">${esc(f.title)}</h1>${f.sub ? `<p class="hang__sub">${esc(f.sub)}</p>` : ''}</div>`
+      : '';   // пустая стена
   el.classList.add('hero--wall');
   el.innerHTML = `<div class="wall" style="background-image:url('${h.wall}')">${pics}
-      <div class="hang${f.image ? ' hang--pic' : ''}"><span class="hang__nail"></span>${canvas}</div>
+      ${canvas ? `<div class="hang${f.image ? ' hang--pic' : ''}${f.spray ? ' hang--spray' : ''}">${f.spray ? '' : '<span class="hang__nail"></span>'}${canvas}</div>` : '<h1 class="visually-hidden">Вместе — молодёжное движение в Перми</h1>'}
     </div>
     ${btns ? `<div class="container hero__actions">${btns}</div>` : ''}`;
   const head = document.getElementById('head');

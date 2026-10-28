@@ -930,3 +930,14 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .p-teaser .poster__btn { left: 4cqw; bottom: 4cqw; background: var(--paper); border-color: var(--paper); color: var(--ink); font-size: max(2.2cqw, 11px); min-height: 7cqw; padding: 0 3cqw; }
 .p-teaser:hover .poster__btn { background: var(--blue); border-color: var(--blue); color: var(--paper); }
 @container (max-width: 520px) { .p-teaser .poster__title { font-size: max(7.5cqw, 20px); } .p-teaser .poster__meta { display: none; } }
+
+/* надпись на стене без багета: по центру стены, во всю ширину контейнера, тень от краски на кирпиче */
+.hang--spray { width: min(1100px, 80%); bottom: auto; top: 50%; transform: translate(-50%, -46%); }
+.hang--spray .hang__img { filter: drop-shadow(0 2px 2px rgba(0,0,0,.25)); mix-blend-mode: multiply; }
+.hero--wall:has(.hang--spray) { padding-bottom: var(--section); }
+@media (max-width: 1040px) { .hang--spray { width: 88%; } }
+
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* пустая стена: без картины ниже края ничего не свисает */
+.hero--wall:not(:has(.hang)) { padding-bottom: var(--section); }
+.hero--wall:not(:has(.hang)) .wall { height: clamp(360px, 56vh, 520px); }

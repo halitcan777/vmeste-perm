@@ -146,8 +146,9 @@ const POSTS = [
 const HERO = {
   wall: 'assets/img/brick-wall.webp',
   photos: [],   // 28.10: кадры со стены убраны, владелец пришлёт, что и как развесить
-  // картина: цифровая копия настоящей (золотой багет, надпись «ВМЕСТЕ» баллончиком, без пейзажа) — assets/img/painting.png
-  frame: { image: 'assets/img/painting.png', title: 'Вместе' },
+  // надпись «ВМЕСТЕ» баллончиком прямо на стене (28.10: багет убран по просьбе владельца; картина с багетом — assets/img/painting.png, вернуть: image: 'assets/img/painting.png', spray: false)
+  // 28.10: пока пусто — просто белая стена (владелец пришлёт, что повесить). Надпись: image: 'assets/img/spray.png', spray: true; картина: image: 'assets/img/painting.png'
+  frame: {},
   actions: [],   // 28.10: кнопок под картиной нет (решение владельца)
 };
 
