@@ -15,7 +15,7 @@
 <main>
 
 <!-- Ближайшие события: кадр на всю ширину -->
-<section class="hero" id="hero" aria-label="Ближайшие события"></section>
+<section class="hero home-desk" id="hero" aria-label="Ближайшие события"></section>
 
 <!-- Афиша -->
 <section class="section section--alt" id="afisha"><div class="container">
@@ -27,7 +27,7 @@
 </div></section>
 
 <!-- Форматы встреч -->
-<section class="section" id="formats"><div class="container">
+<section class="section home-desk" id="formats"><div class="container">
   <div class="sec-head">
     <div><h2>Форматы встреч</h2><p class="lead">Пять форматов, у каждого свой характер. Какой формат в какой день — смотри в афише.</p></div>
   </div>
@@ -35,7 +35,7 @@
 </div></section>
 
 <!-- О нас -->
-<section class="section section--alt" id="about"><div class="container spread">
+<section class="section section--alt home-desk" id="about"><div class="container spread">
   <div>
     <h2 id="about-title"></h2>
     <div class="copy" id="about-story"></div>
@@ -53,7 +53,7 @@
 </div></section>
 
 <!-- Гости и эксперты -->
-<section class="section section--alt" id="people"><div class="container">
+<section class="section section--alt home-desk" id="people"><div class="container">
   <div class="sec-head">
     <div><h2>Эксперты</h2><p class="lead">Кто ведёт вечера и делится опытом. У каждого своя страница.</p></div>
     <a class="btn btn--line more" href="people.html">Все люди</a>
@@ -62,7 +62,7 @@
 </div></section>
 
 <!-- Партнёры -->
-<section class="section" id="partners"><div class="container">
+<section class="section home-desk" id="partners"><div class="container">
   <div class="sec-head">
     <div><h2>Партнёры</h2><p class="lead">Компании и объединения, которые помогают «Вместе» со стартом и ведут встречи для участников.</p></div>
   </div>
@@ -70,7 +70,7 @@
 </div></section>
 
 <!-- Как нас найти -->
-<section class="section" id="where"><div class="container">
+<section class="section home-desk" id="where"><div class="container">
   <div class="sec-head">
     <div><h2>Как нас найти</h2><p class="lead">Центр Перми, второй этаж. Если заблудился — напиши в Телеграме, встретим.</p></div>
     <a class="btn btn--line more" href="https://yandex.ru/maps/?text=%D0%9F%D0%B5%D1%80%D0%BC%D1%8C%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%9B%D0%B5%D0%BD%D0%B8%D0%BD%D0%B0%2C%2044" target="_blank" rel="noopener">Открыть в Яндекс Картах</a>
@@ -83,7 +83,7 @@
 <script src="events.js"></script><script src="content.js"></script><script src="site.js"></script>
 <script>
 renderHero();
-renderSchedule('home-events', { limit: 4 });
+renderPosters('home-events', { months: true });
 renderFormats('formats-grid');
 document.getElementById('about-title').textContent = SITE.slogan;
 renderStory('about-story', null, { short: true });

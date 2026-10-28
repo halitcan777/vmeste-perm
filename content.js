@@ -18,7 +18,7 @@ const TICKER = [
 // Визуализации зала (события, блог): false — убраны 26.10, пути в данных остаются. Настоящие фото людей показываются всегда.
 const SHOW_PHOTOS = true;
 // Готовые ассоциативные кадры в assets/img/people/assoc (обновляется скриптом при генерации)
-const ASSOC_FILES = ['design.webp', 'edit.webp', 'video.webp', 'social.webp', 'events.webp', 'texts.webp', 'partners.webp', 'ops.webp', 'marketing.webp', 'creative.webp', 'biz.webp', 'outside.webp', 'host.webp', 'vmeste.webp'];   // ИИ-визуализации зала из данных убраны 26.10; теперь фото только настоящие
+const ASSOC_FILES = ['design.webp', 'edit.webp', 'video.webp', 'social.webp', 'events.webp', 'texts.webp', 'partners.webp', 'ops.webp', 'marketing.webp', 'creative.webp', 'biz.webp', 'outside.webp', 'host.webp', 'vmeste.webp', 'fashion.webp', 'mountain.webp', 'city.webp', 'psy.webp', 'founder.webp'];   // ИИ-визуализации зала из данных убраны 26.10; теперь фото только настоящие
 
 // Форматы встреч. Какой формат в какой день — объявляем в афише, к дням недели не привязываем.
 const FORMATS = [
@@ -36,7 +36,7 @@ const FORMATS = [
 // photos: [{src, note, pos}] — кадры человека (pos — точка фото, которую держим при обрезке); photo/photoPos — портрет для карточки.
 const PEOPLE = [
   {
-    id: 'platon', role: 'team', name: 'Платон Трутнев', position: 'Основатель, партнёрства и сообщество',
+    id: 'platon', role: 'team', name: 'Платон Трутнев', position: 'Основатель, партнёрства и сообщество', bg: 'assets/img/people/assoc/founder.webp',
     photo: 'assets/img/people/platon/p03.webp', photoPos: '50% 45%',   // pos — какую точку фото держать в кадре при обрезке
     photos: [   // кадры человека без деления; первый — портрет из карточки добавляется сам
       { src: 'assets/img/people/platon/p01.webp', note: 'Офис', pos: '50% 60%' },
@@ -51,7 +51,7 @@ const PEOPLE = [
   },
   { id: 'roman', role: 'team', assoc: 'assets/img/people/assoc/outside.webp', position: 'Внешние мероприятия', name: 'Роман Гильмутдинов' },
   {
-    id: 'ilya', role: 'team', name: 'Илья Амиров', position: 'Основатель, операционное управление',
+    id: 'ilya', role: 'team', name: 'Илья Амиров', position: 'Основатель, операционное управление', bg: 'assets/img/people/assoc/ops.webp',
     photo: 'assets/img/w/ilya.webp', photoPos: '50% 12%',
     about: ['Ведёт студию DAPI и помогает превращать идеи «Вместе» в продукты, кейсы и задачи для команды.'],
     talk: 'Продуктовое мышление, сбор команды, постановка задач и переход от идеи к первому результату.',
@@ -67,7 +67,10 @@ const PEOPLE = [
   { id: 'eva', role: 'team', assoc: 'assets/img/people/assoc/creative.webp', position: 'Мероприятия и креатив', name: 'Ева Коскова' },
   { id: 'vika', role: 'team', assoc: 'assets/img/people/assoc/partners.webp', position: 'Партнёрства и привлечение', name: 'Вика' },
   { id: 'ksyusha', role: 'team', assoc: 'assets/img/people/assoc/texts.webp', position: 'Тексты и соцсети', name: 'Ксюша' },
-  { id: 'adelina', role: 'team', assoc: 'assets/img/people/assoc/ops.webp', position: 'Операционное управление', name: 'Аделина' },
+  { id: 'adelina', role: 'team', name: 'Аделина Гросс', position: 'Операционное управление, арт-терапия', bg: 'assets/img/people/assoc/creative.webp',
+    photo: 'assets/img/people/adelina.webp', photoPos: '50% 18%',   // портрет из её резюме (19.10)
+    about: ['Ведёт арт-терапию во «Вместе». Художественное образование, студентка ВШЭ по направлению «Менеджмент в креативных индустриях», параллельно учится психотерапии.'],
+    talk: 'Арт-терапия, творчество как способ разобраться в себе, учёба и своё дело параллельно.' },
   { id: 'alexey', role: 'team', assoc: 'assets/img/people/assoc/marketing.webp', position: 'Маркетинг и медиа', name: 'Алексей' },
   { id: 'vlada', role: 'team', assoc: 'assets/img/people/assoc/host.webp', position: 'Лицо основного аккаунта', name: 'Влада' },
   { id: 'angelina', role: 'team', assoc: 'assets/img/people/assoc/biz.webp', position: 'Бизнес-проекты', name: 'Ангелина' },
@@ -75,20 +78,21 @@ const PEOPLE = [
   { id: 'dmitry-bazuev', role: 'team', assoc: 'assets/img/people/assoc/vmeste.webp', name: 'Дмитрий Базуев', position: '' },
   { id: 'anya', role: 'team', assoc: 'assets/img/people/assoc/marketing.webp', position: 'Маркетинг и медиа', name: 'Аня' },
   // Эксперты и гости встреч — по открытым источникам (26.10): проверить с ними перед публикацией, фото запросить.
-  { id: 'oshchepkov', role: 'expert', name: 'Олег Ощепков', position: 'Предприниматель, ресторатор, профессор ВШЭ в Перми',
-    photo: 'assets/img/people/oshchepkov.webp', photoPos: '50% 30%',
+  { id: 'oshchepkov', role: 'expert', name: 'Олег Ощепков', position: 'Предприниматель, ресторатор, профессор ВШЭ в Перми', bg: 'assets/img/people/assoc/city.webp',
+    photo: 'assets/img/people/oshchepkov.webp', photoPos: '50% 25%',   // фото НИУ ВШЭ в Перми (новость 22.04.2025)
+    photos: [{ src: 'assets/img/people/oshchepkov-2.webp', note: 'Фото: Максим Кимерлинг, «Коммерсантъ»', pos: '50% 30%' }],
     about: ['Предприниматель с 1997 года: больше 25 лет был основателем и генеральным директором маркетингового агентства «ОЗОН Групп», с 2015 года — ресторатор (кафе «Улитка», «Маркс», «Вехотка»). В 2005–2008 годах — министр культуры Пермского края.',
             'С 2024 года в НИУ ВШЭ в Перми: профессор департамента менеджмента, научный руководитель программы «Менеджмент в креативных индустриях». Окончил Пермский политехнический университет.'],
     talk: 'Как делать проекты в городе, креативные индустрии, рестораны, маркетинг и почему стоит начинать в Перми.' },
-  { id: 'baranov', role: 'expert', name: 'Николай Баранов', position: 'Клинический психолог, системный терапевт',
+  { id: 'baranov', role: 'expert', name: 'Николай Баранов', position: 'Клинический психолог, системный терапевт', bg: 'assets/img/people/assoc/psy.webp',
     photo: 'assets/img/people/baranov.webp',
     about: ['Работает с зависимостями, отношениями и семейной системой; много лет консультирует пары. Ученик Юрия Вагина. Ведёт канал @psy_baranov: о расставаниях, доверии, ссорах и о том, что исцеляет не техника, а другой человек рядом.'],
     talk: 'Отношения, семья, зависимости, как не терять себя рядом с другими.', contact: 'https://t.me/psy_baranov' },
-  { id: 'sotnikov', role: 'expert', name: 'Александр Сотников', position: 'Бизнес-психолог',
+  { id: 'sotnikov', role: 'expert', name: 'Александр Сотников', position: 'Бизнес-психолог', bg: 'assets/img/people/assoc/psy.webp',
     photo: 'assets/img/people/sotnikov.webp',
     about: ['Работает в гештальт-подходе с собственниками и первыми лицами компаний: конфиденциально, без оценок, через глубокий диалог. Ведёт канал @founder_zen о решениях, контроле, выгорании и «карме предпринимателя».'],
     talk: 'Решения под давлением, контроль и страхи, выгорание, терапия как остановка.', contact: 'https://t.me/founder_zen' },
-  { id: 'besfamilnaya', role: 'guest', name: 'Яна Бесфамильная', position: 'Дизайнер одежды, бренд YANA BESFAMILNAYA',
+  { id: 'besfamilnaya', role: 'guest', name: 'Яна Бесфамильная', position: 'Дизайнер одежды, бренд YANA BESFAMILNAYA', bg: 'assets/img/people/assoc/fashion.webp',
     photo: 'assets/img/people/besfamilnaya.webp', photoPos: '28% 25%',
     // 27.10: только кадры с самой Яной (показы с моделями убраны в _originals). Пресс-фото, заменить на присланные ею.
     photos: [
@@ -98,8 +102,13 @@ const PEOPLE = [
     ],
     about: ['Пермский дизайнер, основательница бренда YANA BESFAMILNAYA. Коллекции показываются на Московской неделе моды, эксперт программы «Модный приговор». В основе бренда — идея трансформации и отказ от натурального меха и кожи.'],
     talk: 'Как запустить свой бренд из Перми, мода как бизнес, путь дизайнера.' },
-  { id: 'didebashvili', role: 'guest', name: 'Заза Дидебашвили', position: 'Парк Горького, курорт «Губаха», лига «Конфликт»',
+  { id: 'guryanov', role: 'guest', name: 'Данил Гурьянов', position: 'Креативный продюсер, сооснователь ДК, фронтмен The Hard Lux', bg: 'assets/img/people/assoc/host.webp',
+    photo: 'assets/img/people/guryanov.webp', photoPos: '62% 40%',   // кадр от владельца 28.10 (ч/б, в машине)
+    about: ['Креативный продюсер, сооснователь ДК, фронтмен группы The Hard Lux. Подробнее расскажет на встрече.'],
+    talk: 'Как делать площадки, контент и музыку в Перми.', contact: 'https://www.instagram.com/danil_guryanov' },
+  { id: 'didebashvili', role: 'guest', name: 'Заза Дидебашвили', position: 'Парк Горького, курорт «Губаха», лига «Конфликт»', bg: 'assets/img/people/assoc/mountain.webp',
     photo: 'assets/img/people/didebashvili.webp', photoPos: '50% 35%',
+    photos: [{ src: 'assets/img/people/didebashvili-ring.webp', note: 'На ринге лиги «Конфликт», в центре', pos: '50% 30%' }],
     about: ['Предприниматель: Парк Горького, всесезонный курорт «Губаха», кулачная лига «Конфликт». Подробнее расскажет на встрече.'],
     talk: 'Свой путь в бизнесе, первые шаги и ошибки.' },
 ];
@@ -143,7 +152,6 @@ const SITE = {
   howToFindVideo: '',
   telegram: 'https://t.me/Paltus10',          // личка Платона
   channel: 'https://t.me/v_meste_perm',       // канал: анонсы
-  chat: 'https://t.me/+Bs7x5h7SbtI4NWQy',     // чат участников
   instagram: 'https://www.instagram.com/vmeste.prm',
 };
 

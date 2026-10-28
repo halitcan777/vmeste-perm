@@ -114,13 +114,16 @@ async function init(){
   }
   document.title = `${ev.title} — Вместе`;
   $('ev-type').textContent = ev.type || 'Встреча';
-  $('ev-when').innerHTML = `<span>${esc(fmtRange(ev))}</span><span>${esc(ev.time)}</span><span>${esc(ev.place || DEFAULT_PLACE)}</span>`;
+  // дата и время — только подтверждённые (SHOW_DATES / confirmed в events.js)
+  const whenText = dateKnown(ev) ? `${fmtRange(ev)}${timeKnown(ev) ? `, ${ev.time.toLowerCase()}` : ''}` : 'Дата уточняется';
+  $('ev-when').innerHTML = `${dateKnown(ev) ? `<span>${esc(fmtRange(ev))}</span>${timeKnown(ev) ? `<span>${esc(ev.time)}</span>` : ''}` : '<span>Дата уточняется</span>'}<span>${esc(ev.place || DEFAULT_PLACE)}</span>`;
   $('ev-title').textContent = ev.title;
   $('ev-text').textContent = ev.text;
-  if (photo(ev.image)) { $('ev-figure').hidden = false; $('ev-img').src = ev.image; $('ev-cap').textContent = ev.imageNote || ''; } else document.querySelector('.event-head__grid').classList.add('single');
+  // шапка встречи — её постер (как в афише), без ссылки
+  const fig = $('ev-figure'); fig.hidden = false; fig.classList.remove('grain'); fig.innerHTML = posterHTML(ev, { link: false });
   $('reg-title').textContent = ev.action === 'Помочь' ? 'Записаться помогать' : 'Записаться';
 
-  const facts = [['Когда', `${fmtRange(ev)}, ${ev.time.toLowerCase()}`], ['Где', ev.place || DEFAULT_PLACE], ['Вход', 'Бесплатно']];
+  const facts = [['Когда', whenText], ['Где', ev.place || DEFAULT_PLACE], ['Вход', 'Бесплатно']];
   if (ev.capacity) facts.push(['Мест', `${ev.capacity}${ev.dates.length > 1 ? ' в день' : ''}`]);
   $('ev-facts').innerHTML = facts.map(([k, v]) => `<div class="fact"><strong>${k}</strong><p>${esc(v)}</p></div>`).join('');
   // гости встречи — ссылкой на их страницы

@@ -22,12 +22,22 @@ const REG_ENDPOINT = '';
 const BOT_USERNAME = '';
 
 const CONTACT_TG = 'https://t.me/Paltus10';
-const WORK_CHAT = 'https://t.me/+Bs7x5h7SbtI4NWQy';
 const DEFAULT_PLACE = 'Пермь, ул. Ленина, 44';
+
+// Даты на сайте. Пока даты встреч не согласованы с гостями — false: показываем только порядок и формат,
+// без чисел и времени. У отдельной встречи можно поставить "confirmed": true — её дата покажется.
+// Когда вся афиша подтверждена — поставить true.
+const SHOW_DATES = false;
 
 const EVENTS = /*EVENTS-START*/[
   {
     "id": "obustroystvo",
+    "poster": {
+      "variant": "paper",
+      "color": "blue",
+      "title": "Обустраиваем|зал",
+      "kicker": "Своими руками"
+    },
     "title": "Обустраиваем зал",
     "dates": [
       "2026-10-08",
@@ -55,6 +65,12 @@ const EVENTS = /*EVENTS-START*/[
   },
   {
     "id": "znakomstvo",
+    "poster": {
+      "variant": "frame",
+      "color": "green",
+      "title": "Знакомство|с командой",
+      "kicker": "Встреча"
+    },
     "title": "Знакомство с командой",
     "dates": [
       "2026-10-24"
@@ -72,6 +88,12 @@ const EVENTS = /*EVENTS-START*/[
   },
   {
     "id": "otkrytie",
+    "poster": {
+      "variant": "acid",
+      "color": "wine",
+      "title": "Открытие",
+      "kicker": "Первый вечер «Вместе»"
+    },
     "title": "Открытие «Вместе»",
     "dates": [
       "2026-11-01"
@@ -84,6 +106,7 @@ const EVENTS = /*EVENTS-START*/[
     "action": "Записаться",
     "capacity": 30,
     "regOpens": "2026-10-20T12:00",
+    "confirmed": true,
     "type": "Открытие",
     "color": "wine",
     "image": "assets/img/events/otkrytie.webp",
@@ -91,6 +114,12 @@ const EVENTS = /*EVENTS-START*/[
   },
   {
     "id": "kino-1",
+    "poster": {
+      "variant": "frame",
+      "color": "wine",
+      "title": "Кино|на стене",
+      "kicker": "Вечер для своих"
+    },
     "title": "Кино на стене",
     "dates": [
       "2026-11-05"
@@ -111,6 +140,12 @@ const EVENTS = /*EVENTS-START*/[
   },
   {
     "id": "tattoo",
+    "poster": {
+      "variant": "swiss",
+      "color": "wine",
+      "title": "Тату:|профессия изнутри",
+      "kicker": "Мастер-класс"
+    },
     "title": "Мастер-класс по татуировкам",
     "dates": [
       "2026-11-15"
@@ -130,29 +165,14 @@ const EVENTS = /*EVENTS-START*/[
     "imagePos": "50% 40%"
   },
   {
-    "id": "psiholog-1",
-    "title": "Тренинг с психологом Николаем Барановым",
-    "dates": [
-      "2026-11-22"
-    ],
-    "time": "19:00",
-    "text": "Клинический психолог и системный терапевт: практика в кругу про отношения и то, как не терять себя рядом с другими. Тема уточняется.",
-    "about": [
-      "Формат «Общение»: практика в кругу, без оценок и спешки. Мест немного, чтобы каждый успел поучаствовать."
-    ],
-    "action": "Записаться",
-    "capacity": 20,
-    "regOpens": null,
-    "type": "Общение",
-    "color": "wine",
-    "image": "assets/img/events/psiholog-1.webp",
-    "imagePos": "50% 50%",
-    "people": [
-      "baranov"
-    ]
-  },
-  {
     "id": "oshchepkov",
+    "poster": {
+      "variant": "duo",
+      "color": "green",
+      "title": "Олег|Ощепков",
+      "kicker": "Встреча · Бизнес",
+      "pos": "50% 25%"
+    },
     "title": "Встреча с Олегом Ощепковым",
     "dates": [
       "2026-11-11"
@@ -172,11 +192,77 @@ const EVENTS = /*EVENTS-START*/[
       "oshchepkov"
     ],
     "image": "assets/img/events/oshchepkov.webp",
-    "imagePos": "35% 30%",
+    "imagePos": "50% 25%",
     "textSide": "right"
   },
   {
+    "id": "trening-psy",
+    "poster": {
+      "variant": "swiss",
+      "color": "blue",
+      "title": "Тренинг|с психологами",
+      "kicker": "Практика в кругу · 3–4 часа"
+    },
+    "title": "Тренинг с психологами",
+    "dates": [
+      "2026-11-22"
+    ],
+    "time": "Время уточняется",
+    "text": "Три-четыре часа практики в кругу с двумя-тремя специалистами. Ведут клинический психолог Николай Баранов и бизнес-психолог Александр Сотников. Тема уточняется.",
+    "about": [
+      "Формат «Общение»: практика в кругу, без оценок и спешки. Мест немного, чтобы каждый успел поучаствовать.",
+      "Группа ведущих — два-три специалиста: Николай Баранов (клинический психолог, системный терапевт), Александр Сотников (бизнес-психолог). Третий ведущий уточняется."
+    ],
+    "action": "Записаться",
+    "capacity": 20,
+    "regOpens": null,
+    "type": "Общение",
+    "color": "blue",
+    "image": "assets/img/events/psiholog-1.webp",
+    "imagePos": "50% 50%",
+    "people": [
+      "baranov",
+      "sotnikov"
+    ]
+  },
+  {
+    "id": "guryanov",
+    "poster": {
+      "variant": "stars",
+      "color": "wine",
+      "title": "Данил|Гурьянов",
+      "kicker": "Встреча · Бизнес",
+      "pos": "62% 40%"
+    },
+    "title": "Встреча с Данилом Гурьяновым",
+    "dates": [
+      "2026-11-29"
+    ],
+    "time": "Время уточняется",
+    "text": "Креативный продюсер, сооснователь ДК, фронтмен The Hard Lux. О том, как делать площадки, контент и музыку в Перми.",
+    "about": [
+      "Данил Гурьянов — креативный продюсер, сооснователь ДК, фронтмен группы The Hard Lux. Подробнее расскажет на встрече.",
+      "Формат «Бизнес»: история гостя, потом вопросы из зала. Приходи с вопросом."
+    ],
+    "action": "Записаться",
+    "capacity": 30,
+    "regOpens": null,
+    "type": "Бизнес",
+    "color": "wine",
+    "people": [
+      "guryanov"
+    ],
+    "image": "assets/img/people/guryanov.webp",
+    "imagePos": "62% 40%"
+  },
+  {
     "id": "m-perm",
+    "poster": {
+      "variant": "swiss",
+      "color": "green",
+      "title": "«М Пермь»",
+      "kicker": "Встреча · Проекты"
+    },
     "title": "Встреча с «М Пермь»",
     "dates": [
       "2026-12-02"
@@ -196,6 +282,13 @@ const EVENTS = /*EVENTS-START*/[
   },
   {
     "id": "haircut",
+    "poster": {
+      "variant": "paper",
+      "color": "blue",
+      "title": "Стрижки:|профессия изнутри",
+      "kicker": "Мастер-класс",
+      "sub": "Инструменты, первые навыки, как зарабатывают."
+    },
     "title": "Мастер-класс по стрижкам",
     "dates": [
       "2026-11-27"
@@ -215,14 +308,23 @@ const EVENTS = /*EVENTS-START*/[
   },
   {
     "id": "art-terapiya",
+    "poster": {
+      "variant": "white",
+      "color": "wine",
+      "title": "Арт-|терапия",
+      "kicker": "Практика · Общение",
+      "sub": "Ведёт Аделина Гросс",
+      "pos": "50% 18%"
+    },
     "title": "Арт-терапия",
     "dates": [
       "2026-11-20"
     ],
     "time": "19:00",
-    "text": "Рисуем, лепим и говорим: практика с ведущим, где не нужно уметь рисовать. Ведущий уточняется.",
+    "text": "Рисуем, лепим и говорим: практика, где не нужно уметь рисовать. Ведёт Аделина Гросс.",
     "about": [
-      "Формат «Общение»: материалы даём, опыт не нужен. Уходишь со своей работой и чуть легче."
+      "Формат «Общение»: материалы даём, опыт не нужен. Уходишь со своей работой и чуть легче.",
+      "Ведёт Аделина Гросс: художественное образование, студентка ВШЭ, параллельно учится психотерапии."
     ],
     "action": "Записаться",
     "capacity": 20,
@@ -230,10 +332,20 @@ const EVENTS = /*EVENTS-START*/[
     "type": "Общение",
     "color": "wine",
     "image": "assets/img/events/art-terapiya.webp",
-    "imagePos": "50% 50%"
+    "imagePos": "50% 50%",
+    "people": [
+      "adelina"
+    ]
   },
   {
     "id": "besfamilnaya",
+    "poster": {
+      "variant": "white",
+      "color": "ink",
+      "title": "Яна|Бесфамильная",
+      "kicker": "Встреча · Бизнес",
+      "pos": "28% 25%"
+    },
     "title": "Встреча с Яной Бесфамильной",
     "dates": [
       "2026-11-18"
@@ -258,12 +370,19 @@ const EVENTS = /*EVENTS-START*/[
   },
   {
     "id": "ameli-band",
+    "poster": {
+      "variant": "night",
+      "color": "wine",
+      "title": "Амели|бенд",
+      "kicker": "Концерт",
+      "pos": "50% 40%"
+    },
     "title": "Концерт группы «Амели бенд»",
     "dates": [
       "2026-11-13"
     ],
     "time": "19:30",
-    "text": "Живой концерт в зале: акустика, свои и каверы. Детали уточняются.",
+    "text": "Живой концерт в зале. Детали уточняются.",
     "about": [
       "Формат «Вечер для своих»: музыка, чай, знакомства. Вход бесплатный, места на ковре."
     ],
@@ -273,10 +392,16 @@ const EVENTS = /*EVENTS-START*/[
     "type": "Вечер для своих",
     "color": "wine",
     "image": "assets/img/events/ameli-band.webp",
-    "imagePos": "50% 50%"
+    "imagePos": "50% 40%"
   },
   {
     "id": "vshe-lekciya",
+    "poster": {
+      "variant": "night",
+      "color": "blue",
+      "title": "Лекция|с ВШЭ",
+      "kicker": "Выездная · Профориентация"
+    },
     "title": "Выездная лекция с ВШЭ Пермь",
     "dates": [
       "2026-12-05"
@@ -296,29 +421,15 @@ const EVENTS = /*EVENTS-START*/[
     "imagePos": "50% 50%"
   },
   {
-    "id": "psiholog-2",
-    "title": "Тренинг с Александром Сотниковым",
-    "dates": [
-      "2026-11-29"
-    ],
-    "time": "19:00",
-    "text": "Бизнес-психолог, гештальт-подход: как принимать решения без паники и не выгорать в своём деле. Тема уточняется.",
-    "about": [
-      "Формат «Общение»: практика в кругу. Можно прийти, даже если не был на первом."
-    ],
-    "action": "Записаться",
-    "capacity": 20,
-    "regOpens": null,
-    "type": "Общение",
-    "color": "wine",
-    "image": "assets/img/events/psiholog-2.webp",
-    "imagePos": "50% 50%",
-    "people": [
-      "sotnikov"
-    ]
-  },
-  {
     "id": "didebashvili",
+    "poster": {
+      "variant": "circle",
+      "color": "wine",
+      "title": "Заза|Дидебашвили",
+      "kicker": "Встреча · Бизнес",
+      "photo": "assets/img/people/didebashvili-ring.webp",
+      "pos": "50% 30%"
+    },
     "title": "Встреча с Зазой Дидебашвили",
     "dates": [
       "2026-11-25"
@@ -337,11 +448,18 @@ const EVENTS = /*EVENTS-START*/[
     "people": [
       "didebashvili"
     ],
-    "image": "assets/img/people/didebashvili.webp",
+    "image": "assets/img/people/didebashvili-ring.webp",
     "imagePos": "50% 30%"
   },
   {
     "id": "yoga",
+    "poster": {
+      "variant": "paper",
+      "color": "green",
+      "title": "Йога|для новичков",
+      "kicker": "Мастер-класс",
+      "sub": "Дыхание, растяжка, спокойная голова. Коврики есть."
+    },
     "title": "Мастер-класс по йоге",
     "dates": [
       "2026-11-08"
@@ -386,6 +504,18 @@ function fmtOpens(ev){
 function openDates(ev){ const t = todayStart(); return ev.dates.filter(d => parseDay(d) >= t); }
 
 function fmtDay(iso){ const d = parseDay(iso); return `${d.getDate()} ${MONTHS_GEN[d.getMonth()]}`; }
+
+// Дата встречи известна и её можно показывать (см. SHOW_DATES)
+function dateKnown(ev){ return SHOW_DATES || !!ev.confirmed; }
+// Время назначено (а не «уточняется»)
+function timeKnown(ev){ return !!ev.time && !/уточня/i.test(ev.time); }
+// Строка «когда» для карточек: «1 ноября, вс, 19:00»; пусто, если дата не подтверждена
+function whenLine(ev){
+  if (!dateKnown(ev)) return '';
+  const d = nextDate(ev) || ev.dates[ev.dates.length - 1];
+  const multi = ev.dates.length > 1 && nextDate(ev);
+  return `${multi ? fmtRange(ev) : `${fmtDay(d)}, ${weekday(d)}`}${timeKnown(ev) ? `, ${ev.time.toLowerCase()}` : ''}`;
+}
 
 function fmtRange(ev){
   const first = ev.dates[0], last = ev.dates[ev.dates.length - 1];

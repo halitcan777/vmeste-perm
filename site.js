@@ -110,7 +110,7 @@ function renderHero(){
     return `<article class="slide${ev.textSide === 'right' ? ' slide--right' : ''}"${i ? ' hidden' : ''} aria-roledescription="слайд" aria-label="${i + 1} из ${list.length}">
       ${slideBg(ev, i)}
       <div class="container slide__in">
-        <p class="slide__when"><span>${fmtDay(d)}, ${weekday(d)}</span><span>${esc(ev.time)}</span><span>${esc(ev.place || DEFAULT_PLACE)}</span></p>
+        <p class="slide__when">${dateKnown(ev) ? `<span>${fmtDay(d)}, ${weekday(d)}</span>${timeKnown(ev) ? `<span>${esc(ev.time)}</span>` : ''}` : `<span>${esc(ev.type || 'Встреча')}</span>`}<span>${esc(ev.place || DEFAULT_PLACE)}</span></p>
         <h1 class="slide__title">${esc(ev.title)}</h1>
         <p class="slide__text">${esc(ev.text)}</p>
         <div class="slide__actions">
@@ -169,8 +169,12 @@ function eventCard(ev, seats, { big = false } = {}){
     ? `<div class="card__img grain"><img src="${pic}" alt="" loading="lazy"${ev.imagePos ? ` style="object-position:${ev.imagePos}"` : ''}></div>`
     : `<div class="card__plate card__plate--poster"><b>${esc(ev.type || 'Встреча')}</b></div>`;
   const where = ev.place && ev.place !== DEFAULT_PLACE ? `, ${esc(ev.place)}` : '';
+  // дата и время — только подтверждённые (SHOW_DATES / confirmed); иначе формат и «дата уточняется»
+  const top = dateKnown(ev)
+    ? `<div class="card__top"><span class="card__num">${pad2(dd.getDate())}.${pad2(dd.getMonth() + 1)}</span><span><span class="card__name">${multi ? 'любой день' : weekday(d)}${timeKnown(ev) ? `, ${esc(ev.time.toLowerCase())}` : ''}</span><br><span class="card__role">${esc(ev.type || 'Встреча')}${where}</span></span></div>`
+    : `<div class="card__top card__top--nodate"><span><span class="card__name">${esc(ev.type || 'Встреча')}</span><br><span class="card__role">${future ? 'Дата уточняется' : 'Прошло'}${where}</span></span></div>`;
   return `<a class="ev-card${big ? ' ev-card--big' : ''}${future ? '' : ' ev-card--past'}" href="${url}">
-    <div class="card__top"><span class="card__num">${pad2(dd.getDate())}.${pad2(dd.getMonth() + 1)}</span><span><span class="card__name">${multi ? 'любой день' : weekday(d)}, ${esc(ev.time.toLowerCase())}</span><br><span class="card__role">${esc(ev.type || 'Встреча')}${where}</span></span></div>
+    ${top}
     ${frame}
     <h3 class="ev-card__title">${esc(ev.title)}</h3>
     <p class="ev-card__text">${esc(ev.text)}</p>
@@ -189,7 +193,9 @@ async function renderAfisha(target, { limit = 0, big = false, months = false } =
     ? `<div class="reel">${items.map((ev, i) => eventCard(ev, seats, { big: big && i === 0 })).join('')}</div>`
     : `<p class="events__empty">В этом месяце встреч пока нет. Анонсы сначала выходят в <a class="link" href="${SITE.channel}" target="_blank" rel="noopener">канале</a>.</p>`;
   const tabs = document.getElementById(target + '-months');
-  if (!months || !tabs) { el.innerHTML = draw(list); return; }
+  // вкладки месяцев имеют смысл только при подтверждённых датах
+  if (tabs && !SHOW_DATES) tabs.hidden = true;
+  if (!months || !tabs || !SHOW_DATES) { el.innerHTML = draw(list); return; }
   // ряд месяцев как у Триумфа: текущий и шесть следующих; активен первый с встречами
   const now = new Date(), first = list.length ? parseDay(nextDate(list[0])) : now;
   const seq = [...Array(7)].map((_, i) => new Date(now.getFullYear(), now.getMonth() + i, 1));
@@ -212,19 +218,100 @@ function renderPast(target){
   el.innerHTML = list.length ? `<div class="reel">${list.map(ev => eventCard(ev, {})).join('')}</div>` : `<p class="events__empty">Пока ничего не прошло: мы только открываемся.</p>`;
 }
 
-// Программа: типографский список ближайших встреч без картинок (для главной)
-async function renderSchedule(target, { limit = 5 } = {}){
+/* ---------- постеры событий ---------- */
+// У каждой встречи свой постер 16:9: реальный кадр гостя (или кадр встречи) + типографика. Девять композиций,
+// в events.js у встречи poster: { variant, color, title ('|' = перенос строки), kicker, sub, photo, pos }.
+// Фирменная обработка общая: кадры ч/б или дуотон в цветах бренда, зерно и растр печати, сдвиг цвета на заголовке, штамп «Вместе».
+const POSTER_VARIANTS = ['paper', 'duo', 'night', 'acid', 'frame', 'stars', 'white', 'circle', 'swiss'];
+// Заголовок: базовый размер и ширина колонки по композициям (cqw), чтобы длинное слово («Бесфамильная») ужалось, а не обрезалось
+const POSTER_FIT = { paper: [9, 44], duo: [10, 36], night: [10.5, 64], acid: [12.5, 72], frame: [8.5, 42], stars: [9.5, 47], white: [11, 56], circle: [9, 62], swiss: [9, 46] };
+// Цвет штампа «Вместе» по композиции: paper — светлый поверх кадра, иначе цвет постера
+const POSTER_STAMP = { paper: 'paper', duo: 'paper', night: 'paper', acid: 'pc', frame: 'paper', stars: 'paper', white: 'paper', circle: 'paper', swiss: 'ink' };
+function posterData(ev){
+  const p = ev.poster || {};
+  const guests = (ev.people || []).map(id => PEOPLE.find(x => x.id === id)).filter(Boolean);
+  const guest = guests[0];
+  const d = nextDate(ev) || ev.dates[ev.dates.length - 1];
+  const own = p.photo || (guest && guest.photo) || ev.image;
+  return {
+    variant: POSTER_VARIANTS.includes(p.variant) ? p.variant : POSTER_VARIANTS[[...ev.id].reduce((a, c) => a + c.charCodeAt(0), 0) % POSTER_VARIANTS.length],
+    color: p.color || ev.color || 'wine',
+    photo: photo(own),
+    pos: p.pos || (p.photo ? '' : guest && guest.photo ? guest.photoPos : ev.imagePos) || '50% 50%',
+    kicker: p.kicker || ev.type || 'Встреча',
+    title: p.title || ev.title,
+    sub: p.sub || (guest ? guest.position : ev.text),
+    when: whenLine(ev) || MONTHS_NOM[parseDay(d).getMonth()],
+    place: ev.place || 'Ленина, 44',
+    guests,
+  };
+}
+const POSTER_STARS = `<svg class="poster__stars" viewBox="0 0 60 34" aria-hidden="true" preserveAspectRatio="none">
+  <path d="M12 15 L13.8 20.6 L19.5 22.5 L13.8 24.4 L12 30 L10.2 24.4 L4.5 22.5 L10.2 20.6 Z"/>
+  <path d="M3 2 L3.9 5 L7 6 L3.9 7 L3 10 L2.1 7 L-1 6 L2.1 5 Z"/>
+  <path d="M6 12 L6.6 13.8 L8.5 14.4 L6.6 15 L6 16.8 L5.4 15 L3.5 14.4 L5.4 13.8 Z"/>
+  <path d="M24 29 L24.6 30.8 L26.5 31.4 L24.6 32 L24 33.8 L23.4 32 L21.5 31.4 L23.4 30.8 Z"/>
+  <path d="M56 19 L56.8 21.4 L59.2 22.2 L56.8 23 L56 25.4 L55.2 23 L52.8 22.2 L55.2 21.4 Z"/>
+</svg>`;
+// Обводка от руки вокруг человека в центре кадра (Заза на ринге): два неровных овала
+const POSTER_RING = `<svg class="poster__ring" viewBox="0 0 160 90" aria-hidden="true" preserveAspectRatio="none">
+  <path d="M80 5 C 96 4, 98 24, 96 36 C 94 50, 87 58, 78 57.5 C 66 57, 62 45, 63 31 C 64 16, 69 5.5, 80 5 Z"/>
+  <path d="M81.5 8 C 94 8, 95.5 25, 93.5 36 C 91.5 48, 86 55, 78.5 54.5 C 68.5 54, 65 44, 66 31 C 67 18, 71 8.5, 81.5 8" style="stroke-width:.45"/>
+</svg>`;
+function posterHTML(ev, { link = true } = {}){
+  const x = posterData(ev);
+  const img = (src, pos, extra = '') => `<img src="${src}" alt="" loading="lazy" style="object-position:${pos}"${extra}>`;
+  const ph = x.photo ? `<div class="poster__ph">${img(x.photo, x.pos)}</div>` : '';
+  const lines = x.title.split(/\s*\|\s*/), longest = Math.max(...lines.map(l => l.length)) + (x.variant === 'acid' ? 1 : 0);
+  const [base, width] = POSTER_FIT[x.variant], lower = x.variant === 'duo' || x.variant === 'stars';
+  const size = Math.min(base, width / ((lower ? .5 : .54) * longest)).toFixed(2);
+  const title = `<h3 class="poster__title" style="font-size:${size}cqw">${lines.map(esc).join('<br>')}${x.variant === 'acid' ? '.' : ''}</h3>`;
+  const marq = () => `<p class="poster__marq" aria-hidden="true">${`${esc(x.kicker)} · Вместе · ${esc(x.place)} · `.repeat(6)}</p>`;
+  const k = text => `<p class="poster__k">${text}</p>`;
+  const meta = text => `<p class="poster__meta">${esc(text)}</p>`;
+  const foot = (...parts) => `<div class="poster__foot">${parts.join('')}</div>`;
+  const stampColor = POSTER_STAMP[x.variant] === 'pc' ? x.color : POSTER_STAMP[x.variant];
+  const stamp = `<img class="poster__stamp" src="assets/brand/wordmark-${stampColor}.svg" alt="Вместе">`;
+  // Swiss: два ведущих — два портрета с подписями вместо одного кадра
+  const faces = x.guests.length > 1
+    ? `<div class="poster__faces">${x.guests.slice(0, 3).map(g => `<div class="poster__face">${g.photo ? img(g.photo, g.photoPos || '50% 30%') : ''}<small><b>${esc(g.name)}</b>${esc(g.position || '')}</small></div>`).join('')}</div>`
+    : ph;
+  const grid = `<div class="poster__grid"><span><b>Формат</b>${esc(x.kicker)}</span><span><b>Когда</b>${esc(x.when)}</span><span><b>Где</b>${esc(x.place)}</span></div>`;
+  const body = {
+    paper:  `${ph}${k(esc(x.kicker))}${title}${foot(meta(x.sub), `<p class="poster__big">${esc(x.when)}</p>`)}${stamp}`,
+    duo:    `${ph}${title}${foot(k(`${esc(x.kicker)} · ${esc(x.when)}`), meta(x.sub))}${stamp}`,
+    night:  `${ph}${marq()}${marq()}${title}${meta(`${x.kicker} · ${x.when} · ${x.place}`)}${stamp}`,
+    acid:   `${ph}<span class="poster__sq poster__sq--tl"></span><span class="poster__sq poster__sq--bl"></span>${k(`${esc(x.kicker)}<br>${esc(x.place)}`)}${title}<p class="poster__big">${esc(x.when)}</p>${stamp}`,
+    frame:  `${ph}${k(`<span>${esc(x.kicker)}</span><span>${esc(x.when)}</span>`)}${foot(title, meta(x.sub))}${stamp}`,
+    stars:  `${ph}${POSTER_STARS}${k(`${esc(x.kicker)}<br>${esc(x.when)}`)}${title}${meta(x.sub)}${stamp}`,
+    white:  `${ph}${k(`${esc(x.kicker)}`)}${meta(x.sub)}<p class="poster__big">${esc(x.when)}</p>${title}${stamp}`,
+    circle: `${ph}${POSTER_RING}${k(`${esc(x.kicker)}<br>${esc(x.when)} · ${esc(x.place)}`)}${title}${stamp}`,
+    swiss:  `${faces}${k(esc(x.guests.length > 1 ? 'Ведут ' + x.guests.map(g => g.name.split(' ')[0]).join(' и ') : x.kicker))}${title}${grid}${stamp}`,
+  }[x.variant];
+  const tag = link ? 'a' : 'div';
+  return `<${tag} class="poster p-${x.variant} ${x.color} grain"${link ? ` href="${eventUrl(ev)}" aria-label="${esc(ev.title)}"` : ''}>${body}</${tag}>`;
+}
+
+// Лента постеров: один месяц на экране, кнопки соседних месяцев. Месяц берём по внутренней дате
+// (числа без подтверждения не показываем — см. SHOW_DATES в events.js).
+function renderPosters(target, { months = true, limit = 0 } = {}){
   const el = document.getElementById(target);
   if (!el) return;
-  const list = upcomingEvents().slice(0, limit);
+  const list = upcomingEvents();
   if (!list.length) { el.innerHTML = `<p class="events__empty">Новых встреч пока нет. Анонсы сначала выходят в <a class="link" href="${SITE.channel}" target="_blank" rel="noopener">канале</a>.</p>`; return; }
-  el.innerHTML = `<div class="sch">${list.map(ev => { const d = nextDate(ev), dt = parseDay(d); return `<a class="sch__row" href="${eventUrl(ev)}">
-    <span class="sch__date">${pad2(dt.getDate())}.${pad2(dt.getMonth() + 1)}</span>
-    <span class="sch__day">${weekday(d)}, ${esc(ev.time.toLowerCase())}</span>
-    <span class="sch__title">${esc(ev.title)}</span>
-    <span class="sch__type">${esc(ev.type || 'Встреча')}</span>
-  </a>`; }).join('')}</div>`;
+  const key = ev => { const d = parseDay(nextDate(ev)); return `${d.getFullYear()}-${d.getMonth()}`; };
+  const keys = [...new Set(list.map(key))];
+  const name = k => MONTHS_NOM[Number(k.split('-')[1])];
+  let i = 0;
+  const draw = () => {
+    const items = list.filter(ev => key(ev) === keys[i]).slice(0, limit || undefined);
+    const nav = months ? `<div class="mbar"><b>${name(keys[i])}</b><div class="mbar__nav">${i > 0 ? `<button type="button" class="btn btn--line btn--sm" data-m="-1">${name(keys[i - 1])}</button>` : ''}${i < keys.length - 1 ? `<button type="button" class="btn btn--line btn--sm" data-m="1">${name(keys[i + 1])}</button>` : ''}</div></div>` : '';
+    el.innerHTML = `${nav}<div class="pfeed">${items.map(ev => posterHTML(ev)).join('')}</div>`;
+    el.querySelectorAll('[data-m]').forEach(b => b.addEventListener('click', () => { i += Number(b.dataset.m); draw(); el.scrollIntoView({ block: 'start', behavior: 'smooth' }); }));
+  };
+  draw();
 }
+const renderSchedule = renderPosters; // старое имя
 
 // Эксперт крупно: фото слева, текст справа; остальные — строкой имён
 function renderSpotlight(target){
@@ -353,10 +440,12 @@ function renderPosts(target, { limit = 0 } = {}){
 }
 
 /* ---------- страница человека: кадр-слайдер, каталог кадров, короткий текст ---------- */
+// Кадры на странице человека: три штуки. Портрет из карточки добавляется первым, только если своих кадров меньше трёх.
+const PERSON_SHOTS = 3;
 function personShots(p){
   const shots = [...(p.photos || [])];
-  if (p.photo && !shots.some(x => x.src === p.photo)) shots.unshift({ src: p.photo, pos: p.photoPos, note: 'Портрет' });
-  return shots;
+  if (p.photo && shots.length < PERSON_SHOTS && !shots.some(x => x.src === p.photo)) shots.unshift({ src: p.photo, pos: p.photoPos, note: 'Портрет' });
+  return shots.slice(0, PERSON_SHOTS);
 }
 
 function renderPerson(target){
@@ -371,10 +460,11 @@ function renderPerson(target){
   document.title = `${p.name} — Вместе`;
   const role = p.position || ROLE_NAME[p.role];
   const shots = personShots(p);
-  const bg = p.photo || (shots[0] && shots[0].src) || (p.assoc && assocReady(p.assoc) ? p.assoc : '');
+  // фон шапки — ассоциативный кадр (bg), не фото человека: он размыт и работает как настроение
+  const bg = p.bg || (p.assoc && assocReady(p.assoc) ? p.assoc : '');
   // 1. Кадр: размытое фото на фоне (ассоциация с человеком, не забирает фокус), имя крупно, текст расставлен по кадру
   const hero = `<section class="phero"><div class="container"><div class="phero__frame${bg ? '' : ' phero__frame--flat'} grain">
-      ${bg ? `<img class="phero__bg" src="${bg}" alt=""${p.photoPos ? ` style="object-position:${p.photoPos}"` : ''}>` : ''}
+      ${bg ? `<img class="phero__bg" src="${bg}" alt="">` : ''}
       <div class="phero__in">
         <p class="phero__top"><a href="${back[0]}">${back[1]}</a><span>${esc(role)}</span></p>
         <h1 class="phero__name">${esc(p.name)}</h1>
@@ -387,9 +477,10 @@ function renderPerson(target){
     </div></div></section>`;
   // 2. Мозаика кадров: смотреть и открывать на весь экран
   // 2. Мозаика 3×3 слитно: есть кадры — заполняем, остальные клетки пустые (под будущие фото)
-  const cells = shots.slice(0, 9).map((x, i) => `<button type="button" class="grid9__item grain" data-lb="${i}" aria-label="Открыть кадр ${i + 1}"><img src="${x.src}" alt="${esc(x.note || p.name)}" loading="lazy"${x.pos ? ` style="object-position:${x.pos}"` : ''}></button>`);
-  while (cells.length < 9) cells.push(`<div class="grid9__item grid9__item--empty" aria-hidden="true"></div>`);
-  const grid = `<section class="section"><div class="container"><div class="grid9">${cells.join('')}</div></div></section>`;
+  const cells = shots.map((x, i) => `<button type="button" class="grid9__item grain" data-lb="${i}" aria-label="Открыть кадр ${i + 1}"><img src="${x.src}" alt="${esc(x.note || p.name)}" loading="lazy"${x.pos ? ` style="object-position:${x.pos}"` : ''}></button>`);
+  while (cells.length < PERSON_SHOTS) cells.push(`<div class="grid9__item grid9__item--empty" aria-hidden="true"></div>`);
+  // нет ни одного кадра — ряд не показываем
+  const grid = shots.length ? `<section class="section"><div class="container"><div class="grid9">${cells.join('')}</div></div></section>` : '';
   // 3. Остальной текст, если есть
   const more = (p.about && p.about.length > 1) || (p.work && p.work.length) ? `<section class="section section--alt"><div class="container person-grid--text">
       ${p.about && p.about.length > 1 ? `<div class="copy">${p.about.slice(1).map(t => `<p>${esc(t)}</p>`).join('')}</div>` : ''}
