@@ -847,3 +847,13 @@ body[data-page="home"] .join h2 { font-size: 56px; }
   .p-white .poster__meta { top: 9.5cqw; }
   .p-type .poster__k { top: 11cqw; }
 }
+
+/* коллаж: кадр во весь постер в цвете (чужой визуал), затемнение снизу, заголовок внизу слева */
+.p-collage { background: var(--ink); color: var(--paper); }
+.p-collage .poster__ph::after { content: ''; position: absolute; inset: 0; z-index: 2; background: linear-gradient(to top, rgba(15,15,15,.88) 0, rgba(15,15,15,.35) 40%, rgba(15,15,15,0) 65%); }
+.p-collage .poster__k { left: 4cqw; top: 4cqw; width: 50cqw; padding: 1cqw 1.4cqw; background: var(--ink); }
+.p-collage .poster__title { left: 4cqw; bottom: 4cqw; width: 62cqw; text-shadow: .35cqw .35cqw 0 var(--pc); }
+/* raw: кадр без ч/б и растра */
+.poster--raw .poster__ph img, .poster--raw .poster__strip img { filter: none; }
+.poster--raw .poster__ph::before { display: none; }
+.p-boxes.poster--raw .poster__ph img { filter: brightness(.85); }

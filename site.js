@@ -96,7 +96,7 @@ function renderFoot(){
 
 /* ---------- главный кадр: ближайшие события ---------- */
 function slideBg(ev, i){
-  const src = photo(ev.image);
+  const src = photo(ev.heroImage || ev.image);   // для героя можно задать свой широкий кадр
   return src ? `<figure class="slide__bg"><img src="${src}" alt=""${i ? ' loading="lazy"' : ''}${ev.imagePos ? ` style="object-position:${ev.imagePos}"` : ''}></figure>` : '';
 }
 
@@ -230,9 +230,9 @@ function renderPast(target){
 // У каждой встречи свой постер 16:9: реальный кадр гостя (или кадр встречи) + типографика. Девять композиций,
 // в events.js у встречи poster: { variant, color, title ('|' = перенос строки), kicker, sub, photo, pos }.
 // Фирменная обработка общая: кадры ч/б или дуотон в цветах бренда, зерно и растр печати, сдвиг цвета на заголовке, штамп «Вместе».
-const POSTER_VARIANTS = ['paper', 'duo', 'night', 'acid', 'frame', 'stars', 'white', 'circle', 'swiss', 'numeral', 'strips', 'boxes', 'riso', 'vertical', 'type'];
+const POSTER_VARIANTS = ['paper', 'duo', 'night', 'acid', 'frame', 'stars', 'white', 'circle', 'swiss', 'numeral', 'strips', 'boxes', 'riso', 'vertical', 'type', 'collage'];
 // Заголовок: базовый размер и ширина колонки по композициям (cqw), чтобы длинное слово («Бесфамильная») ужалось, а не обрезалось
-const POSTER_FIT = { paper: [9, 44], duo: [10, 36], night: [10.5, 64], acid: [12.5, 72], frame: [8.5, 42], stars: [9.5, 47], white: [11, 56], circle: [9, 62], swiss: [9, 46], numeral: [7.5, 50], strips: [12, 80], boxes: [9, 70], riso: [11, 60], vertical: [11, 70], type: [10.5, 80] };
+const POSTER_FIT = { paper: [9, 44], duo: [10, 36], night: [10.5, 64], acid: [12.5, 72], frame: [8.5, 42], stars: [9.5, 47], white: [11, 56], circle: [9, 62], swiss: [9, 46], numeral: [7.5, 50], strips: [12, 80], boxes: [9, 70], riso: [11, 60], vertical: [11, 70], type: [10.5, 80], collage: [10, 62] };
 function posterData(ev){
   const p = ev.poster || {};
   const guests = (ev.people || []).map(id => PEOPLE.find(x => x.id === id)).filter(Boolean);
@@ -251,6 +251,7 @@ function posterData(ev){
     num: dateKnown(ev) ? `${pad2(parseDay(d).getDate())}.${pad2(parseDay(d).getMonth() + 1)}` : MONTHS_NOM[parseDay(d).getMonth()],
     place: ev.place || 'Ленина, 44',
     guests,
+    raw: !!p.raw,
   };
 }
 const POSTER_STARS = `<svg class="poster__stars" viewBox="0 0 60 34" aria-hidden="true" preserveAspectRatio="none">
@@ -300,11 +301,12 @@ function posterHTML(ev, { link = true } = {}){
     boxes:  `${ph}<h3 class="poster__title poster__boxes" style="--ts:${size}cqw">${lines.map(l => `<span>${esc(l)}</span>`).join('')}</h3>${k(`${esc(x.kicker)}<br>${esc(x.when)}, ${esc(x.place)}`)}${meta(x.sub)}${stamp}`,
     riso:   `${ph}${k(`${esc(x.kicker)}<br>${esc(x.when)}`)}${title}${meta(x.sub)}${stamp}`,
     vertical: `${ph}<p class="poster__vert">${esc(x.kicker)}</p><p class="poster__box">${esc(x.when)}</p>${title}${meta(x.sub)}${stamp}`,
+    collage: `${ph}${k(`${esc(x.kicker)}<br>${esc(x.when)}, ${esc(x.place)}`)}${title}${stamp}`,
     type:   `${k(esc(x.kicker))}<p class="poster__big">${esc(x.when)}</p>${title}${meta(x.sub)}${stamp}`,
     swiss:  `${faces}${k(esc(x.guests.length > 1 ? 'Ведут ' + x.guests.map(g => g.name.split(' ')[0]).join(' и ') : x.kicker))}${title}${grid}${stamp}`,
   }[x.variant];
   const tag = link ? 'a' : 'div';
-  return `<${tag} class="poster p-${x.variant} ${x.color} grain"${link ? ` href="${eventUrl(ev)}" aria-label="${esc(ev.title)}"` : ''}>${body}</${tag}>`;
+  return `<${tag} class="poster p-${x.variant} ${x.color} grain${x.raw ? ' poster--raw' : ''}"${link ? ` href="${eventUrl(ev)}" aria-label="${esc(ev.title)}"` : ''}>${body}</${tag}>`;
 }
 
 // Лента постеров: один месяц на экране, кнопки соседних месяцев. Месяц берём по внутренней дате

@@ -15,9 +15,10 @@
      people     — id гостей из content.js (PEOPLE), страница встречи ссылается на них, а их страница — на встречи
      Афиша ноября заведена 26.10 по списку владельца; даты расставлены на глаз и ещё сдвинутся; «уточняется» = ждём факт.
      image      — картинка для афиши и шапки, imageNote — подпись к ней
+     heroImage  — отдельный кадр для героя на главной (широкий, человек справа, слева место под текст); без него берётся image
      hidden     — true: не показывать в афише, пока не пройдёт (закрытый вечер) или пока не подтверждено; после даты попадает в «Уже прошло»
      program    — как пройдёт вечер: [["Шаг", "одна фраза"], …] — формат без времени; времени нет, пока не назначено
-     poster     — постер: variant, color, title ('|' = перенос), kicker, sub, photo, pos (см. posterHTML в site.js) */
+     poster     — постер: variant, color, title ('|' = перенос), kicker, sub, photo, pos, raw (true = кадр в цвете, без ч/б и растра: коллажи из чужого визуала) */
 
 // URL веб-приложения Google Apps Script (см. 03_Запись_на_мероприятия.md). Пусто = запись через Телеграм.
 const REG_ENDPOINT = '';
@@ -195,8 +196,7 @@ const EVENTS = /*EVENTS-START*/[
       "oshchepkov"
     ],
     "image": "assets/img/events/oshchepkov.webp",
-    "imagePos": "50% 25%",
-    "textSide": "right",
+    "imagePos": "50% 50%",
     "program": [
       [
         "Знакомство",
@@ -214,7 +214,8 @@ const EVENTS = /*EVENTS-START*/[
         "После",
         "Разговоры в зале. Кто хочет, остаётся."
       ]
-    ]
+    ],
+    "heroImage": "assets/img/events/oshchepkov-hero.webp"
   },
   {
     "id": "trening-psy",
@@ -319,11 +320,14 @@ const EVENTS = /*EVENTS-START*/[
   {
     "id": "m-perm",
     "poster": {
-      "variant": "type",
+      "variant": "collage",
       "color": "green",
       "title": "Встреча|с «мпермь»",
       "kicker": "Городское медиа, 5 лет о Перми",
-      "sub": "Рассказывают, показывают, объединяют"
+      "sub": "Рассказывают, показывают, объединяют",
+      "photo": "assets/img/events/mperm-collage.webp",
+      "pos": "50% 50%",
+      "raw": true
     },
     "title": "Встреча с «мпермь»",
     "dates": [
@@ -340,8 +344,8 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Проекты",
     "color": "ink",
-    "image": "",
-    "imagePos": "50% 35%",
+    "image": "assets/img/events/mperm-collage.webp",
+    "imagePos": "50% 50%",
     "program": [
       [
         "Кто такие «мпермь»",
@@ -541,7 +545,8 @@ const EVENTS = /*EVENTS-START*/[
       "kicker": "Вечер для своих",
       "sub": "Уличная одежда из Перми. Ограниченный тираж.",
       "photo": "assets/img/events/friendship-love.webp",
-      "pos": "50% 30%"
+      "pos": "50% 50%",
+      "raw": true
     },
     "title": "Дроп Friendship/Love",
     "dates": [
@@ -573,7 +578,7 @@ const EVENTS = /*EVENTS-START*/[
     "type": "Вечер для своих",
     "color": "blue",
     "image": "assets/img/events/friendship-love.webp",
-    "imagePos": "50% 30%"
+    "imagePos": "50% 50%"
   },
   {
     "id": "vshe-lekciya",
