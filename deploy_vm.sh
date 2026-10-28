@@ -10,6 +10,8 @@ rsync -az --delete -e "ssh -i $K" \
   --exclude '.git' --exclude 'CNAME' --exclude '*.md' --exclude '_*' --exclude 'qa-screens' --exclude 'google_apps_script' \
   --exclude 'deploy.sh' --exclude 'deploy_vm.sh' --exclude '.DS_Store' --exclude 'robots.txt' \
   "$SRC/" "$H:$DST/"
+# версия у css/js против кэша браузеров (правится на сервере, исходники чистые)
+V=$(date +%d%H%M); ssh -i $K $H "cd $DST && for f in *.html; do sed -i -E 's#(site\.css|events\.js|content\.js|site\.js)(\?v=[0-9]+)?\"#\1?v=$V\"#g' \$f; done"
 # robots: индексировать можно; 404 — страница сайта
 ssh -i $K $H "printf 'User-agent: *\nAllow: /\nSitemap: https://vmeste59.com/sitemap.xml\n' > $DST/robots.txt && chmod -R a+rX $DST"
 curl -s -o /dev/null -w "vmeste59.com: %{http_code}\n" https://vmeste59.com/
