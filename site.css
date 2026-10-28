@@ -1,3 +1,7 @@
+/* Шрифты дизайнера (28.10): 129 Fatboy — заголовки (заглавные залиты, строчные контуром; бесплатно для коммерции),
+   Fredoka One Cyrillic — подзаголовки (SIL OFL 1.1). Основной текст — Onest. */
+@font-face { font-family: 'Fatboy'; src: url('assets/fonts/fatboy.ttf') format('truetype'); font-weight: 400 900; font-display: swap; }
+@font-face { font-family: 'Fredoka One'; src: url('assets/fonts/fredoka.ttf') format('truetype'); font-weight: 400 900; font-display: swap; }
 /* «Вместе» — сайт, версия 2.1 (26.10.2026). Цвета из логотипа, сетка 8px.
    Минимализм + кино: крупные узкие заголовки, зерно плёнки.
    Правила владельца: фон — только два бежевых по очереди; брендовые цвета — в обводках, номерах, кнопках, вставках;
@@ -22,7 +26,8 @@
   --head-h: 72px;
   --tick-h: 48px;
 
-  --f-display: 'Oswald', 'Rubik', system-ui, sans-serif;
+  --f-display: 'Fatboy', 'Oswald', system-ui, sans-serif;
+  --f-sub: 'Fredoka One', 'Onest', system-ui, sans-serif;
   --f-head: 'Rubik', system-ui, sans-serif;
   --f-text: 'Onest', system-ui, sans-serif;
 }
@@ -941,3 +946,34 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 /* пустая стена: без картины ниже края ничего не свисает */
 .hero--wall:not(:has(.hang)) { padding-bottom: var(--section); }
 .hero--wall:not(:has(.hang)) .wall { height: clamp(360px, 56vh, 520px); }
+
+/* ---------- шрифты дизайнера: Fatboy широкий, размеры заголовков ужаты; Fredoka — подзаголовки ---------- */
+h1, h2, h3, h4 { font-weight: 400; letter-spacing: .01em; }
+.sec-head h2 { font-size: 48px; }
+.page-head h1 { font-size: 80px; }
+.event-head h1 { font-size: 44px; line-height: 1; }
+.phero__name { font-size: 96px; }
+.h-sub { font-size: 28px; }
+.step b, .fmt__name, .card__name, .ev-card__title, .spot__text h3, .principles b, .menu nav a, .mbar b { font-family: var(--f-sub); font-weight: 400; text-transform: none; }
+.step b { font-size: 22px; }
+.poster__title { letter-spacing: 0; line-height: 1; }
+.poster__k, .poster__meta { font-family: var(--f-sub); letter-spacing: .02em; }
+.poster__big { font-family: var(--f-display); }
+@media (max-width: 760px) {
+  .sec-head h2 { font-size: 32px; }
+  .page-head h1 { font-size: 44px; }
+  .event-head h1 { font-size: 30px; }
+  .phero__name { font-size: clamp(28px, 9vw, 44px); }
+  .h-sub { font-size: 24px; }
+}
+
+/* Fatboy: строчные у него контурные и плохо читаются — всё, что набрано Fatboy, только заглавными */
+h1, h2, h3, h4, .poster__title, .poster__big, .poster__num, .hang__title { text-transform: uppercase !important; }
+.step b, .fmt__name, .card__name, .ev-card__title, .spot__text h3, .principles b { text-transform: none !important; }
+
+/* длинные заголовки (название встречи, подразделы, форма) — Fredoka: Fatboy только для коротких «масштабных» */
+.event-head h1, .h-sub, .reg h2, .post-head h1, .lb__note { font-family: var(--f-sub) !important; text-transform: none !important; letter-spacing: 0; }
+.event-head h1 { font-size: 52px; line-height: 1.05; }
+.h-sub { font-size: 30px; }
+.reg h2 { font-size: 28px; }
+@media (max-width: 760px) { .event-head h1 { font-size: 32px; } .h-sub { font-size: 24px; } }

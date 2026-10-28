@@ -233,7 +233,7 @@ function posterHTML(ev, { link = true } = {}){
   const ph = x.photo ? `<div class="poster__ph">${img(x.photo, x.pos)}</div>` : '';
   const lines = x.title.split(/\s*\|\s*/), longest = Math.max(...lines.map(l => l.length)) + (x.variant === 'acid' ? 1 : 0);
   const [base, width] = POSTER_FIT[x.variant], lower = x.variant === 'duo' || x.variant === 'stars';
-  const size = Math.min(base, width / ((lower ? .5 : .54) * longest)).toFixed(2);
+  const size = Math.min(base, width / (.9 * longest)).toFixed(2);   // ширина заглавного знака Fatboy ≈ 0.9 кегля
   const title = `<h3 class="poster__title" style="--ts:${size}cqw">${lines.map(esc).join('<br>')}${x.variant === 'acid' ? '.' : ''}</h3>`;
   // цифры даты (или слово месяца, пока даты нет): ужимаются по длине, чтобы не лезть на кадр
   const numSize = Math.min(26, 50 / (0.56 * x.num.length)).toFixed(1);

@@ -75,7 +75,7 @@ const PEOPLE = [
   { id: 'alexey', role: 'team', assoc: 'assets/img/people/assoc/marketing.webp', position: 'Маркетинг и медиа', name: 'Алексей' },
   { id: 'vlada', role: 'team', photo: 'assets/img/people/team/vlada.webp', photoPos: '45% 33%', assoc: 'assets/img/people/assoc/host.webp', position: 'Лицо основного аккаунта', name: 'Влада' },
   { id: 'angelina', role: 'team', photo: 'assets/img/people/team/angelina.webp', photoPos: '48% 46%', assoc: 'assets/img/people/assoc/biz.webp', position: 'Бизнес-проекты', name: 'Ангелина' },
-  { id: 'kirill', role: 'team', assoc: 'assets/img/people/assoc/edit.webp', position: 'Видеомонтаж', name: 'Кирилл Богданов' },
+  { id: 'kirill', role: 'team', photo: 'assets/img/people/team/kirill.webp', photoPos: '50% 35%', assoc: 'assets/img/people/assoc/edit.webp', position: 'Видеомонтаж', name: 'Кирилл Богданов' },
   { id: 'dmitry-bazuev', role: 'team', assoc: 'assets/img/people/assoc/vmeste.webp', name: 'Дмитрий Базуев', position: '' },
   { id: 'anya', role: 'team', assoc: 'assets/img/people/assoc/marketing.webp', position: 'Маркетинг и медиа', name: 'Аня' },
   // Эксперты и гости встреч — по открытым источникам (26.10): проверить с ними перед публикацией, фото запросить.
