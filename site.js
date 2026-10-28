@@ -230,9 +230,9 @@ function renderPast(target){
 // У каждой встречи свой постер 16:9: реальный кадр гостя (или кадр встречи) + типографика. Девять композиций,
 // в events.js у встречи poster: { variant, color, title ('|' = перенос строки), kicker, sub, photo, pos }.
 // Фирменная обработка общая: кадры ч/б или дуотон в цветах бренда, зерно и растр печати, сдвиг цвета на заголовке, штамп «Вместе».
-const POSTER_VARIANTS = ['paper', 'duo', 'night', 'acid', 'frame', 'stars', 'white', 'circle', 'swiss', 'numeral', 'strips', 'boxes', 'riso', 'vertical', 'type', 'collage', 'mperm'];
+const POSTER_VARIANTS = ['paper', 'duo', 'night', 'acid', 'frame', 'stars', 'white', 'circle', 'swiss', 'numeral', 'strips', 'boxes', 'riso', 'vertical', 'type', 'collage', 'mperm', 'lookbook'];
 // Заголовок: базовый размер и ширина колонки по композициям (cqw), чтобы длинное слово («Бесфамильная») ужалось, а не обрезалось
-const POSTER_FIT = { paper: [9, 44], duo: [10, 36], night: [10.5, 64], acid: [12.5, 72], frame: [8.5, 42], stars: [9.5, 47], white: [11, 56], circle: [9, 62], swiss: [9, 46], numeral: [7.5, 50], strips: [12, 80], boxes: [9, 70], riso: [11, 60], vertical: [11, 70], type: [10.5, 80], collage: [11, 46], mperm: [11, 60] };
+const POSTER_FIT = { paper: [9, 44], duo: [10, 36], night: [10.5, 64], acid: [12.5, 72], frame: [8.5, 42], stars: [9.5, 47], white: [11, 56], circle: [9, 62], swiss: [9, 46], numeral: [7.5, 50], strips: [12, 80], boxes: [9, 70], riso: [11, 60], vertical: [11, 70], type: [10.5, 80], collage: [11, 46], mperm: [10, 50], lookbook: [8.5, 60] };
 function posterData(ev){
   const p = ev.poster || {};
   const guests = (ev.people || []).map(id => PEOPLE.find(x => x.id === id)).filter(Boolean);
@@ -303,7 +303,9 @@ function posterHTML(ev, { link = true } = {}){
     vertical: `${ph}<p class="poster__vert">${esc(x.kicker)}</p><p class="poster__box">${esc(x.when)}</p>${title}${meta(x.sub)}${stamp}`,
     collage: `${ph}${k(`${esc(x.kicker)}<br>${esc(x.when)}, ${esc(x.place)}`)}${title}${meta(x.sub)}${stamp}`,
     // «мпермь»: в стиле их карточек — чёрное поле, жёлтые плашки-«стикеры», моноширинный текст
-    mperm:  `<p class="poster__k">${esc(x.kicker)}</p>${title}<p class="poster__tag">${esc(x.when)}, ${esc(x.place)}</p>${meta(x.sub)}${stamp}`,
+    mperm:  `${ph}<p class="poster__k">${esc(x.kicker)}</p>${title}<p class="poster__tag">${esc(x.when)}, ${esc(x.place)}</p>${meta(x.sub)}${stamp}`,
+    // лукбук: кадры во всю верхнюю часть, под ними чёрная полоса с названием — визуал не перекрыт
+    lookbook: `${ph}<div class="poster__band"><div>${k(esc(x.kicker))}${title}</div><div class="poster__band-r">${meta(`${x.when}, ${x.place}`)}${meta(x.sub)}</div></div>${stamp}`,
     type:   `${k(esc(x.kicker))}<p class="poster__big">${esc(x.when)}</p>${title}${meta(x.sub)}${stamp}`,
     swiss:  `${faces}${k(esc(x.guests.length > 1 ? 'Ведут ' + x.guests.map(g => g.name.split(' ')[0]).join(' и ') : x.kicker))}${title}${grid}${stamp}`,
   }[x.variant];
