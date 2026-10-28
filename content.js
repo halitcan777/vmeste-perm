@@ -76,7 +76,7 @@ const PEOPLE = [
   { id: 'vlada', role: 'team', photo: 'assets/img/people/team/vlada.webp', photoPos: '45% 33%', assoc: 'assets/img/people/assoc/host.webp', position: 'Лицо основного аккаунта', name: 'Влада' },
   { id: 'angelina', role: 'team', photo: 'assets/img/people/team/angelina.webp', photoPos: '48% 46%', assoc: 'assets/img/people/assoc/biz.webp', position: 'Бизнес-проекты', name: 'Ангелина' },
   { id: 'kirill', role: 'team', photo: 'assets/img/people/team/kirill.webp', photoPos: '50% 35%', assoc: 'assets/img/people/assoc/edit.webp', position: 'Видеомонтаж', name: 'Кирилл Богданов' },
-  { id: 'dmitry-bazuev', role: 'team', assoc: 'assets/img/people/assoc/vmeste.webp', name: 'Дмитрий Базуев', position: '' },
+  { id: 'dmitry-bazuev', role: 'team', photo: 'assets/img/people/team/dmitry-bazuev.webp', photoPos: '50% 40%', assoc: 'assets/img/people/assoc/vmeste.webp', name: 'Дмитрий Базуев', position: '' },
   { id: 'anya', role: 'team', assoc: 'assets/img/people/assoc/marketing.webp', position: 'Маркетинг и медиа', name: 'Аня' },
   // Эксперты и гости встреч — по открытым источникам (26.10): проверить с ними перед публикацией, фото запросить.
   { id: 'oshchepkov', role: 'expert', name: 'Олег Ощепков', position: 'Предприниматель, ресторатор, профессор ВШЭ в Перми', bg: 'assets/img/people/assoc/city.webp',
@@ -128,16 +128,23 @@ const PARTNERS = [
   { name: 'Даниил Снег', logo: '', url: '', status: 'talks', note: 'Личный бренд' },
 ];
 
-// Блог: отчёты о прошедших встречах и заметки.
-// event — id из events.js, если статья про встречу (тогда дата и фото подтянутся оттуда).
+// Блог: отчёты о прошедших встречах и новости. Свежие сверху (по date).
+// kind — 'Отчёт' (про прошедшую встречу) или 'Новость'; event — id из events.js, если запись про встречу;
+// image — обложка (широкий кадр), photos — кадры внутри записи [{src, note}], body — абзацы.
 const POSTS = [
   // Первая запись (28.10): как собирали зал. Факты — слова владельца, фото настоящие (13.10 и 20.10).
   {
-    id: 'zal', date: '2026-10-20', title: 'Как мы собирали зал',
+    id: 'zal', kind: 'Новость', date: '2026-10-20', title: 'Как мы собирали зал',
     lead: 'Зал на Ленина, 44, второй этаж. В октябре красили стены, чинили мебель и стелили ковёр сами, вместе с теми, кто пришёл помочь.',
     image: 'assets/img/hall-now.webp', imageNote: 'Зал 20 октября: стены покрашены, мебель на местах',
     body: ['Сначала были голые кирпичные стены, балки под потолком и высокие окна. Потом появились столы, стулья и зелёный диван, ковёр и картина на стене.',
            'Дальше — первые встречи. Афиша ноября уже на сайте, даты появятся в канале.'],
+    photos: [
+      { src: 'assets/img/wall/hall-oct.webp', note: '13 октября: ремонт, стулья на столах' },
+      { src: 'assets/img/wall/hall-beams.webp', note: 'Балки под потолком' },
+      { src: 'assets/img/wall/hall-side.webp', note: 'Стена с подсветкой' },
+      { src: 'assets/img/wall/hall-now.webp', note: '20 октября: мебель на местах' },
+    ],
   },
 ];
 

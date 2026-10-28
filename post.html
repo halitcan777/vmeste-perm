@@ -8,45 +8,31 @@
 <link rel="icon" href="assets/brand/avatar-blue.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Rubik:wght@600;700&family=Onest:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="site.css?v=281636">
+<link rel="stylesheet" href="site.css?v=281637">
 </head><body data-page="blog">
 <div class="tick" id="tick"></div>
 <header class="head" id="head"></header>
 <main>
 
 <section class="page-head"><div class="container article">
-  <p class="crumbs"><a href="blog.html">Блог</a><span id="post-date"></span></p>
+  <p class="crumbs"><a href="blog.html">Блог</a></p>
+  <div id="post-meta"></div>
   <h1 id="post-title">Запись</h1>
   <p class="lead" id="post-lead"></p>
 </div></section>
 
-<section class="section"><div class="container article">
-  <figure class="grain" id="post-figure" hidden><img id="post-img" alt=""><figcaption id="post-cap"></figcaption></figure>
-  <div class="copy" id="post-body"></div>
-  <p style="margin-top:40px;display:flex;gap:16px;flex-wrap:wrap" id="post-actions"><a class="btn btn--line" href="blog.html">Все записи</a></p>
+<section class="section"><div class="container">
+  <figure class="post-cover grain" id="post-figure" hidden><img id="post-img" alt=""><figcaption id="post-cap"></figcaption></figure>
+  <div class="article">
+    <div class="copy" id="post-body"></div>
+    <div id="post-photos"></div>
+    <p class="actions" style="margin-top:40px" id="post-actions"><a class="btn btn--line" href="blog.html">Все записи</a></p>
+    <div id="post-more"></div>
+  </div>
 </div></section>
 
 </main>
 <footer class="foot" id="foot"></footer>
-<script src="events.js?v=281636"></script><script src="content.js?v=281636"></script><script src="site.js?v=281636"></script>
-<script>
-const post = POSTS.find(p => p.id === new URLSearchParams(location.search).get('id'));
-if (!post) {
-  document.getElementById('post-title').textContent = 'Запись не найдена';
-  document.getElementById('post-lead').textContent = 'Возможно, ссылка устарела. Все записи в блоге.';
-} else {
-  document.title = `${post.title} — Вместе`;
-  document.getElementById('post-date').textContent = postDate(post);
-  document.getElementById('post-title').textContent = post.title;
-  document.getElementById('post-lead').textContent = post.lead;
-  if (photo(post.image)) {
-    const f = document.getElementById('post-figure'); f.hidden = false;
-    document.getElementById('post-img').src = post.image;
-    document.getElementById('post-cap').textContent = post.imageNote || '';
-  }
-  document.getElementById('post-body').innerHTML = (post.body || []).map(p => `<p>${esc(p)}</p>`).join('');
-  const ev = post.event && eventById(post.event);
-  if (ev) document.getElementById('post-actions').insertAdjacentHTML('afterbegin', `<a class="btn" href="${eventUrl(ev)}">Страница встречи</a>`);
-}
-</script>
+<script src="events.js?v=281637"></script><script src="content.js?v=281637"></script><script src="site.js?v=281637"></script>
+<script>renderPost();</script>
 </body></html>

@@ -434,18 +434,56 @@ function postDate(post){
   return post.date ? fmtDay(post.date) : ev ? fmtRange(ev) : '';
 }
 
-function renderPosts(target, { limit = 0 } = {}){
+// Блог: вкладки «Все / Отчёты / Новости»; первая запись крупно (кадр слева, текст справа), остальные строками.
+function postsSorted(){ return [...POSTS].sort((a, b) => (b.date || '').localeCompare(a.date || '')); }
+function postMeta(p){ return `<p class="post-meta"><span class="post-kind">${esc(p.kind || 'Запись')}</span><span>${esc(postDate(p))}</span></p>`; }
+function renderPosts(target, { limit = 0, tabs = true } = {}){
   const el = document.getElementById(target);
   if (!el) return;
-  const list = POSTS.slice(0, limit || undefined);
-  el.innerHTML = `<div class="reel">${list.map((p, i) => {
-    const src = photo(p.image);
-    const frame = src ? `<div class="card__img grain"><img src="${src}" alt="" loading="lazy"></div>` : `<div class="card__plate">${esc(p.lead)}</div>`;
-    return `<a class="card" href="post.html?id=${encodeURIComponent(p.id)}">
-      <div class="card__top"><span class="card__num">${pad2(i + 1)}</span><span><span class="card__name">${esc(p.title)}</span><br><span class="card__role">${esc(postDate(p))}</span></span></div>
-      ${frame}${src ? `<p class="card__text">${esc(p.lead)}</p>` : ''}
+  const all = postsSorted();
+  const kinds = [...new Set(all.map(p => p.kind).filter(Boolean))];
+  let cur = '';
+  const draw = () => {
+    const list = all.filter(p => !cur || p.kind === cur).slice(0, limit || undefined);
+    const nav = tabs && kinds.length > 1 ? `<div class="months" role="group" aria-label="Тип записи">${['', ...kinds].map(k => `<button type="button" data-k="${k}" aria-pressed="${k === cur}">${k ? esc(k === 'Отчёт' ? 'Отчёты' : k === 'Новость' ? 'Новости' : k) : 'Все'}</button>`).join('')}</div>` : '';
+    if (!list.length) { el.innerHTML = nav + `<p class="events__empty">Здесь пока пусто. Первые отчёты появятся после встреч.</p>`; bind(); return; }
+    const [first, ...rest] = list;
+    const cover = p => photo(p.image) ? `<img src="${p.image}" alt="" loading="lazy">` : `<span>${esc(p.kind || 'Запись')}</span>`;
+    const lead = `<a class="post-lead" href="post.html?id=${encodeURIComponent(first.id)}">
+      <div class="post-lead__img grain">${cover(first)}</div>
+      <div class="post-lead__text">${postMeta(first)}<h2>${esc(first.title)}</h2><p>${esc(first.lead)}</p><span class="btn btn--line btn--sm">Читать</span></div>
     </a>`;
-  }).join('')}</div>`;
+    const rows = rest.map(p => `<a class="post-row" href="post.html?id=${encodeURIComponent(p.id)}">
+      <div class="post-row__img grain">${cover(p)}</div>
+      <div>${postMeta(p)}<h3>${esc(p.title)}</h3><p>${esc(p.lead)}</p></div>
+    </a>`).join('');
+    el.innerHTML = nav + lead + (rows ? `<div class="post-rows">${rows}</div>` : '');
+    bind();
+  };
+  const bind = () => el.querySelectorAll('[data-k]').forEach(b => b.addEventListener('click', () => { cur = b.dataset.k; draw(); }));
+  draw();
+}
+
+// Страница записи: шапка, обложка во всю ширину, текст колонкой, кадры с лайтбоксом, соседние записи
+function renderPost(){
+  const post = POSTS.find(p => p.id === new URLSearchParams(location.search).get('id'));
+  const $ = id => document.getElementById(id);
+  if (!post) { $('post-title').textContent = 'Запись не найдена'; $('post-lead').textContent = 'Возможно, ссылка устарела. Все записи в блоге.'; return; }
+  document.title = `${post.title} — Вместе`;
+  $('post-meta').innerHTML = postMeta(post);
+  $('post-title').textContent = post.title;
+  $('post-lead').textContent = post.lead;
+  if (photo(post.image)) { $('post-figure').hidden = false; $('post-img').src = post.image; $('post-cap').textContent = post.imageNote || ''; }
+  $('post-body').innerHTML = (post.body || []).map(p => `<p>${esc(p)}</p>`).join('');
+  const shots = post.photos || [];
+  if (shots.length) {
+    $('post-photos').innerHTML = `<h2 class="h-sub">Кадры</h2><div class="grid9">${shots.map((x, i) => `<button type="button" class="grid9__item grain" data-lb="${i}" aria-label="Открыть кадр ${i + 1}"><img src="${x.src}" alt="${esc(x.note || '')}" loading="lazy"></button>`).join('')}</div>`;
+    initLightbox($('post-photos'), shots.map(x => ({ src: x.src, note: x.note || '' })));
+  }
+  const ev = post.event && eventById(post.event);
+  if (ev) $('post-actions').insertAdjacentHTML('afterbegin', `<a class="btn" href="${eventUrl(ev)}">Страница встречи</a>`);
+  const all = postsSorted(), i = all.indexOf(post), other = [all[i - 1], all[i + 1]].filter(Boolean);
+  if (other.length) $('post-more').innerHTML = `<h2 class="h-sub">Ещё в блоге</h2><div class="post-rows">${other.map(p => `<a class="post-row" href="post.html?id=${encodeURIComponent(p.id)}"><div class="post-row__img grain">${photo(p.image) ? `<img src="${p.image}" alt="" loading="lazy">` : ''}</div><div>${postMeta(p)}<h3>${esc(p.title)}</h3></div></a>`).join('')}</div>`;
 }
 
 /* ---------- страница человека: кадр-слайдер, каталог кадров, короткий текст ---------- */
