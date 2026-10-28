@@ -17,6 +17,7 @@
      image      — картинка для афиши и шапки, imageNote — подпись к ней
      heroImage  — отдельный кадр для героя на главной (широкий, человек справа, слева место под текст); без него берётся image
      hidden     — true: не показывать в афише, пока не пройдёт (закрытый вечер) или пока не подтверждено; после даты попадает в «Уже прошло»
+     photos     — кадры на странице встречи: [{src, note}] (гость/бренд прислали)
      program    — как пройдёт вечер: [["Шаг", "одна фраза"], …] — формат без времени; времени нет, пока не назначено
      poster     — постер: variant, color, title ('|' = перенос), kicker, sub, photo, pos, raw (true = кадр в цвете, без ч/б и растра: коллажи из чужого визуала) */
 
@@ -320,14 +321,13 @@ const EVENTS = /*EVENTS-START*/[
   {
     "id": "m-perm",
     "poster": {
-      "variant": "mperm",
-      "color": "ink",
+      "variant": "paper",
+      "color": "green",
       "title": "Встреча|с «мпермь»",
       "kicker": "Городское медиа",
       "sub": "Пять лет рассказывают, показывают и объединяют Пермь",
-      "photo": "assets/img/events/mperm-card.webp",
-      "pos": "50% 0%",
-      "raw": true
+      "photo": "assets/img/events/mperm/01.webp",
+      "pos": "50% 42%"
     },
     "title": "Встреча с «мпермь»",
     "dates": [
@@ -344,8 +344,8 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Проекты",
     "color": "ink",
-    "image": "assets/img/events/mperm-card.webp",
-    "imagePos": "50% 0%",
+    "image": "assets/img/events/mperm/02.webp",
+    "imagePos": "50% 20%",
     "program": [
       [
         "Кто такие «мпермь»",
@@ -359,6 +359,16 @@ const EVENTS = /*EVENTS-START*/[
         "Что сделаем вместе",
         "Обсуждаем, где «Вместе» и «мпермь» полезны друг другу."
       ]
+    ],
+    "photos": [
+      {
+        "src": "assets/img/events/mperm/02.webp",
+        "note": "Команда «мпермь»"
+      },
+      {
+        "src": "assets/img/events/mperm/01.webp",
+        "note": "Съёмка «мпермь»"
+      }
     ]
   },
   {
@@ -539,13 +549,13 @@ const EVENTS = /*EVENTS-START*/[
   {
     "id": "friendship-love",
     "poster": {
-      "variant": "lookbook",
+      "variant": "full",
       "color": "blue",
-      "title": "Friendship/Love",
-      "kicker": "Дроп. Вечер для своих",
+      "title": "Дроп|Friendship/Love",
+      "kicker": "Вечер для своих",
       "sub": "Уличная одежда из Перми, ограниченный тираж",
-      "photo": "assets/img/events/friendship-love.webp",
-      "pos": "50% 50%",
+      "photo": "assets/img/events/fsl/0815.webp",
+      "pos": "50% 38%",
       "raw": true
     },
     "title": "Дроп Friendship/Love",
@@ -577,8 +587,34 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Вечер для своих",
     "color": "blue",
-    "image": "assets/img/events/friendship-love.webp",
-    "imagePos": "50% 30%"
+    "image": "assets/img/events/fsl/0815.webp",
+    "imagePos": "50% 38%",
+    "photos": [
+      {
+        "src": "assets/img/events/fsl/0809.webp",
+        "note": "Friendship/Love"
+      },
+      {
+        "src": "assets/img/events/fsl/0816.webp",
+        "note": "Friendship/Love"
+      },
+      {
+        "src": "assets/img/events/fsl/0813.webp",
+        "note": "Friendship/Love"
+      },
+      {
+        "src": "assets/img/events/fsl/0814.webp",
+        "note": "Friendship/Love"
+      },
+      {
+        "src": "assets/img/events/fsl/0810.webp",
+        "note": "Friendship/Love"
+      },
+      {
+        "src": "assets/img/events/fsl/0811.webp",
+        "note": "Friendship/Love × Smoky Dog, 19.09"
+      }
+    ]
   },
   {
     "id": "vshe-lekciya",

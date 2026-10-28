@@ -139,6 +139,11 @@ async function init(){
   $('ev-about').innerHTML = (ev.about || []).map(p => `<p>${esc(p)}</p>`).join('');
   // как пройдёт вечер — шаги без времени (program в events.js)
   if (ev.program && ev.program.length) $('ev-program').innerHTML = `<h2 class="h-sub">Как пройдёт вечер</h2><div class="program">${ev.program.map(([t, d]) => `<div class="step"><b>${esc(t)}</b><p>${esc(d)}</p></div>`).join('')}</div>`;
+  // кадры от гостя или бренда (photos в events.js) — ряд с лайтбоксом
+  if (ev.photos && ev.photos.length) {
+    $('ev-guests').insertAdjacentHTML('beforebegin', `<h2 class="h-sub">Кадры</h2><div class="grid9 event-photos">${ev.photos.map((x, i) => `<button type="button" class="grid9__item grain" data-lb="${i}" aria-label="Открыть кадр ${i + 1}"><img src="${x.src}" alt="${esc(x.note || ev.title)}" loading="lazy"${x.pos ? ` style="object-position:${x.pos}"` : ''}></button>`).join('')}</div>`);
+    initLightbox(document.querySelector('.event-photos').parentElement, ev.photos.map(x => ({ src: x.src, note: x.note || '' })));
+  }
   // ведущие и гости — карточками со ссылкой на страницу человека
   if (guests.length) $('ev-guests').innerHTML = `<h2 class="h-sub">${ev.type === 'Общение' || ev.type === 'Тренинг' ? 'Кто ведёт' : guests.length > 1 ? 'Гости' : 'Гость'}</h2><div class="reel reel--2 event-guests">${guests.map((g, i) => personCard(g, i)).join('')}</div>`;
 

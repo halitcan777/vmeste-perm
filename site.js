@@ -106,11 +106,11 @@ function renderHero(){
   const pics = (h.photos || []).map(p => `<figure class="wall__pic" style="left:${p.x}%;top:${p.y}%;width:${p.w}%;--rot:${p.rot || 0}deg"><img src="${p.src}" alt="" loading="lazy"></figure>`).join('');
   const btns = (h.actions || []).map(a => `<a class="btn${a.line ? ' btn--line' : ''}" href="${a.href}"${/^https?:/.test(a.href) ? ' target="_blank" rel="noopener"' : ''}>${esc(a.label)}</a>`).join('');
   const canvas = f.image
-    ? `<img class="frame__img" src="${f.image}" alt="${esc(f.title || '')}">`
-    : `<div class="frame__canvas grain">${f.kicker ? `<p class="frame__kicker">${esc(f.kicker)}</p>` : ''}<h1 class="frame__title">${esc(f.title || SITE.slogan)}</h1>${f.sub ? `<p class="frame__sub">${esc(f.sub)}</p>` : ''}</div>`;
+    ? `<img class="hang__img" src="${f.image}" alt="${esc(f.title || '')}" width="1800" height="1424">`
+    : `<div class="hang__canvas grain">${f.kicker ? `<p class="hang__kicker">${esc(f.kicker)}</p>` : ''}<h1 class="hang__title">${esc(f.title || SITE.slogan)}</h1>${f.sub ? `<p class="hang__sub">${esc(f.sub)}</p>` : ''}</div>`;
   el.classList.add('hero--wall');
   el.innerHTML = `<div class="wall" style="background-image:url('${h.wall}')">${pics}
-      <div class="frame"><span class="frame__nail"></span>${canvas}</div>
+      <div class="hang${f.image ? ' hang--pic' : ''}"><span class="hang__nail"></span>${canvas}</div>
     </div>
     ${btns ? `<div class="container hero__actions">${btns}</div>` : ''}`;
   const head = document.getElementById('head');
@@ -189,9 +189,9 @@ function renderPast(target){
 // У каждой встречи свой постер 16:9: реальный кадр гостя (или кадр встречи) + типографика. Девять композиций,
 // в events.js у встречи poster: { variant, color, title ('|' = перенос строки), kicker, sub, photo, pos }.
 // Фирменная обработка общая: кадры ч/б или дуотон в цветах бренда, зерно и растр печати, сдвиг цвета на заголовке, штамп «Вместе».
-const POSTER_VARIANTS = ['paper', 'duo', 'night', 'acid', 'frame', 'stars', 'white', 'circle', 'swiss', 'numeral', 'strips', 'boxes', 'riso', 'vertical', 'type', 'collage', 'mperm', 'lookbook'];
+const POSTER_VARIANTS = ['paper', 'duo', 'night', 'acid', 'frame', 'stars', 'white', 'circle', 'swiss', 'numeral', 'strips', 'boxes', 'riso', 'vertical', 'type', 'collage', 'mperm', 'lookbook', 'full'];
 // Заголовок: базовый размер и ширина колонки по композициям (cqw), чтобы длинное слово («Бесфамильная») ужалось, а не обрезалось
-const POSTER_FIT = { paper: [9, 44], duo: [10, 36], night: [10.5, 64], acid: [12.5, 72], frame: [8.5, 42], stars: [9.5, 47], white: [11, 56], circle: [9, 62], swiss: [9, 46], numeral: [7.5, 50], strips: [12, 80], boxes: [9, 70], riso: [11, 60], vertical: [11, 70], type: [10.5, 80], collage: [11, 46], mperm: [10, 50], lookbook: [8.5, 60] };
+const POSTER_FIT = { paper: [9, 44], duo: [10, 36], night: [10.5, 64], acid: [12.5, 72], frame: [8.5, 42], stars: [9.5, 47], white: [11, 56], circle: [9, 62], swiss: [9, 46], numeral: [7.5, 50], strips: [12, 80], boxes: [9, 70], riso: [11, 60], vertical: [11, 70], type: [10.5, 80], collage: [11, 46], mperm: [10, 50], lookbook: [8.5, 60], full: [10, 62] };
 function posterData(ev){
   const p = ev.poster || {};
   const guests = (ev.people || []).map(id => PEOPLE.find(x => x.id === id)).filter(Boolean);
@@ -254,6 +254,8 @@ function posterHTML(ev, { link = true } = {}){
     frame:  `${ph}${k(`<span>${esc(x.kicker)}</span><span>${esc(x.when)}</span>`)}${foot(title, meta(x.sub))}${stamp}`,
     stars:  `${ph}${POSTER_STARS}${k(`${esc(x.kicker)}<br>${esc(x.when)}`)}${title}${meta(x.sub)}${stamp}`,
     white:  `${ph}${k(`${esc(x.kicker)}`)}${meta(x.sub)}<p class="poster__big">${esc(x.when)}</p>${title}${stamp}`,
+    // во весь постер: кадр в цвете, подпись сверху слева, название внизу на затемнении
+    full:   `${ph}${k(`${esc(x.kicker)}<br>${esc(x.when)}, ${esc(x.place)}`)}${title}${stamp}`,
     circle: `${ph}${POSTER_RING}${k(`${esc(x.kicker)}<br>${esc(x.when)}, ${esc(x.place)}`)}${title}${stamp}`,
     numeral: `${ph}${k(esc(x.kicker))}<p class="poster__num" style="--ns:${numSize}cqw">${esc(x.num)}</p>${foot(title, meta(x.sub))}${stamp}`,
     strips: `${[0, 1, 2].map(i => `<div class="poster__ph poster__strip" style="left:${i * 34}cqw">${x.photo ? `<img src="${x.photo}" alt="" loading="lazy" style="object-position:${x.pos};margin-left:${-i * 34}cqw">` : ''}</div>`).join('')}${k(`${esc(x.kicker)}<br>${esc(x.when)}`)}${title}${meta(x.sub)}${stamp}`,

@@ -145,17 +145,9 @@ const POSTS = [
 // photos: кадры на стене; x/y — в процентах от стены, rot — наклон, w — ширина в % стены.
 const HERO = {
   wall: 'assets/img/brick-wall.webp',
-  photos: [
-    { src: 'assets/img/wall/hall-oct.webp',     x: 3,  y: 10, w: 15, rot: -5 },
-    { src: 'assets/img/wall/hall-beams.webp',   x: 19, y: 46, w: 14, rot: 4 },
-    { src: 'assets/img/wall/hall-side-1.webp',  x: 7,  y: 60, w: 11, rot: -3 },
-    { src: 'assets/img/wall/hall-now-1.webp',   x: 21, y: 6,  w: 12, rot: 7 },
-    { src: 'assets/img/wall/hall-now.webp',     x: 70, y: 8,  w: 15, rot: 5 },
-    { src: 'assets/img/wall/hall-oct-1.webp',   x: 84, y: 38, w: 12, rot: -6 },
-    { src: 'assets/img/wall/hall-beams-1.webp', x: 68, y: 52, w: 13, rot: 3 },
-    { src: 'assets/img/wall/hall-side.webp',    x: 86, y: 68, w: 11, rot: -4 },
-  ],
-  frame: { image: '', kicker: 'Молодёжное движение в Перми', title: 'Зачем быть одному, если можно быть вместе?', sub: 'Ленина, 44' },
+  photos: [],   // 28.10: кадры со стены убраны, владелец пришлёт, что и как развесить
+  // картина: цифровая копия настоящей (золотой багет, надпись «ВМЕСТЕ» баллончиком, без пейзажа) — assets/img/painting.png
+  frame: { image: 'assets/img/painting.png', title: 'Вместе' },
   actions: [{ label: 'Афиша', href: 'afisha.html' }, { label: 'Канал в Телеграме', href: 'https://t.me/v_meste_perm', line: true }],
 };
 
