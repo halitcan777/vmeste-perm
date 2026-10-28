@@ -949,7 +949,7 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 
 /* пустая стена вплотную к афише: без полосы фона между ними, стена выше */
 .hero--wall:not(:has(.hang)) { padding-bottom: 0 !important; }
-.hero--wall:not(:has(.hang)) .wall { height: clamp(260px, 40vh, 400px) !important; }
+.hero--wall:not(:has(.hang)) .wall { height: clamp(312px, 48vh, 480px) !important; }
 
 /* Fredoka One — мелкий текст (28.10): плашки, подписи и мета на постерах, имена в карточках, шаги программы, вкладки, кнопки */
 .poster__k, .poster__meta, .poster__tag, .poster__marq, .poster__vert, .poster__box, .poster__grid, .poster__face small,
