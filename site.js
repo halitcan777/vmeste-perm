@@ -396,7 +396,9 @@ function renderTeamMosaic(target, { count = 16 } = {}){
   // только настоящие фото (без ассоциативных кадров): Илья первым, Платон вторым, дальше пустые квадраты
   const team = PEOPLE.filter(p => p.role === 'team');
   const first = ['ilya', 'platon'].map(id => team.find(p => p.id === id)).filter(Boolean);
-  const list = [...first, ...team.filter(p => !first.includes(p))].slice(0, count);
+  const rest = team.filter(p => !first.includes(p));
+  // люди с фото вперёд, без фото — в конец (пустые клетки только если фото меньше, чем клеток)
+  const list = [...first, ...rest.filter(p => p.photo), ...rest.filter(p => !p.photo)].slice(0, count);
   el.innerHTML = `<div class="mosaic">${list.map(p => `<a class="mosaic__item${p.photo ? '' : ' mosaic__item--empty'}" href="person.html?id=${encodeURIComponent(p.id)}" aria-label="${esc(p.name)}" title="${esc(p.name)}">${p.photo ? `<img src="${p.photo}" alt="" loading="lazy"${p.photoPos ? ` style="object-position:${p.photoPos}"` : ''}>` : ''}</a>`).join('')}</div>`;
 }
 
