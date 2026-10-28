@@ -26,14 +26,6 @@
   <div id="home-events"></div>
 </div></section>
 
-<!-- Форматы встреч -->
-<section class="section home-desk" id="formats"><div class="container">
-  <div class="sec-head">
-    <div><h2>Форматы встреч</h2><p class="lead">Пять форматов, у каждого свой характер. Нажми на формат, откроется ближайшая встреча.</p></div>
-  </div>
-  <div id="formats-grid"></div>
-</div></section>
-
 <!-- Команда -->
 <section class="section" id="team"><div class="container">
   <div class="sec-head">
@@ -52,14 +44,6 @@
   <div id="home-people"></div>
 </div></section>
 
-<!-- Партнёры -->
-<section class="section home-desk" id="partners"><div class="container">
-  <div class="sec-head">
-    <div><h2>Партнёры</h2><p class="lead">Компании и объединения, которые помогают «Вместе» со стартом и ведут встречи для участников.</p></div>
-  </div>
-  <div id="home-partners"></div>
-</div></section>
-
 <!-- Как нас найти -->
 <section class="section home-desk" id="where"><div class="container">
   <div class="sec-head">
@@ -75,10 +59,8 @@
 <script>
 renderHero();
 renderPosters('home-events', { months: true });
-renderFormats('formats-grid');
 renderTeamMosaic('home-team', { count: 16 });
 renderPeople('home-people', { limit: 5, compact: true });
-renderPartnerStrip('home-partners', { limit: 4 });
 renderWhere('where-block');
 bindLinks();
 </script>

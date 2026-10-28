@@ -22,7 +22,12 @@ const ASSOC_READY = typeof ASSOC_FILES !== 'undefined' ? ASSOC_FILES : [];
 const assocReady = src => ASSOC_READY.some(f => src.endsWith('/' + f));
 
 /* ---------- лента над шапкой: фразы из принципов ---------- */
-function navItems(){ return NAV.filter(n => n[2] !== 'blog' || (typeof POSTS !== 'undefined' && POSTS.length)); }
+// «Блог» — только при записях; «Партнёры» — когда подтверждённых партнёров хотя бы три (28.10, решение владельца)
+function navItems(){
+  const posts = typeof POSTS !== 'undefined' && POSTS.length;
+  const partners = typeof PARTNERS !== 'undefined' && PARTNERS.filter(p => p.status === 'partner').length >= 3;
+  return NAV.filter(n => (n[2] !== 'blog' || posts) && (n[2] !== 'partners' || partners));
+}
 
 function renderTicker(){
   const el = document.getElementById('tick');
@@ -267,7 +272,9 @@ function posterHTML(ev, { link = true } = {}){
   const lines = x.title.split(/\s*\|\s*/), longest = Math.max(...lines.map(l => l.length)) + (x.variant === 'acid' ? 1 : 0);
   const [base, width] = POSTER_FIT[x.variant], lower = x.variant === 'duo' || x.variant === 'stars';
   const size = Math.min(base, width / ((lower ? .5 : .54) * longest)).toFixed(2);
-  const title = `<h3 class="poster__title" style="font-size:${size}cqw">${lines.map(esc).join('<br>')}${x.variant === 'acid' ? '.' : ''}</h3>`;
+  const title = `<h3 class="poster__title" style="--ts:${size}cqw">${lines.map(esc).join('<br>')}${x.variant === 'acid' ? '.' : ''}</h3>`;
+  // цифры даты (или слово месяца, пока даты нет): ужимаются по длине, чтобы не лезть на кадр
+  const numSize = Math.min(26, 50 / (0.56 * x.num.length)).toFixed(1);
   const marq = () => `<p class="poster__marq" aria-hidden="true">${`<span>${esc(x.kicker)}</span><span>Вместе</span><span>${esc(x.place)}</span>`.repeat(6)}</p>`;
   const k = text => `<p class="poster__k">${text}</p>`;
   const meta = text => `<p class="poster__meta">${esc(text)}</p>`;
@@ -276,7 +283,7 @@ function posterHTML(ev, { link = true } = {}){
   const stamp = `<span class="poster__stamp"><img src="assets/brand/wordmark-ink.svg" alt="Вместе"></span>`;
   // Swiss: два ведущих — два портрета с подписями вместо одного кадра
   const faces = x.guests.length > 1
-    ? `<div class="poster__faces">${x.guests.slice(0, 3).map(g => `<div class="poster__face">${g.photo ? img(g.photo, g.photoPos || '50% 30%') : ''}<small><b>${esc(g.name)}</b>${esc(g.position || '')}</small></div>`).join('')}</div>`
+    ? `<div class="poster__faces">${x.guests.slice(0, 3).map(g => `<div class="poster__face">${g.photo ? img(g.photo, g.photoPos || '50% 30%') : ''}<small><b>${esc(g.name)}</b><span>${esc(g.position || '')}</span></small></div>`).join('')}</div>`
     : ph;
   const grid = `<div class="poster__grid"><span><b>Формат</b>${esc(x.kicker)}</span><span><b>Когда</b>${esc(x.when)}</span><span><b>Где</b>${esc(x.place)}</span></div>`;
   const body = {
@@ -288,9 +295,9 @@ function posterHTML(ev, { link = true } = {}){
     stars:  `${ph}${POSTER_STARS}${k(`${esc(x.kicker)}<br>${esc(x.when)}`)}${title}${meta(x.sub)}${stamp}`,
     white:  `${ph}${k(`${esc(x.kicker)}`)}${meta(x.sub)}<p class="poster__big">${esc(x.when)}</p>${title}${stamp}`,
     circle: `${ph}${POSTER_RING}${k(`${esc(x.kicker)}<br>${esc(x.when)}, ${esc(x.place)}`)}${title}${stamp}`,
-    numeral: `${ph}${k(esc(x.kicker))}<p class="poster__num">${esc(x.num)}</p>${foot(title, meta(x.sub))}${stamp}`,
+    numeral: `${ph}${k(esc(x.kicker))}<p class="poster__num" style="--ns:${numSize}cqw">${esc(x.num)}</p>${foot(title, meta(x.sub))}${stamp}`,
     strips: `${[0, 1, 2].map(i => `<div class="poster__ph poster__strip" style="left:${i * 34}cqw">${x.photo ? `<img src="${x.photo}" alt="" loading="lazy" style="object-position:${x.pos};margin-left:${-i * 34}cqw">` : ''}</div>`).join('')}${k(`${esc(x.kicker)}<br>${esc(x.when)}`)}${title}${meta(x.sub)}${stamp}`,
-    boxes:  `${ph}<h3 class="poster__title poster__boxes" style="font-size:${size}cqw">${lines.map(l => `<span>${esc(l)}</span>`).join('')}</h3>${k(`${esc(x.kicker)}<br>${esc(x.when)}, ${esc(x.place)}`)}${meta(x.sub)}${stamp}`,
+    boxes:  `${ph}<h3 class="poster__title poster__boxes" style="--ts:${size}cqw">${lines.map(l => `<span>${esc(l)}</span>`).join('')}</h3>${k(`${esc(x.kicker)}<br>${esc(x.when)}, ${esc(x.place)}`)}${meta(x.sub)}${stamp}`,
     riso:   `${ph}${k(`${esc(x.kicker)}<br>${esc(x.when)}`)}${title}${meta(x.sub)}${stamp}`,
     vertical: `${ph}<p class="poster__vert">${esc(x.kicker)}</p><p class="poster__box">${esc(x.when)}</p>${title}${meta(x.sub)}${stamp}`,
     type:   `${k(esc(x.kicker))}<p class="poster__big">${esc(x.when)}</p>${title}${meta(x.sub)}${stamp}`,
