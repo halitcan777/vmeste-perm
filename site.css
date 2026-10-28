@@ -973,3 +973,7 @@ h1, h2, h3, h4 { font-weight: 400; letter-spacing: .01em; }
 .h-sub { font-size: 30px; }
 .reg h2 { font-size: 28px; }
 @media (max-width: 760px) { .event-head h1 { font-size: 32px; } .h-sub { font-size: 24px; } }
+
+/* пустая стена вплотную к афише: без полосы фона между ними, стена выше */
+.hero--wall:not(:has(.hang)) { padding-bottom: 0 !important; }
+.hero--wall:not(:has(.hang)) .wall { height: clamp(420px, 66vh, 640px) !important; }
