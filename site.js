@@ -2,12 +2,13 @@
    Подключать после events.js и content.js. Страница помечает себя <body data-page="...">.
    Правила владельца (26.10): без линий-разделителей и точек-разделителей; фото показываем только при SHOW_PHOTOS. */
 
+// Пункты меню; «Блог» выводится, только когда есть записи (navItems)
 const NAV = [
   ['afisha.html', 'Афиша', 'afisha'],
   ['team.html', 'Команда', 'team'],
   ['people.html', 'Эксперты', 'people'],
   ['partners.html', 'Партнёры', 'partners'],
-  ['blog.html', 'Блог', 'blog'],
+  ['blog.html', 'Блог', 'blog'],   // показывается, только если есть записи (см. renderHead)
   ['about.html', 'О нас', 'about'],
 ];
 
@@ -21,6 +22,8 @@ const ASSOC_READY = typeof ASSOC_FILES !== 'undefined' ? ASSOC_FILES : [];
 const assocReady = src => ASSOC_READY.some(f => src.endsWith('/' + f));
 
 /* ---------- лента над шапкой: фразы из принципов ---------- */
+function navItems(){ return NAV.filter(n => n[2] !== 'blog' || (typeof POSTS !== 'undefined' && POSTS.length)); }
+
 function renderTicker(){
   const el = document.getElementById('tick');
   if (!el) return;
@@ -35,7 +38,7 @@ function renderTicker(){
 function renderHead(){
   const el = document.getElementById('head');
   if (!el) return;
-  const links = NAV.map(([href, label, id]) => `<a href="${href}"${id === page ? ' aria-current="page"' : ''}>${label}</a>`).join('');
+  const links = navItems().map(([href, label, id]) => `<a href="${href}"${id === page ? ' aria-current="page"' : ''}>${label}</a>`).join('');
   el.innerHTML = `<div class="container head__in">
     <a class="head__logo" href="index.html" aria-label="Вместе — на главную"><img src="assets/brand/wordmark-blue.svg" alt="Вместе" width="122" height="28"></a>
     <nav class="head__nav" aria-label="Разделы">${links}</nav>
@@ -44,7 +47,7 @@ function renderHead(){
   </div>
   <div class="menu on-dark" id="menu" hidden role="dialog" aria-modal="true" aria-label="Меню">
     <div class="menu__top"><img src="assets/brand/wordmark-paper.svg" alt="Вместе"><button class="menu__close" type="button" aria-label="Закрыть меню">×</button></div>
-    <nav>${NAV.map(([href, label]) => `<a href="${href}">${label}</a>`).join('')}</nav>
+    <nav>${navItems().map(([href, label]) => `<a href="${href}">${label}</a>`).join('')}</nav>
     <a class="btn btn--paper" href="${SITE.channel}" target="_blank" rel="noopener">Вступить</a>
   </div>`;
   const menu = el.querySelector('#menu'), burger = el.querySelector('.head__burger'), main = document.querySelector('main');
@@ -71,7 +74,7 @@ function renderFoot(){
         <p>${esc(SITE.slogan)} ${esc(SITE.about)}</p>
         <a class="btn" href="${SITE.channel}" target="_blank" rel="noopener">Канал в Телеграме</a>
       </div>
-      <div><h3>Разделы</h3><ul>${NAV.map(([href, label]) => `<li><a href="${href}">${label}</a></li>`).join('')}</ul></div>
+      <div><h3>Разделы</h3><ul>${navItems().map(([href, label]) => `<li><a href="${href}">${label}</a></li>`).join('')}</ul></div>
       <div><h3>Где мы</h3><ul><li>${esc(SITE.address)}</li><li>Вход со Старокирпичного переулка</li></ul></div>
       <div><h3>Связь</h3><ul>
         <li><a href="${SITE.channel}" target="_blank" rel="noopener">Канал в Телеграме</a></li>
@@ -81,7 +84,7 @@ function renderFoot(){
     </div>
     <div class="foot__bottom">
       <span>© ${new Date().getFullYear()} «Вместе», Пермь</span>
-      <nav aria-label="Документы"><a href="privacy.html">Политика обработки персональных данных</a><a href="consent.html">Согласие на обработку данных</a><a href="offer.html">Оферта о пожертвовании</a></nav>
+      <nav aria-label="Документы"><a href="privacy.html">Политика обработки персональных данных</a><a href="consent.html">Согласие на обработку данных</a></nav>
     </div>
   </div>`;
 }
@@ -222,11 +225,9 @@ function renderPast(target){
 // У каждой встречи свой постер 16:9: реальный кадр гостя (или кадр встречи) + типографика. Девять композиций,
 // в events.js у встречи poster: { variant, color, title ('|' = перенос строки), kicker, sub, photo, pos }.
 // Фирменная обработка общая: кадры ч/б или дуотон в цветах бренда, зерно и растр печати, сдвиг цвета на заголовке, штамп «Вместе».
-const POSTER_VARIANTS = ['paper', 'duo', 'night', 'acid', 'frame', 'stars', 'white', 'circle', 'swiss', 'numeral', 'strips', 'boxes', 'riso', 'vertical'];
+const POSTER_VARIANTS = ['paper', 'duo', 'night', 'acid', 'frame', 'stars', 'white', 'circle', 'swiss', 'numeral', 'strips', 'boxes', 'riso', 'vertical', 'type'];
 // Заголовок: базовый размер и ширина колонки по композициям (cqw), чтобы длинное слово («Бесфамильная») ужалось, а не обрезалось
-const POSTER_FIT = { paper: [9, 44], duo: [10, 36], night: [10.5, 64], acid: [12.5, 72], frame: [8.5, 42], stars: [9.5, 47], white: [11, 56], circle: [9, 62], swiss: [9, 46], numeral: [7.5, 50], strips: [12, 80], boxes: [9, 70], riso: [11, 60], vertical: [11, 70] };
-// Цвет штампа «Вместе» по композиции: paper — светлый поверх кадра, иначе цвет постера
-const POSTER_STAMP = { paper: 'paper', duo: 'paper', night: 'paper', acid: 'pc', frame: 'paper', stars: 'paper', white: 'paper', circle: 'paper', swiss: 'ink', numeral: 'ink', strips: 'paper', boxes: 'paper', riso: 'ink', vertical: 'paper' };
+const POSTER_FIT = { paper: [9, 44], duo: [10, 36], night: [10.5, 64], acid: [12.5, 72], frame: [8.5, 42], stars: [9.5, 47], white: [11, 56], circle: [9, 62], swiss: [9, 46], numeral: [7.5, 50], strips: [12, 80], boxes: [9, 70], riso: [11, 60], vertical: [11, 70], type: [10.5, 80] };
 function posterData(ev){
   const p = ev.poster || {};
   const guests = (ev.people || []).map(id => PEOPLE.find(x => x.id === id)).filter(Boolean);
@@ -271,8 +272,8 @@ function posterHTML(ev, { link = true } = {}){
   const k = text => `<p class="poster__k">${text}</p>`;
   const meta = text => `<p class="poster__meta">${esc(text)}</p>`;
   const foot = (...parts) => `<div class="poster__foot">${parts.join('')}</div>`;
-  const stampColor = POSTER_STAMP[x.variant] === 'pc' || (!x.photo && POSTER_STAMP[x.variant] === 'paper') ? x.color : POSTER_STAMP[x.variant];
-  const stamp = `<img class="poster__stamp" src="assets/brand/wordmark-${stampColor}.svg" alt="Вместе">`;
+  // штамп «Вместе» — наклейка: кремовая плашка с чёрным словом, читается на любом фоне
+  const stamp = `<span class="poster__stamp"><img src="assets/brand/wordmark-ink.svg" alt="Вместе"></span>`;
   // Swiss: два ведущих — два портрета с подписями вместо одного кадра
   const faces = x.guests.length > 1
     ? `<div class="poster__faces">${x.guests.slice(0, 3).map(g => `<div class="poster__face">${g.photo ? img(g.photo, g.photoPos || '50% 30%') : ''}<small><b>${esc(g.name)}</b>${esc(g.position || '')}</small></div>`).join('')}</div>`
@@ -291,7 +292,8 @@ function posterHTML(ev, { link = true } = {}){
     strips: `${[0, 1, 2].map(i => `<div class="poster__ph poster__strip" style="left:${i * 34}cqw">${x.photo ? `<img src="${x.photo}" alt="" loading="lazy" style="object-position:${x.pos};margin-left:${-i * 34}cqw">` : ''}</div>`).join('')}${k(`${esc(x.kicker)}<br>${esc(x.when)}`)}${title}${meta(x.sub)}${stamp}`,
     boxes:  `${ph}<h3 class="poster__title poster__boxes" style="font-size:${size}cqw">${lines.map(l => `<span>${esc(l)}</span>`).join('')}</h3>${k(`${esc(x.kicker)}<br>${esc(x.when)}, ${esc(x.place)}`)}${meta(x.sub)}${stamp}`,
     riso:   `${ph}${k(`${esc(x.kicker)}<br>${esc(x.when)}`)}${title}${meta(x.sub)}${stamp}`,
-    vertical: `${ph}<p class="poster__vert"><span>${esc(x.kicker)}</span><span>${esc(x.place)}</span></p><p class="poster__box">${esc(x.when)}</p>${title}${meta(x.sub)}${stamp}`,
+    vertical: `${ph}<p class="poster__vert">${esc(x.kicker)}</p><p class="poster__box">${esc(x.when)}</p>${title}${meta(x.sub)}${stamp}`,
+    type:   `${k(esc(x.kicker))}<p class="poster__big">${esc(x.when)}</p>${title}${meta(x.sub)}${stamp}`,
     swiss:  `${faces}${k(esc(x.guests.length > 1 ? 'Ведут ' + x.guests.map(g => g.name.split(' ')[0]).join(' и ') : x.kicker))}${title}${grid}${stamp}`,
   }[x.variant];
   const tag = link ? 'a' : 'div';
@@ -344,7 +346,7 @@ function renderSpotlight(target){
 function renderPartnerStrip(target, { limit = 0 } = {}){
   const el = document.getElementById(target);
   if (!el) return;
-  el.innerHTML = `<div class="pstrip">${PARTNERS.slice(0, limit || undefined).map(p => { const tag = p.url ? 'a' : 'span'; return `<${tag} class="pstrip__item"${p.url ? ` href="${p.url}" target="_blank" rel="noopener"` : ''}>${p.logo ? `<img src="${p.logo}" alt="${esc(p.name)}" loading="lazy">` : `<b>${esc(p.name)}</b>`}</${tag}>`; }).join('')}
+  el.innerHTML = `<div class="pstrip">${PARTNERS.filter(p => p.status === 'partner').slice(0, limit || undefined).map(p => { const tag = p.url ? 'a' : 'span'; return `<${tag} class="pstrip__item"${p.url ? ` href="${p.url}" target="_blank" rel="noopener"` : ''}>${p.logo ? `<img src="${p.logo}" alt="${esc(p.name)}" loading="lazy">` : `<b>${esc(p.name)}</b>`}</${tag}>`; }).join('')}
     <a class="pstrip__item pstrip__item--call" href="partners.html"><b>Стать партнёром</b></a></div>`;
 }
 
@@ -422,7 +424,7 @@ function renderPeople(target, { roles = ['expert', 'guest'], invite = true, limi
 function renderPartners(target, { invite = true, limit = 0 } = {}){
   const el = document.getElementById(target);
   if (!el) return;
-  const list = PARTNERS.slice(0, limit || undefined);
+  const list = PARTNERS.filter(p => p.status === 'partner').slice(0, limit || undefined);
   const cards = list.map((p, i) => {
     const frame = p.logo ? `<div class="card__plate card__plate--logo"><img src="${p.logo}" alt="${esc(p.name)}" loading="lazy"></div>`
       : `<div class="card__plate card__plate--poster"><b>${esc(p.name)}</b></div>`;

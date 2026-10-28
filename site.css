@@ -458,6 +458,7 @@ a.card:hover .card__name { color: var(--blue); }
 .seat-line { margin-top: 8px; font-size: 15px; color: var(--ink-2); }
 .reg-form { display: flex; flex-direction: column; gap: 16px; margin-top: 24px; }
 .field { display: flex; flex-direction: column; gap: 8px; }
+.field[hidden] { display: none; }   /* иначе display:flex перебивает hidden */
 .field > span { font-size: 14px; font-weight: 600; }
 .field small { font-weight: 400; color: var(--ink-2); }
 .field input, .field select, .field textarea { width: 100%; min-height: 48px; padding: 12px 16px; border: 1.5px solid transparent; border-radius: var(--radius); background: var(--paper); font: 400 16px/1.4 var(--f-text); color: var(--ink); }
@@ -636,7 +637,7 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .poster__ph { inset: 0; overflow: hidden; }
 .poster__ph img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; filter: grayscale(1) contrast(1.12); }
 /* растр печати поверх любого кадра */
-.poster__ph::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: .14; mix-blend-mode: multiply;
+.poster__ph::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: .1; mix-blend-mode: multiply;
   background-image: radial-gradient(circle, rgba(15,15,15,.7) .25cqw, transparent .4cqw); background-size: .75cqw .75cqw; }
 .p-white .poster__ph::before { display: none; }   /* вырезанный портрет на кремовом: растр выдал бы границу кадра */
 .poster:hover .poster__ph img { transform: scale(1.03); }
@@ -651,21 +652,23 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .poster__stars { fill: none; stroke: var(--paper); stroke-width: .7; stroke-linejoin: round; stroke-linecap: round; }
 .poster__ring { left: 0; top: 0; width: 100%; height: 100%; fill: none; stroke: var(--paper); stroke-width: .9; stroke-linecap: round; z-index: 3; }
 .poster__foot { display: flex; flex-direction: column; gap: 1.5cqw; }
-.poster__stamp { width: 11cqw; height: auto; right: 4cqw; top: 4cqw; z-index: 4; }
+.poster__stamp { right: 4cqw; top: 4cqw; z-index: 4; display: inline-block; padding: 1.1cqw 1.5cqw .9cqw; border-radius: .5cqw; background: var(--paper); transform: rotate(-3deg); }
+.poster__stamp img { display: block; width: 11cqw; height: auto; }
 
 /* бумага: крем, ч/б кадр справа с рваным краем, цветное слово внизу, сдвиг цвета на заголовке */
 .p-paper { background: var(--paper); }
 .p-paper .poster__ph { left: 50cqw; clip-path: polygon(3% 0, 0 3%, 4% 7%, 1% 12%, 5% 16%, 2% 21%, 0 26%, 4% 31%, 1% 36%, 5% 41%, 2% 46%, 0 51%, 4% 56%, 1% 61%, 5% 66%, 2% 71%, 0 76%, 4% 81%, 1% 86%, 5% 91%, 2% 96%, 4% 100%, 100% 100%, 100% 0); }
-.p-paper .poster__k { left: 4cqw; top: 4cqw; color: var(--pc); }
-.p-paper .poster__title { left: 4cqw; top: 9cqw; width: 44cqw; text-shadow: .3cqw .3cqw 0 var(--pc); }
+.p-paper .poster__stamp { right: auto; left: 4cqw; top: 4cqw; }
+.p-paper .poster__k { left: 4cqw; top: 10cqw; color: var(--pc); }
+.p-paper .poster__title { left: 4cqw; top: 14cqw; width: 44cqw; text-shadow: .3cqw .3cqw 0 var(--pc); }
 .p-paper .poster__foot { left: 4cqw; bottom: 4cqw; width: 42cqw; }
 .p-paper .poster__meta { color: var(--ink-2); }
 
-/* дуотон: цветной кадр справа, строчный заголовок цветом слева */
+/* портрет: крем, чистый ч/б кадр справа без растра, строчный заголовок цветом слева */
 .p-duo { background: var(--paper); }
-.p-duo .poster__ph { left: 42cqw; background: color-mix(in srgb, var(--pc) 55%, var(--ink)); }
-.p-duo .poster__ph img { mix-blend-mode: screen; }
-.p-duo .poster__ph::after { content: ''; position: absolute; inset: 0; z-index: 2; background: var(--paper); mix-blend-mode: multiply; opacity: .85; }
+.p-duo .poster__ph { left: 42cqw; }
+.p-duo .poster__ph img { filter: grayscale(1) contrast(1.08); }
+.p-duo .poster__ph::before { display: none; }
 .p-duo .poster__title { left: 4cqw; top: 3.5cqw; width: 36cqw; text-transform: none; color: var(--pc); }
 .p-duo .poster__foot { left: 4cqw; bottom: 4cqw; width: 36cqw; }
 .p-duo .poster__meta { color: var(--ink-2); }
@@ -677,7 +680,7 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .p-night .poster__marq { top: 3cqw; } .p-night .poster__marq + .poster__marq { top: 6.4cqw; opacity: .5; }
 .p-night .poster__title { left: 4cqw; bottom: 4cqw; width: 64cqw; }
 .p-night .poster__k { right: 4cqw; bottom: 4cqw; width: 26cqw; text-align: right; }
-.p-night .poster__stamp { top: 11cqw; }
+.p-night .poster__stamp { top: 10.5cqw; }
 
 /* кислота: светлый ч/б кадр, огромный цветной заголовок с точкой, квадраты по углам */
 .p-acid { background: var(--paper-2); }
@@ -694,7 +697,8 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .p-frame .poster__k { left: 4cqw; top: 4cqw; width: 42cqw; display: flex; justify-content: space-between; gap: 2cqw; }
 .p-frame .poster__foot { left: 4cqw; bottom: 4cqw; width: 42cqw; }
 .p-frame .poster__meta { opacity: .85; }
-.p-frame .poster__stamp { right: 7cqw; top: 7cqw; }
+.p-frame .poster__stamp { right: auto; left: 4cqw; top: 4cqw; }
+.p-frame .poster__k { top: 10cqw; }
 
 /* звёзды: сплошной цвет, кадр слева впечатан, нарисованные звёзды, строчный заголовок справа */
 .p-stars { background: var(--pc); color: var(--paper); }
@@ -727,7 +731,7 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .p-swiss .poster__ph, .p-swiss .poster__faces { left: 52cqw; right: 4cqw; top: 4cqw; bottom: 15cqw; }
 .p-swiss .poster__ph { left: 54cqw; }
 .p-swiss .poster__k { left: 4cqw; top: 4cqw; width: 46cqw; }
-.p-swiss .poster__title { left: 4cqw; top: 13cqw; width: 46cqw; text-shadow: .3cqw .3cqw 0 var(--pc); }
+.p-swiss .poster__title { left: 4cqw; top: 15cqw; width: 46cqw; text-shadow: .3cqw .3cqw 0 var(--pc); }
 .p-swiss .poster__grid { left: 4cqw; right: 4cqw; bottom: 4cqw; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2cqw; padding-top: 1.6cqw; border-top: .35cqw solid var(--ink); font: 500 2.1cqw/1.35 var(--f-text); letter-spacing: .05em; text-transform: uppercase; }
 .p-swiss .poster__grid b { display: block; font-weight: 700; color: var(--pc); }
 .p-swiss .poster__faces { display: grid; grid-template-columns: 1fr 1fr; gap: 2cqw; }
@@ -736,7 +740,7 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .p-swiss .poster__face small { font: 500 2cqw/1.3 var(--f-text); color: var(--ink-2); }
 .p-swiss .poster__face small b { display: block; color: var(--ink); }
 .p-swiss .poster__stamp { right: auto; left: 4cqw; top: 4cqw; }
-.p-swiss .poster__k { top: 7.5cqw; }
+.p-swiss .poster__k { top: 10cqw; }
 
 /* цифры: крем, огромная дата в цвете, кадр справа, заголовок под цифрами (швейцарская школа) */
 .p-numeral { background: var(--paper); }
@@ -782,7 +786,7 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .p-vertical .poster__box { left: 4cqw; top: 4cqw; padding: 1.2cqw 2cqw .8cqw; border: .35cqw solid var(--paper); font: 600 3cqw/1 var(--f-display); text-transform: uppercase; }
 .p-vertical .poster__title { left: 4cqw; bottom: 4cqw; width: 70cqw; }
 .p-vertical .poster__meta { display: none; }   /* подпись не влезает рядом с широким заголовком */
-.p-vertical .poster__stamp { right: 9cqw; top: 4cqw; }
+.p-vertical .poster__stamp { right: 9cqw; top: 3.5cqw; }
 
 /* программа вечера и ведущие на странице встречи */
 .h-sub { margin-top: 48px; font-size: 32px; }
@@ -801,3 +805,17 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 
 /* ряд из трёх кадров на телефоне — столбиком, без пустых клеток */
 @media (max-width: 640px) { .grid9 { grid-template-columns: 1fr; gap: 8px; border-radius: 0; } .grid9__item { border-radius: var(--radius); } .grid9__item--empty { display: none; } }
+
+/* тип: без кадра, крем, огромный строчный заголовок цветом внизу, месяц крупно справа сверху */
+.p-type { background: var(--paper-2); }
+.p-type .poster__k { left: 4cqw; top: 10cqw; width: 60cqw; color: var(--ink-2); }
+.p-type .poster__big { right: 4cqw; top: 4cqw; color: var(--ink); }
+.p-type .poster__title { left: 4cqw; bottom: 10cqw; width: 80cqw; text-transform: none; color: var(--pc); text-shadow: .35cqw .35cqw 0 var(--paper); }
+.p-type .poster__meta { left: 4cqw; bottom: 4cqw; width: 60cqw; color: var(--ink-2); }
+.p-type .poster__stamp { right: auto; left: 4cqw; top: 4cqw; }
+
+/* форма записи: проверка «не робот» и подсказка после отправки */
+.captcha__row { display: grid; grid-template-columns: minmax(0, 1fr) 96px; gap: 12px; align-items: center; font-size: 16px; }
+.captcha__row input { text-align: center; }
+.copybox { display: flex; gap: 8px; align-items: stretch; margin-top: 16px; }
+.copybox textarea { flex: 1; min-height: 72px; padding: 12px 16px; border: 1.5px solid transparent; border-radius: var(--radius); background: var(--paper); font: 400 15px/1.4 var(--f-text); color: var(--ink); resize: none; }

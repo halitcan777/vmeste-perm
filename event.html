@@ -53,6 +53,8 @@
       <!-- ловушка для ботов: люди это поле не видят -->
       <label class="hp" aria-hidden="true">Сайт<input name="website" tabindex="-1" autocomplete="off"></label>
       <label class="check"><input type="checkbox" name="consent" required><span>Даю <a class="link" href="consent.html" target="_blank">согласие</a> на обработку персональных данных по <a class="link" href="privacy.html" target="_blank">политике</a></span></label>
+      <!-- проверка «не робот»: пример с числами, ответ сверяется на месте; при подключении сервера заменить на капчу с проверкой на сервере -->
+      <label class="field captcha"><span>Проверка, что ты не робот</span><span class="captcha__row"><span id="captcha-q"></span><input name="captcha" inputmode="numeric" autocomplete="off" required maxlength="3" aria-label="Ответ"></span></label>
       <p class="form-note">Место закрепляется после подтверждения в Телеграме, это один шаг.</p>
       <p class="form-error" id="form-error" role="alert" hidden></p>
       <button class="btn" type="submit" id="reg-submit">Записаться</button>
@@ -61,8 +63,9 @@
     <!-- шаг 2: подтвердить в Телеграме -->
     <div class="reg-confirm" id="reg-confirm" hidden>
       <p class="intro" id="confirm-text"></p>
+      <div class="copybox" id="confirm-copy" hidden><textarea id="confirm-msg" readonly></textarea><button type="button" class="btn btn--line btn--sm" id="confirm-copy-btn">Скопировать</button></div>
       <p class="done-actions"><a class="btn" id="tg-confirm" target="_blank" rel="noopener">Подтвердить в Телеграме</a></p>
-      <p class="form-note">Откроется наш бот, нажми «Старт». Без подтверждения место освободится через 15 минут. Бот напомнит о встрече за день, а если планы поменяются, там же можно отменить запись.</p>
+      <p class="form-note" id="confirm-note">Откроется наш бот, нажми «Старт». Без подтверждения место освободится через 15 минут. Бот напомнит о встрече за день, а если планы поменяются, там же можно отменить запись.</p>
     </div>
 
     <!-- запись закрыта / событие прошло / не найдено -->
@@ -83,6 +86,9 @@ const source = params.get('from') || params.get('utm_source') || (document.refer
 const $ = id => document.getElementById(id);
 const show = id => { ['reg-soon','reg-form','reg-confirm','reg-closed'].forEach(x => $(x).hidden = x !== id); };
 let seats = {};
+// проверка «не робот»: простой пример, ответ известен только странице
+const capA = 2 + Math.floor(Math.random() * 8), capB = 2 + Math.floor(Math.random() * 8);
+document.getElementById('captcha-q').textContent = `Сколько будет ${capA} + ${capB}?`;
 
 function closed(text){ show('reg-closed'); $('closed-text').textContent = text; }
 
@@ -90,7 +96,7 @@ function currentDay(){ return ev.dates.length > 1 ? $('day-select').value : ev.d
 
 // Строка «записались / осталось» и текст кнопки под выбранный день
 function refreshSeats(){
-  const line = seatLine(ev, currentDay(), seats);
+  const line = dateKnown(ev) ? seatLine(ev, currentDay(), seats) : '';
   $('seat-line').textContent = line; $('seat-line').hidden = !line;
   const s = seats[`${ev.id}|${currentDay()}`];
   const full = ev.capacity && s && s.taken >= ev.capacity;
@@ -122,7 +128,7 @@ async function init(){
   $('reg-title').textContent = ev.action === 'Помочь' ? 'Записаться помогать' : 'Записаться';
 
   const facts = [['Когда', whenText], ['Где', ev.place || DEFAULT_PLACE], ['Вход', 'Бесплатно']];
-  if (ev.capacity) facts.push(['Мест', `${ev.capacity}${ev.dates.length > 1 ? ' в день' : ''}`]);
+  if (ev.capacity && dateKnown(ev)) facts.push(['Мест', `${ev.capacity}${ev.dates.length > 1 ? ' в день' : ''}`]);
   $('ev-facts').innerHTML = facts.map(([k, v]) => `<div class="fact"><strong>${k}</strong><p>${esc(v)}</p></div>`).join('');
   // гости встречи — ссылкой на их страницы
   const guests = (ev.people || []).map(id => PEOPLE.find(p => p.id === id)).filter(Boolean);
@@ -148,7 +154,7 @@ async function init(){
   }
 
   show('reg-form');
-  if (ev.dates.length > 1) {
+  if (ev.dates.length > 1 && dateKnown(ev)) {
     $('day-field').hidden = false;
     $('day-select').innerHTML = days.map(d => `<option value="${d}">${fmtDay(d)}</option>`).join('');
     $('day-select').addEventListener('change', refreshSeats);
@@ -166,10 +172,21 @@ $('reg-form').addEventListener('submit', async e => {
   if (!f.name.value.trim() || f.phone.value.replace(/\D/g, '').length < 10) { err.textContent = 'Укажи имя и телефон.'; err.hidden = false; return; }
   if (!f.consent.checked) { err.textContent = 'Нужно согласие на обработку данных.'; err.hidden = false; return; }
   if (f.website.value) return; // бот
+  if (Number(f.captcha.value) !== capA + capB) { err.textContent = 'Проверь ответ в примере.'; err.hidden = false; return; }
 
-  if (!REG_ENDPOINT || !BOT_USERNAME) { // сервер ещё не подключён — не теряем человека
-    err.innerHTML = `Онлайн-запись скоро заработает. Пока напиши нам в <a class="link" href="${CONTACT_TG}">Телеграм</a>.`;
-    err.hidden = false; return;
+  if (!REG_ENDPOINT || !BOT_USERNAME) {
+    // сервер ещё не подключён: заявка уходит сообщением в Телеграм — текст готов, осталось отправить
+    const when = dateKnown(ev) ? `, ${fmtDay(currentDay())}` : '';
+    const n = Number(f.people.value), who = n === 1 ? 'приду один' : n === 2 ? 'придём вдвоём' : 'придём втроём';
+    const msg = `Привет! Хочу на встречу «${ev.title}»${when}. Меня зовут ${f.name.value.trim()}, ${who}.${f.comment.value.trim() ? ' ' + f.comment.value.trim() : ''}`;
+    show('reg-confirm');
+    $('reg-title').textContent = 'Последний шаг';
+    $('confirm-text').textContent = 'Отправь это сообщение нам в Телеграм, и место за тобой.';
+    $('confirm-msg').value = msg; $('confirm-copy').hidden = false;
+    $('confirm-copy-btn').addEventListener('click', () => { navigator.clipboard?.writeText(msg); $('confirm-copy-btn').textContent = 'Скопировано'; });
+    $('tg-confirm').textContent = 'Открыть Телеграм'; $('tg-confirm').href = CONTACT_TG;
+    $('confirm-note').textContent = 'Откроется чат с Платоном. Вставь сообщение и отправь. Ответим и подтвердим запись.';
+    return;
   }
 
   const day = currentDay();
