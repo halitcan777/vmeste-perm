@@ -317,12 +317,13 @@ function renderPosters(target, { months = true, limit = 0 } = {}){
   const key = ev => { const d = parseDay(nextDate(ev)); return `${d.getFullYear()}-${d.getMonth()}`; };
   const keys = [...new Set(list.map(key))];
   const name = k => MONTHS_NOM[Number(k.split('-')[1])];
+  const tabs = document.getElementById(target + '-months');
   let i = 0;
   const draw = () => {
     const items = list.filter(ev => key(ev) === keys[i]).slice(0, limit || undefined);
-    const nav = months ? `<div class="mbar"><b>${name(keys[i])}</b><div class="mbar__nav">${i > 0 ? `<button type="button" class="btn btn--line btn--sm" data-m="-1">${name(keys[i - 1])}</button>` : ''}${i < keys.length - 1 ? `<button type="button" class="btn btn--line btn--sm" data-m="1">${name(keys[i + 1])}</button>` : ''}</div></div>` : '';
-    el.innerHTML = `${nav}<div class="pfeed">${items.map(ev => posterHTML(ev)).join('')}</div>`;
-    el.querySelectorAll('[data-m]').forEach(b => b.addEventListener('click', () => { i += Number(b.dataset.m); draw(); el.scrollIntoView({ block: 'start', behavior: 'smooth' }); }));
+    if (tabs && months) tabs.innerHTML = keys.map((k, n) => `<button type="button" data-m="${n}" aria-pressed="${n === i}">${name(k)}</button>`).join('');
+    el.innerHTML = `<div class="pfeed">${items.map(ev => posterHTML(ev)).join('')}</div>`;
+    if (tabs) tabs.querySelectorAll('[data-m]').forEach(b => b.addEventListener('click', () => { i = Number(b.dataset.m); draw(); }));
   };
   draw();
 }

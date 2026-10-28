@@ -64,6 +64,7 @@ p { margin: 0; }
 .sec-head .more { flex: none; }
 @media (max-width: 760px) {
   .sec-head { flex-direction: column; align-items: flex-start; margin-bottom: 24px; }
+  .sec-head--tabs { align-items: flex-start; gap: 16px; }
   .sec-head h2 { font-size: 40px; }
   .sec-head .lead { margin-top: 16px; font-size: 17px; }
 }
@@ -261,7 +262,10 @@ a.pstrip__item:hover b { color: var(--blue); }
 @media (max-width: 640px) { .pstrip { grid-template-columns: 1fr 1fr; } .pstrip__item { min-height: 88px; } .pstrip__item b { font-size: 17px; } }
 
 /* месяцы над афишей, как у Триумфа */
-.months { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 40px; padding-bottom: 8px; scrollbar-width: thin; }
+.months { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 24px; padding-bottom: 4px; scrollbar-width: thin; }
+.sec-head--tabs { align-items: center; }
+.sec-head--tabs .months { margin: 0; }
+.actions--center { justify-content: center; margin-top: 32px; }
 .months button { flex: none; min-height: 44px; padding: 0 20px; border: 0; border-radius: var(--radius); background: var(--paper); font: 600 15px/1 var(--f-text); text-transform: uppercase; letter-spacing: .04em; cursor: pointer; color: var(--ink-2); }
 .section:not(.section--alt) .months button { background: var(--paper-2); }
 .months button:hover { color: var(--ink); }
@@ -443,9 +447,13 @@ a.card:hover .card__name { color: var(--blue); }
 
 /* Страница встречи */
 .event-head { background: var(--paper-2); padding: 24px 0 56px; }
-.event-poster { margin: 0 0 40px; }
-.event-head h1 { margin-top: 16px; font-size: 72px; max-width: 900px; }
-.event-head .lead { margin-top: 24px; font-size: 19px; color: var(--ink-2); max-width: 720px; }
+/* постер слева в половину ширины, справа текст: одна логика для всех встреч */
+.event-head__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.event-poster { margin: 0; }
+.event-head h1 { margin-top: 12px; font-size: 56px; }
+.event-head .lead { margin-top: 16px; font-size: 18px; color: var(--ink-2); }
+.facts.facts--row { grid-template-columns: repeat(3, 1fr); margin-top: 24px; }
+.event-head .fact { background: var(--paper); }
 .event-body { display: grid; grid-template-columns: 7fr 5fr; gap: 56px; align-items: start; }
 .facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .fact { padding: 16px 20px; border-radius: var(--radius); background: var(--paper-2); }
@@ -472,10 +480,11 @@ a.card:hover .card__name { color: var(--blue); }
 .done-actions { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 24px; }
 .reg .intro { margin-top: 16px; font-size: 17px; }
 @media (max-width: 900px) {
-  .event-body { grid-template-columns: 1fr; gap: 32px; }
+  .event-body, .event-head__grid { grid-template-columns: 1fr; gap: 24px; }
   .event-head { padding: 16px 0 40px; }
-  .event-poster { margin-bottom: 24px; }
-  .event-head h1 { font-size: 40px; }
+  .event-head h1 { font-size: 36px; }
+  .facts.facts--row { grid-template-columns: 1fr 1fr; }
+  .step { grid-template-columns: 1fr; gap: 6px; }
   .reg { position: static; padding: 24px; }
 }
 
@@ -624,10 +633,6 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 /* ---------- постеры событий: 16:9, каждая встреча — своя афиша; размеры от ширины постера (cqw) ---------- */
 .pfeed { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
 @media (max-width: 640px) { .pfeed { grid-template-columns: 1fr; gap: 16px; } }
-.mbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
-.mbar b { font: 600 40px/1 var(--f-display); text-transform: uppercase; }
-.mbar__nav { display: flex; gap: 8px; }
-@media (max-width: 760px) { .mbar b { font-size: 32px; } }
 
 .poster { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; container-type: inline-size; overflow: hidden; border-radius: var(--radius); background: var(--paper-2); color: var(--ink); text-decoration: none; --pc: var(--wine); }
 .poster.blue { --pc: var(--blue); } .poster.green { --pc: var(--green); } .poster.ink { --pc: var(--ink); } .poster.wine { --pc: var(--wine); }
@@ -791,10 +796,11 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 /* программа вечера и ведущие на странице встречи */
 .h-sub { margin-top: 48px; font-size: 32px; }
 .program { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
-.step { display: grid; grid-template-columns: 220px 1fr; gap: 24px; align-items: start; padding: 16px 20px; border-radius: var(--radius); background: var(--paper-2); }
-.step b { font: 600 20px/1.2 var(--f-display); text-transform: uppercase; }
-.step p { margin: 0; font-size: 16px; color: var(--ink-2); }
+.step { display: grid; grid-template-columns: 240px 1fr; gap: 32px; align-items: start; padding: 20px 24px; border-radius: var(--radius); background: var(--paper-2); }
+.step b { font: 600 24px/1.15 var(--f-display); text-transform: uppercase; }
+.step p { margin: 0; font-size: 17px; line-height: 1.5; color: var(--ink-2); }
 .event-guests { margin-top: 16px; }
+@media (max-width: 1040px) { .step { grid-template-columns: 180px 1fr; gap: 20px; } }
 @media (max-width: 760px) { .h-sub { margin-top: 40px; font-size: 28px; } .step { grid-template-columns: 1fr; gap: 6px; } }
 
 /* главная на телефоне: только афиша и команда (как у Триумфа) */

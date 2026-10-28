@@ -17,16 +17,20 @@
 <!-- 1. Шапка события -->
 <section class="event-head"><div class="container">
   <p class="crumbs"><a href="afisha.html">Афиша</a><span id="ev-type">Встреча</span></p>
-  <div class="event-poster" id="ev-figure"></div>
-  <p class="slide__when" id="ev-when"></p>
-  <h1 id="ev-title">Встреча</h1>
-  <p class="lead" id="ev-text"></p>
+  <div class="event-head__grid">
+    <div class="event-poster" id="ev-figure"></div>
+    <div class="event-head__text">
+      <p class="slide__when" id="ev-when"></p>
+      <h1 id="ev-title">Встреча</h1>
+      <p class="lead" id="ev-text"></p>
+      <div class="facts facts--row" id="ev-facts"></div>
+    </div>
+  </div>
 </div></section>
 
 <!-- 2. Подробности слева, запись справа -->
 <section class="section"><div class="container event-body">
   <div>
-    <div class="facts" id="ev-facts"></div>
     <div class="copy" id="ev-about"></div>
     <div id="ev-program"></div>
     <div id="ev-guests"></div>
