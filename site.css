@@ -702,10 +702,10 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .p-stars .poster__ph { right: 55cqw; }
 .p-stars .poster__ph img { filter: grayscale(1) contrast(1.2); mix-blend-mode: multiply; opacity: .85; }
 .p-stars .poster__stars { left: 40cqw; top: 0; width: 60cqw; height: 100%; }
-.p-stars .poster__k { left: 4cqw; top: 4cqw; width: 36cqw; }
+.p-stars .poster__k { left: 4cqw; bottom: 4cqw; width: 36cqw; }   /* внизу, чтобы не ложиться на лицо */
 .p-stars .poster__title { left: 49cqw; top: 4cqw; width: 47cqw; text-transform: none; }
 .p-stars .poster__meta { left: 49cqw; bottom: 4cqw; width: 47cqw; opacity: .9; }
-.p-stars .poster__stamp { right: auto; top: auto; left: 4cqw; bottom: 4cqw; }
+.p-stars .poster__stamp { right: auto; left: 4cqw; top: 4cqw; }
 
 /* белый: кадр слева, тяжёлый чёрный заголовок наезжает на кадр снизу; цвет постера — сдвиг печати */
 .p-white { background: var(--paper); }
@@ -738,6 +738,52 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .p-swiss .poster__face small b { display: block; color: var(--ink); }
 .p-swiss .poster__stamp { right: auto; left: 4cqw; top: 4cqw; }
 .p-swiss .poster__k { top: 7.5cqw; }
+
+/* цифры: крем, огромная дата в цвете, кадр справа, заголовок под цифрами (швейцарская школа) */
+.p-numeral { background: var(--paper); }
+.p-numeral .poster__ph { left: 54cqw; }
+.p-numeral .poster__k { left: 4cqw; top: 4cqw; color: var(--pc); }
+.p-numeral .poster__num { left: 3cqw; top: 6cqw; font: 600 26cqw/1 var(--f-display); letter-spacing: -.03em; color: var(--pc); white-space: nowrap; }
+.p-numeral .poster__foot { left: 4cqw; bottom: 4cqw; width: 48cqw; }
+.p-numeral .poster__meta { color: var(--ink-2); }
+
+/* полосы: кадр нарезан на три вертикальные полосы с зазорами (Polar Circus), заголовок поверх внизу */
+.p-strips { background: var(--pc); color: var(--paper); }   /* зазоры между полосами — цвет постера */
+.p-strips .poster__strip { inset: auto; top: 0; bottom: 0; width: 30cqw; overflow: hidden; }
+.p-strips .poster__strip img { width: 100cqw; max-width: none; filter: grayscale(1) contrast(1.15) brightness(.85); }
+.p-strips .poster__strip::before { opacity: .12; }
+.p-strips .poster__k { left: 4cqw; top: 4cqw; width: 60cqw; }
+.p-strips .poster__title { left: 4cqw; bottom: 4cqw; width: 80cqw; text-shadow: .35cqw .35cqw 0 var(--ink); }
+.p-strips .poster__meta { right: 4cqw; bottom: 4.5cqw; width: 26cqw; text-align: right; display: none; }
+
+/* плашки: тёмный кадр во весь постер, каждое слово заголовка в своей плашке — кремовая и цветная по очереди */
+.p-boxes { background: var(--ink); color: var(--paper); }
+.p-boxes .poster__ph img { filter: grayscale(1) contrast(1.1) brightness(.75); }
+.p-boxes .poster__boxes { left: 4cqw; top: 4cqw; width: 70cqw; display: flex; flex-direction: column; align-items: flex-start; gap: .8cqw; }
+.p-boxes .poster__boxes span { display: inline-block; padding: .6cqw 1.6cqw .2cqw; background: var(--paper); color: var(--ink); }
+.p-boxes .poster__boxes span:nth-child(even) { background: var(--pc); color: var(--paper); margin-left: 6cqw; }
+.p-boxes .poster__k { left: 4cqw; bottom: 4cqw; width: 50cqw; }
+.p-boxes .poster__meta { right: 4cqw; bottom: 4.5cqw; width: 34cqw; text-align: right; opacity: .9; }
+
+/* ризограф: кадр в одном цвете бренда, заголовок во втором со сдвигом печати, бумага */
+.p-riso { background: var(--paper-2); --pc2: var(--blue); }
+.p-riso.blue { --pc: var(--blue); --pc2: var(--wine); } .p-riso.green { --pc: var(--green); --pc2: var(--blue); } .p-riso.wine { --pc: var(--wine); --pc2: var(--green); } .p-riso.ink { --pc: var(--ink); --pc2: var(--wine); }
+.p-riso .poster__ph { left: 38cqw; }
+.p-riso .poster__ph img { filter: grayscale(1) contrast(1.25) brightness(1.05); mix-blend-mode: multiply; }
+.p-riso .poster__ph::after { content: ''; position: absolute; inset: 0; z-index: 2; background: var(--pc); mix-blend-mode: screen; opacity: .85; }
+.p-riso .poster__ph::before { opacity: .3; background-size: 1.1cqw 1.1cqw; background-image: radial-gradient(circle, rgba(15,15,15,.8) .35cqw, transparent .55cqw); }
+.p-riso .poster__k { left: 4cqw; top: 4cqw; width: 60cqw; color: var(--pc2); }
+.p-riso .poster__title { left: 4cqw; bottom: 10cqw; width: 60cqw; color: var(--pc2); text-shadow: -.45cqw -.3cqw 0 var(--pc); mix-blend-mode: multiply; }
+.p-riso .poster__meta { left: 4cqw; bottom: 4cqw; width: 34cqw; color: var(--ink-2); }
+
+/* вертикаль: ч/б кадр во весь постер, строка вдоль правого края, месяц в рамке, заголовок внизу (Fred Again) */
+.p-vertical { background: var(--ink); color: var(--paper); }
+.p-vertical .poster__ph img { filter: grayscale(1) contrast(1.15) brightness(.85); }
+.p-vertical .poster__vert { right: 4cqw; top: 4cqw; writing-mode: vertical-rl; font: 600 2.4cqw/1 var(--f-text); letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+.p-vertical .poster__box { left: 4cqw; top: 4cqw; padding: 1.2cqw 2cqw .8cqw; border: .35cqw solid var(--paper); font: 600 3cqw/1 var(--f-display); text-transform: uppercase; }
+.p-vertical .poster__title { left: 4cqw; bottom: 4cqw; width: 70cqw; }
+.p-vertical .poster__meta { display: none; }   /* подпись не влезает рядом с широким заголовком */
+.p-vertical .poster__stamp { right: 9cqw; top: 4cqw; }
 
 /* постер на странице встречи — не ссылка, без зерна фигуры; правила фигуры для <img> на постер не распространяются */
 .event-head figure .poster img { aspect-ratio: auto; border-radius: 0; }

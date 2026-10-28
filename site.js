@@ -222,11 +222,11 @@ function renderPast(target){
 // У каждой встречи свой постер 16:9: реальный кадр гостя (или кадр встречи) + типографика. Девять композиций,
 // в events.js у встречи poster: { variant, color, title ('|' = перенос строки), kicker, sub, photo, pos }.
 // Фирменная обработка общая: кадры ч/б или дуотон в цветах бренда, зерно и растр печати, сдвиг цвета на заголовке, штамп «Вместе».
-const POSTER_VARIANTS = ['paper', 'duo', 'night', 'acid', 'frame', 'stars', 'white', 'circle', 'swiss'];
+const POSTER_VARIANTS = ['paper', 'duo', 'night', 'acid', 'frame', 'stars', 'white', 'circle', 'swiss', 'numeral', 'strips', 'boxes', 'riso', 'vertical'];
 // Заголовок: базовый размер и ширина колонки по композициям (cqw), чтобы длинное слово («Бесфамильная») ужалось, а не обрезалось
-const POSTER_FIT = { paper: [9, 44], duo: [10, 36], night: [10.5, 64], acid: [12.5, 72], frame: [8.5, 42], stars: [9.5, 47], white: [11, 56], circle: [9, 62], swiss: [9, 46] };
+const POSTER_FIT = { paper: [9, 44], duo: [10, 36], night: [10.5, 64], acid: [12.5, 72], frame: [8.5, 42], stars: [9.5, 47], white: [11, 56], circle: [9, 62], swiss: [9, 46], numeral: [7.5, 50], strips: [12, 80], boxes: [9, 70], riso: [11, 60], vertical: [11, 70] };
 // Цвет штампа «Вместе» по композиции: paper — светлый поверх кадра, иначе цвет постера
-const POSTER_STAMP = { paper: 'paper', duo: 'paper', night: 'paper', acid: 'pc', frame: 'paper', stars: 'paper', white: 'paper', circle: 'paper', swiss: 'ink' };
+const POSTER_STAMP = { paper: 'paper', duo: 'paper', night: 'paper', acid: 'pc', frame: 'paper', stars: 'paper', white: 'paper', circle: 'paper', swiss: 'ink', numeral: 'ink', strips: 'paper', boxes: 'paper', riso: 'ink', vertical: 'paper' };
 function posterData(ev){
   const p = ev.poster || {};
   const guests = (ev.people || []).map(id => PEOPLE.find(x => x.id === id)).filter(Boolean);
@@ -242,6 +242,7 @@ function posterData(ev){
     title: p.title || ev.title,
     sub: p.sub || (guest ? guest.position : ev.text),
     when: whenLine(ev) || MONTHS_NOM[parseDay(d).getMonth()],
+    num: dateKnown(ev) ? `${pad2(parseDay(d).getDate())}.${pad2(parseDay(d).getMonth() + 1)}` : MONTHS_NOM[parseDay(d).getMonth()],
     place: ev.place || 'Ленина, 44',
     guests,
   };
@@ -270,7 +271,7 @@ function posterHTML(ev, { link = true } = {}){
   const k = text => `<p class="poster__k">${text}</p>`;
   const meta = text => `<p class="poster__meta">${esc(text)}</p>`;
   const foot = (...parts) => `<div class="poster__foot">${parts.join('')}</div>`;
-  const stampColor = POSTER_STAMP[x.variant] === 'pc' ? x.color : POSTER_STAMP[x.variant];
+  const stampColor = POSTER_STAMP[x.variant] === 'pc' || (!x.photo && POSTER_STAMP[x.variant] === 'paper') ? x.color : POSTER_STAMP[x.variant];
   const stamp = `<img class="poster__stamp" src="assets/brand/wordmark-${stampColor}.svg" alt="Вместе">`;
   // Swiss: два ведущих — два портрета с подписями вместо одного кадра
   const faces = x.guests.length > 1
@@ -286,6 +287,11 @@ function posterHTML(ev, { link = true } = {}){
     stars:  `${ph}${POSTER_STARS}${k(`${esc(x.kicker)}<br>${esc(x.when)}`)}${title}${meta(x.sub)}${stamp}`,
     white:  `${ph}${k(`${esc(x.kicker)}`)}${meta(x.sub)}<p class="poster__big">${esc(x.when)}</p>${title}${stamp}`,
     circle: `${ph}${POSTER_RING}${k(`${esc(x.kicker)}<br>${esc(x.when)} · ${esc(x.place)}`)}${title}${stamp}`,
+    numeral: `${ph}${k(esc(x.kicker))}<p class="poster__num">${esc(x.num)}</p>${foot(title, meta(x.sub))}${stamp}`,
+    strips: `${[0, 1, 2].map(i => `<div class="poster__ph poster__strip" style="left:${i * 34}cqw">${x.photo ? `<img src="${x.photo}" alt="" loading="lazy" style="object-position:${x.pos};margin-left:${-i * 34}cqw">` : ''}</div>`).join('')}${k(`${esc(x.kicker)} · ${esc(x.when)}`)}${title}${meta(x.sub)}${stamp}`,
+    boxes:  `${ph}<h3 class="poster__title poster__boxes" style="font-size:${size}cqw">${lines.map(l => `<span>${esc(l)}</span>`).join('')}</h3>${k(`${esc(x.kicker)}<br>${esc(x.when)} · ${esc(x.place)}`)}${meta(x.sub)}${stamp}`,
+    riso:   `${ph}${k(`${esc(x.kicker)} · ${esc(x.when)}`)}${title}${meta(x.sub)}${stamp}`,
+    vertical: `${ph}<p class="poster__vert">${esc(x.kicker)} · ${esc(x.place)}</p><p class="poster__box">${esc(x.when)}</p>${title}${meta(x.sub)}${stamp}`,
     swiss:  `${faces}${k(esc(x.guests.length > 1 ? 'Ведут ' + x.guests.map(g => g.name.split(' ')[0]).join(' и ') : x.kicker))}${title}${grid}${stamp}`,
   }[x.variant];
   const tag = link ? 'a' : 'div';

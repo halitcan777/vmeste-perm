@@ -89,10 +89,12 @@ const EVENTS = /*EVENTS-START*/[
   {
     "id": "otkrytie",
     "poster": {
-      "variant": "acid",
+      "variant": "numeral",
       "color": "wine",
-      "title": "Открытие",
-      "kicker": "Первый вечер «Вместе»"
+      "title": "Открытие|«Вместе»",
+      "kicker": "Первый вечер · Ленина, 44",
+      "photo": "assets/img/events/otkrytie-lights.webp",
+      "pos": "50% 40%"
     },
     "title": "Открытие «Вместе»",
     "dates": [
@@ -109,16 +111,18 @@ const EVENTS = /*EVENTS-START*/[
     "confirmed": true,
     "type": "Открытие",
     "color": "wine",
-    "image": "assets/img/events/otkrytie.webp",
-    "imagePos": "50% 50%"
+    "image": "assets/img/events/otkrytie-lights.webp",
+    "imagePos": "50% 40%"
   },
   {
     "id": "kino-1",
     "poster": {
-      "variant": "frame",
+      "variant": "strips",
       "color": "wine",
       "title": "Кино|на стене",
-      "kicker": "Вечер для своих"
+      "kicker": "Вечер для своих",
+      "photo": "assets/img/events/kino-projector.webp",
+      "pos": "50% 50%"
     },
     "title": "Кино на стене",
     "dates": [
@@ -135,16 +139,19 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Вечер для своих",
     "color": "wine",
-    "image": "assets/img/events/kino-1.webp",
+    "image": "assets/img/events/kino-projector.webp",
     "imagePos": "50% 50%"
   },
   {
     "id": "tattoo",
     "poster": {
-      "variant": "swiss",
+      "variant": "boxes",
       "color": "wine",
-      "title": "Тату:|профессия изнутри",
-      "kicker": "Мастер-класс"
+      "title": "Тату:|профессия|изнутри",
+      "kicker": "Мастер-класс",
+      "sub": "Эскиз, машинка, первая работа. Никого не бьём.",
+      "photo": "assets/img/events/tattoo-glove.webp",
+      "pos": "50% 45%"
     },
     "title": "Мастер-класс по татуировкам",
     "dates": [
@@ -161,8 +168,8 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Профориентация",
     "color": "blue",
-    "image": "assets/img/events/tattoo.webp",
-    "imagePos": "50% 40%"
+    "image": "assets/img/events/tattoo-glove.webp",
+    "imagePos": "50% 45%"
   },
   {
     "id": "oshchepkov",
@@ -211,7 +218,7 @@ const EVENTS = /*EVENTS-START*/[
     "text": "Три-четыре часа практики в кругу с двумя-тремя специалистами. Ведут клинический психолог Николай Баранов и бизнес-психолог Александр Сотников. Тема уточняется.",
     "about": [
       "Формат «Общение»: практика в кругу, без оценок и спешки. Мест немного, чтобы каждый успел поучаствовать.",
-      "Группа ведущих — два-три специалиста: Николай Баранов (клинический психолог, системный терапевт), Александр Сотников (бизнес-психолог). Третий ведущий уточняется."
+      "Группа ведущих — два-три специалиста: Николай Баранов (клинический психолог, системный терапевт), Александр Сотников (бизнес-психолог) и третий ведущий из команды Александра."
     ],
     "action": "Записаться",
     "capacity": 20,
@@ -232,7 +239,7 @@ const EVENTS = /*EVENTS-START*/[
       "color": "wine",
       "title": "Данил|Гурьянов",
       "kicker": "Встреча · Бизнес",
-      "pos": "62% 40%"
+      "pos": "55% 35%"
     },
     "title": "Встреча с Данилом Гурьяновым",
     "dates": [
@@ -253,15 +260,18 @@ const EVENTS = /*EVENTS-START*/[
       "guryanov"
     ],
     "image": "assets/img/people/guryanov.webp",
-    "imagePos": "62% 40%"
+    "imagePos": "55% 35%"
   },
   {
     "id": "m-perm",
     "poster": {
-      "variant": "swiss",
+      "variant": "riso",
       "color": "green",
       "title": "«М Пермь»",
-      "kicker": "Встреча · Проекты"
+      "kicker": "Встреча · Проекты",
+      "sub": "Знакомство с командой сообщества",
+      "photo": "assets/img/events/mperm-friends.webp",
+      "pos": "50% 35%"
     },
     "title": "Встреча с «М Пермь»",
     "dates": [
@@ -277,17 +287,18 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Проекты",
     "color": "ink",
-    "image": "assets/img/events/m-perm.webp",
-    "imagePos": "50% 50%"
+    "image": "assets/img/events/mperm-friends.webp",
+    "imagePos": "50% 35%"
   },
   {
     "id": "haircut",
     "poster": {
-      "variant": "paper",
+      "variant": "acid",
       "color": "blue",
-      "title": "Стрижки:|профессия изнутри",
+      "title": "Стрижки",
       "kicker": "Мастер-класс",
-      "sub": "Инструменты, первые навыки, как зарабатывают."
+      "photo": "assets/img/events/haircut-hands.webp",
+      "pos": "50% 50%"
     },
     "title": "Мастер-класс по стрижкам",
     "dates": [
@@ -303,7 +314,7 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Профориентация",
     "color": "blue",
-    "image": "assets/img/events/haircut.webp",
+    "image": "assets/img/events/haircut-hands.webp",
     "imagePos": "50% 50%"
   },
   {
@@ -340,7 +351,7 @@ const EVENTS = /*EVENTS-START*/[
   {
     "id": "besfamilnaya",
     "poster": {
-      "variant": "white",
+      "variant": "vertical",
       "color": "ink",
       "title": "Яна|Бесфамильная",
       "kicker": "Встреча · Бизнес",
@@ -397,10 +408,12 @@ const EVENTS = /*EVENTS-START*/[
   {
     "id": "vshe-lekciya",
     "poster": {
-      "variant": "night",
+      "variant": "frame",
       "color": "blue",
       "title": "Лекция|с ВШЭ",
-      "kicker": "Выездная · Профориентация"
+      "kicker": "Выездная",
+      "photo": "assets/img/events/lecture-students.webp",
+      "pos": "50% 40%"
     },
     "title": "Выездная лекция с ВШЭ Пермь",
     "dates": [
@@ -417,8 +430,8 @@ const EVENTS = /*EVENTS-START*/[
     "type": "Профориентация",
     "color": "blue",
     "place": "Площадка уточняется",
-    "image": "assets/img/events/vshe-lekciya.webp",
-    "imagePos": "50% 50%"
+    "image": "assets/img/events/lecture-students.webp",
+    "imagePos": "50% 40%"
   },
   {
     "id": "didebashvili",
@@ -458,7 +471,9 @@ const EVENTS = /*EVENTS-START*/[
       "color": "green",
       "title": "Йога|для новичков",
       "kicker": "Мастер-класс",
-      "sub": "Дыхание, растяжка, спокойная голова. Коврики есть."
+      "sub": "Дыхание, растяжка, спокойная голова. Коврики есть.",
+      "photo": "assets/img/events/yoga-mat.webp",
+      "pos": "50% 40%"
     },
     "title": "Мастер-класс по йоге",
     "dates": [
@@ -474,8 +489,8 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Вечер для своих",
     "color": "wine",
-    "image": "assets/img/events/yoga.webp",
-    "imagePos": "50% 50%"
+    "image": "assets/img/events/yoga-mat.webp",
+    "imagePos": "50% 40%"
   }
 ]/*EVENTS-END*/;
 
