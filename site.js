@@ -106,7 +106,7 @@ function renderHero(){
   const pics = (h.photos || []).map(p => `<figure class="wall__pic" style="left:${p.x}%;top:${p.y}%;width:${p.w}%;--rot:${p.rot || 0}deg"><img src="${p.src}" alt="" loading="lazy"></figure>`).join('');
   const btns = (h.actions || []).map(a => `<a class="btn${a.line ? ' btn--line' : ''}" href="${a.href}"${/^https?:/.test(a.href) ? ' target="_blank" rel="noopener"' : ''}>${esc(a.label)}</a>`).join('');
   const canvas = f.image
-    ? `<img class="hang__img" src="${f.image}" alt="${esc(f.title || '')}" width="1800" height="1424">`
+    ? `<img class="hang__img" src="${f.image}" alt="${esc(f.title || '')}" width="1800" height="1166">`
     : `<div class="hang__canvas grain">${f.kicker ? `<p class="hang__kicker">${esc(f.kicker)}</p>` : ''}<h1 class="hang__title">${esc(f.title || SITE.slogan)}</h1>${f.sub ? `<p class="hang__sub">${esc(f.sub)}</p>` : ''}</div>`;
   el.classList.add('hero--wall');
   el.innerHTML = `<div class="wall" style="background-image:url('${h.wall}')">${pics}

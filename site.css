@@ -901,7 +901,7 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .hang__sub { margin-top: 20px; font: 500 15px/1.4 var(--f-text); color: var(--ink-2); letter-spacing: .04em; text-transform: uppercase; }
 .hang__img { display: block; width: 100%; height: auto; }
 /* готовая картина (png с прозрачностью): без css-рамы, шире, свисает ниже края стены */
-.hang--pic { width: min(880px, 64%); bottom: -120px; padding: 0; background: none; box-shadow: none; }
+.hang--pic { width: min(900px, 66%); bottom: -110px; padding: 0; background: none; box-shadow: none; }
 .hang--pic::before { display: none; }
 .hang--pic .hang__img { filter: drop-shadow(0 18px 28px rgba(15,15,15,.35)); }
 @media (max-width: 1040px) { .hang--pic { width: min(700px, 80%); bottom: -90px; } }
