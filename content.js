@@ -139,7 +139,8 @@ const SITE = {
   address: 'Пермь, ул. Ленина, 44',
   entrance: 'Вход со Старокирпичного переулка',
   // Яндекс-карта (виджет по адресу). Видео «как нас найти»: ссылка на .mp4 или код вставки (YouTube/VK/Rutube), пусто = плашка.
-  mapUrl: 'https://yandex.ru/map-widget/v1/?text=' + encodeURIComponent('Пермь, улица Ленина, 44') + '&z=17',
+  // Яндекс-виджет по координатам с меткой (поиск по тексту метку не ставил): 58.012615, 56.244163 — Ленина, 44 (здание филармонии «Триумф»)
+  mapUrl: 'https://yandex.ru/map-widget/v1/?ll=56.244163%2C58.012615&pt=56.244163%2C58.012615%2Cpm2rdm&z=17&l=map',
   howToFindVideo: '',
   telegram: 'https://t.me/Paltus10',          // личка Платона
   channel: 'https://t.me/v_meste_perm',       // канал: анонсы

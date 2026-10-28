@@ -320,14 +320,13 @@ const EVENTS = /*EVENTS-START*/[
   {
     "id": "m-perm",
     "poster": {
-      "variant": "collage",
-      "color": "green",
+      "variant": "mperm",
+      "color": "ink",
       "title": "Встреча|с «мпермь»",
-      "kicker": "Городское медиа, 5 лет о Перми",
-      "sub": "Рассказывают, показывают, объединяют",
-      "photo": "assets/img/events/mperm-collage.webp",
-      "pos": "50% 50%",
-      "raw": true
+      "kicker": "Городское медиа",
+      "sub": "Пять лет рассказывают, показывают и объединяют Пермь",
+      "photo": "",
+      "pos": "50% 50%"
     },
     "title": "Встреча с «мпермь»",
     "dates": [
@@ -344,7 +343,7 @@ const EVENTS = /*EVENTS-START*/[
     "regOpens": null,
     "type": "Проекты",
     "color": "ink",
-    "image": "assets/img/events/mperm-collage.webp",
+    "image": "",
     "imagePos": "50% 50%",
     "program": [
       [
@@ -539,9 +538,9 @@ const EVENTS = /*EVENTS-START*/[
   {
     "id": "friendship-love",
     "poster": {
-      "variant": "boxes",
+      "variant": "collage",
       "color": "blue",
-      "title": "Дроп|Friendship/Love",
+      "title": "Дроп|Friendship/|Love",
       "kicker": "Вечер для своих",
       "sub": "Уличная одежда из Перми. Ограниченный тираж.",
       "photo": "assets/img/events/friendship-love.webp",

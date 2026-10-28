@@ -77,7 +77,7 @@ function renderFoot(){
       <div class="foot__brand">
         <img class="wordmark" src="assets/brand/wordmark-blue.svg" alt="Вместе" width="243" height="56">
         <p>${esc(SITE.slogan)} ${esc(SITE.about)}</p>
-        <a class="btn" href="${SITE.channel}" target="_blank" rel="noopener">Канал в Телеграме</a>
+        <div class="actions"><a class="btn" href="${SITE.channel}" target="_blank" rel="noopener">Канал в Телеграме</a><a class="btn btn--line" href="${SITE.instagram}" target="_blank" rel="noopener">Инстаграм</a></div>
       </div>
       <div><h3>Разделы</h3><ul>${navItems().map(([href, label]) => `<li><a href="${href}">${label}</a></li>`).join('')}</ul></div>
       <div><h3>Где мы</h3><ul><li>${esc(SITE.address)}</li><li>Вход со Старокирпичного переулка</li></ul></div>
@@ -230,9 +230,9 @@ function renderPast(target){
 // У каждой встречи свой постер 16:9: реальный кадр гостя (или кадр встречи) + типографика. Девять композиций,
 // в events.js у встречи poster: { variant, color, title ('|' = перенос строки), kicker, sub, photo, pos }.
 // Фирменная обработка общая: кадры ч/б или дуотон в цветах бренда, зерно и растр печати, сдвиг цвета на заголовке, штамп «Вместе».
-const POSTER_VARIANTS = ['paper', 'duo', 'night', 'acid', 'frame', 'stars', 'white', 'circle', 'swiss', 'numeral', 'strips', 'boxes', 'riso', 'vertical', 'type', 'collage'];
+const POSTER_VARIANTS = ['paper', 'duo', 'night', 'acid', 'frame', 'stars', 'white', 'circle', 'swiss', 'numeral', 'strips', 'boxes', 'riso', 'vertical', 'type', 'collage', 'mperm'];
 // Заголовок: базовый размер и ширина колонки по композициям (cqw), чтобы длинное слово («Бесфамильная») ужалось, а не обрезалось
-const POSTER_FIT = { paper: [9, 44], duo: [10, 36], night: [10.5, 64], acid: [12.5, 72], frame: [8.5, 42], stars: [9.5, 47], white: [11, 56], circle: [9, 62], swiss: [9, 46], numeral: [7.5, 50], strips: [12, 80], boxes: [9, 70], riso: [11, 60], vertical: [11, 70], type: [10.5, 80], collage: [10, 62] };
+const POSTER_FIT = { paper: [9, 44], duo: [10, 36], night: [10.5, 64], acid: [12.5, 72], frame: [8.5, 42], stars: [9.5, 47], white: [11, 56], circle: [9, 62], swiss: [9, 46], numeral: [7.5, 50], strips: [12, 80], boxes: [9, 70], riso: [11, 60], vertical: [11, 70], type: [10.5, 80], collage: [11, 46], mperm: [11, 60] };
 function posterData(ev){
   const p = ev.poster || {};
   const guests = (ev.people || []).map(id => PEOPLE.find(x => x.id === id)).filter(Boolean);
@@ -301,7 +301,9 @@ function posterHTML(ev, { link = true } = {}){
     boxes:  `${ph}<h3 class="poster__title poster__boxes" style="--ts:${size}cqw">${lines.map(l => `<span>${esc(l)}</span>`).join('')}</h3>${k(`${esc(x.kicker)}<br>${esc(x.when)}, ${esc(x.place)}`)}${meta(x.sub)}${stamp}`,
     riso:   `${ph}${k(`${esc(x.kicker)}<br>${esc(x.when)}`)}${title}${meta(x.sub)}${stamp}`,
     vertical: `${ph}<p class="poster__vert">${esc(x.kicker)}</p><p class="poster__box">${esc(x.when)}</p>${title}${meta(x.sub)}${stamp}`,
-    collage: `${ph}${k(`${esc(x.kicker)}<br>${esc(x.when)}, ${esc(x.place)}`)}${title}${stamp}`,
+    collage: `${ph}${k(`${esc(x.kicker)}<br>${esc(x.when)}, ${esc(x.place)}`)}${title}${meta(x.sub)}${stamp}`,
+    // «мпермь»: в стиле их карточек — чёрное поле, жёлтые плашки-«стикеры», моноширинный текст
+    mperm:  `<p class="poster__k">${esc(x.kicker)}</p>${title}<p class="poster__tag">${esc(x.when)}, ${esc(x.place)}</p>${meta(x.sub)}${stamp}`,
     type:   `${k(esc(x.kicker))}<p class="poster__big">${esc(x.when)}</p>${title}${meta(x.sub)}${stamp}`,
     swiss:  `${faces}${k(esc(x.guests.length > 1 ? 'Ведут ' + x.guests.map(g => g.name.split(' ')[0]).join(' и ') : x.kicker))}${title}${grid}${stamp}`,
   }[x.variant];

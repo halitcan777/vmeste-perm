@@ -848,12 +848,24 @@ body[data-page="home"] .join h2 { font-size: 56px; }
   .p-type .poster__k { top: 11cqw; }
 }
 
-/* коллаж: кадр во весь постер в цвете (чужой визуал), затемнение снизу, заголовок внизу слева */
+/* коллаж: кадры в правой половине (в цвете), слева чистое поле под заголовок и подпись */
 .p-collage { background: var(--ink); color: var(--paper); }
-.p-collage .poster__ph::after { content: ''; position: absolute; inset: 0; z-index: 2; background: linear-gradient(to top, rgba(15,15,15,.88) 0, rgba(15,15,15,.35) 40%, rgba(15,15,15,0) 65%); }
-.p-collage .poster__k { left: 4cqw; top: 4cqw; width: 50cqw; padding: 1cqw 1.4cqw; background: var(--ink); }
-.p-collage .poster__title { left: 4cqw; bottom: 4cqw; width: 62cqw; text-shadow: .35cqw .35cqw 0 var(--pc); }
+.p-collage .poster__ph::after { content: ''; position: absolute; inset: 0; z-index: 2; background: linear-gradient(to right, rgba(15,15,15,1) 34%, rgba(15,15,15,.55) 48%, rgba(15,15,15,0) 62%); }
+.p-collage .poster__k { left: 4cqw; top: 4cqw; width: 44cqw; }
+.p-collage .poster__title { left: 4cqw; top: 50%; transform: translateY(-50%); width: 46cqw; text-shadow: .35cqw .35cqw 0 var(--pc); }
+.p-collage .poster__meta { left: 4cqw; bottom: 4cqw; width: 40cqw; opacity: .9; }
+.p-collage .poster__stamp { right: auto; left: 4cqw; top: 11cqw; display: none; }
 /* raw: кадр без ч/б и растра */
 .poster--raw .poster__ph img, .poster--raw .poster__strip img { filter: none; }
 .poster--raw .poster__ph::before { display: none; }
 .p-boxes.poster--raw .poster__ph img { filter: brightness(.85); }
+
+/* «мпермь»: их визуальный язык — чёрное поле, жёлтые плашки, моноширинный шрифт, летучие мыши не копируем */
+.p-mperm { background: #121212; color: var(--paper); --yel: #F2C318; }
+.p-mperm .poster__k { left: 4cqw; top: 4cqw; padding: .9cqw 1.4cqw .7cqw; background: var(--yel); color: #121212; font-family: ui-monospace, 'SF Mono', Menlo, monospace; letter-spacing: .04em; }
+.p-mperm .poster__title { left: 4cqw; top: 14cqw; width: 70cqw; color: var(--paper); text-shadow: .4cqw .4cqw 0 var(--yel); }
+.p-mperm .poster__tag { left: 4cqw; bottom: 12cqw; padding: .9cqw 1.4cqw .7cqw; background: var(--yel); color: #121212; font: 600 2.3cqw/1.3 ui-monospace, 'SF Mono', Menlo, monospace; letter-spacing: .04em; text-transform: uppercase; }
+.p-mperm .poster__meta { left: 4cqw; bottom: 4cqw; width: 60cqw; font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 2.1cqw; opacity: .85; }
+.p-mperm .poster__stamp { right: 4cqw; top: 4cqw; }
+.p-mperm::after { content: ''; position: absolute; right: -8cqw; bottom: -14cqw; width: 40cqw; height: 40cqw; border-radius: 50%; background: var(--yel); z-index: 0; }
+.p-mperm .poster__k, .p-mperm .poster__title, .p-mperm .poster__tag, .p-mperm .poster__meta { z-index: 1; }
