@@ -919,3 +919,14 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .p-full .poster__title { left: 4cqw; bottom: 4cqw; width: 62cqw; text-shadow: .35cqw .35cqw 0 var(--pc); }
 /* кадры гостя на странице встречи */
 .event-photos { margin-top: 16px; }
+
+/* заглушка «следующая встреча»: тёмный кадр с кругом стульев, место под постер свободно, кнопка в канал */
+.p-teaser { background: var(--ink); color: var(--paper); }
+.p-teaser .poster__ph img { filter: grayscale(.4) brightness(.7) contrast(1.1); }
+.p-teaser .poster__ph::after { content: ''; position: absolute; inset: 0; z-index: 2; background: linear-gradient(to right, rgba(15,15,15,.92) 0, rgba(15,15,15,.7) 45%, rgba(15,15,15,.15) 100%); }
+.p-teaser .poster__k { left: 4cqw; top: 4cqw; color: var(--paper); opacity: .8; }
+.p-teaser .poster__title { left: 4cqw; top: 10cqw; width: 60cqw; font-size: 7.5cqw; text-transform: none; text-shadow: .3cqw .3cqw 0 var(--blue); }
+.p-teaser .poster__meta { left: 4cqw; bottom: 13cqw; width: 50cqw; opacity: .85; }
+.p-teaser .poster__btn { left: 4cqw; bottom: 4cqw; background: var(--paper); border-color: var(--paper); color: var(--ink); font-size: max(2.2cqw, 11px); min-height: 7cqw; padding: 0 3cqw; }
+.p-teaser:hover .poster__btn { background: var(--blue); border-color: var(--blue); color: var(--paper); }
+@container (max-width: 520px) { .p-teaser .poster__title { font-size: max(7.5cqw, 20px); } .p-teaser .poster__meta { display: none; } }

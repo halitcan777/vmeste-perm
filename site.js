@@ -274,6 +274,17 @@ function posterHTML(ev, { link = true } = {}){
   return `<${tag} class="poster p-${x.variant} ${x.color} grain${x.raw ? ' poster--raw' : ''}"${link ? ` href="${eventUrl(ev)}" aria-label="${esc(ev.title)}"` : ''}>${body}</${tag}>`;
 }
 
+// Постер-заглушка в конце ленты: «следующая встреча появится здесь», ведёт в канал (анонсы выходят там первыми)
+function nextTeaserHTML(){
+  return `<a class="poster p-teaser blue grain" href="${SITE.channel}" target="_blank" rel="noopener" aria-label="Следующая встреча: следи за каналом">
+    <div class="poster__ph"><img src="assets/img/events/next-chairs.webp" alt="" loading="lazy" style="object-position:50% 50%"></div>
+    <p class="poster__k">Следующая встреча</p>
+    <h3 class="poster__title">Завтра здесь<br>может появиться<br>новое событие</h3>
+    <p class="poster__meta">Анонсы выходят сначала в канале. Подпишись, чтобы не пропустить.</p>
+    <span class="btn btn--sm poster__btn">Канал в Телеграме</span>
+  </a>`;
+}
+
 // Лента постеров: один месяц на экране, кнопки соседних месяцев. Месяц берём по внутренней дате
 // (числа без подтверждения не показываем — см. SHOW_DATES в events.js).
 function renderPosters(target, { months = true, limit = 0 } = {}){
@@ -289,7 +300,8 @@ function renderPosters(target, { months = true, limit = 0 } = {}){
   const draw = () => {
     const items = list.filter(ev => key(ev) === keys[i]).slice(0, limit || undefined);
     if (tabs && months) tabs.innerHTML = keys.map((k, n) => `<button type="button" data-m="${n}" aria-pressed="${n === i}">${name(k)}</button>`).join('');
-    el.innerHTML = `<div class="pfeed">${items.map(ev => posterHTML(ev)).join('')}</div>`;
+    const teaser = items.length % 2 ? nextTeaserHTML() : '';   // при нечётном числе закрывает пустую клетку
+    el.innerHTML = `<div class="pfeed">${items.map(ev => posterHTML(ev)).join('')}${teaser}</div>`;
     if (tabs) tabs.querySelectorAll('[data-m]').forEach(b => b.addEventListener('click', () => { i = Number(b.dataset.m); draw(); }));
   };
   draw();
