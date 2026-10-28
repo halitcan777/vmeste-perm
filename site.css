@@ -884,7 +884,7 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 }
 
 /* ---------- герой: кирпичная стена, кадры на ней, картина в центре свисает вниз ---------- */
-.hero--wall { padding: 0 0 var(--section); margin-top: calc(-1 * var(--head-h)); }
+.hero--wall { padding: 0 0 calc(var(--section) + 96px); margin-top: calc(-1 * var(--head-h)); }   /* низ: место под свисающую картину */
 .wall { position: relative; height: clamp(520px, 78vh, 760px); background-size: cover; background-position: center; }
 .wall::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, rgba(253,249,242,.35) 0, rgba(253,249,242,0) 30%); }
 /* кадры на стене: белая рамка-полароид, наклон, тень */

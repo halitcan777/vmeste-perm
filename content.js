@@ -148,7 +148,7 @@ const HERO = {
   photos: [],   // 28.10: кадры со стены убраны, владелец пришлёт, что и как развесить
   // картина: цифровая копия настоящей (золотой багет, надпись «ВМЕСТЕ» баллончиком, без пейзажа) — assets/img/painting.png
   frame: { image: 'assets/img/painting.png', title: 'Вместе' },
-  actions: [{ label: 'Афиша', href: 'afisha.html' }, { label: 'Канал в Телеграме', href: 'https://t.me/v_meste_perm', line: true }],
+  actions: [],   // 28.10: кнопок под картиной нет (решение владельца)
 };
 
 const SITE = {
