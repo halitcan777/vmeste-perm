@@ -95,69 +95,28 @@ function renderFoot(){
 }
 
 /* ---------- главный кадр: ближайшие события ---------- */
-function slideBg(ev, i){
-  const src = photo(ev.heroImage || ev.image);   // для героя можно задать свой широкий кадр
-  return src ? `<figure class="slide__bg"><img src="${src}" alt=""${i ? ' loading="lazy"' : ''}${ev.imagePos ? ` style="object-position:${ev.imagePos}"` : ''}></figure>` : '';
-}
-
+// Герой: кирпичная стена во всю ширину под прозрачной шапкой, на стене мелкие кадры «как мы начали»,
+// в центре картина с надписью, свисающая ниже края стены (HERO в content.js).
 function renderHero(){
   const el = document.getElementById('hero');
   if (!el) return;
-  const list = upcomingEvents().slice(0, 5);
-  if (!list.length) {
-    el.classList.add('hero--empty');
-    el.innerHTML = `<div class="container"><div class="hero__frame grain hero__frame--flat"><div class="slide">
-      <div class="container slide__in"><h1 class="slide__title">${esc(SITE.slogan)}</h1>
-      <p class="slide__text">Новые встречи скоро. Анонсы сначала выходят в канале.</p>
-      <div class="slide__actions"><a class="btn" href="${SITE.channel}" target="_blank" rel="noopener">Канал в Телеграме</a></div></div>
-    </div></div></div>`;
-    return;
-  }
-  const slides = list.map((ev, i) => {
-    const d = nextDate(ev);
-    return `<article class="slide${ev.textSide === 'right' ? ' slide--right' : ''}"${i ? ' hidden' : ''} aria-roledescription="слайд" aria-label="${i + 1} из ${list.length}">
-      ${slideBg(ev, i)}
-      <div class="container slide__in">
-        <p class="slide__when">${dateKnown(ev) ? `<span>${fmtDay(d)}, ${weekday(d)}</span>${timeKnown(ev) ? `<span>${esc(ev.time)}</span>` : ''}` : `<span>${esc(ev.type || 'Встреча')}</span>`}<span>${esc(ev.place || DEFAULT_PLACE)}</span></p>
-        <h1 class="slide__title">${esc(ev.title)}</h1>
-        <p class="slide__text">${esc(ev.text)}</p>
-        <div class="slide__actions">
-          <a class="btn" href="${eventUrl(ev)}">${regNotOpenYet(ev) ? 'Подробнее' : esc(ev.action)}</a>
-          <a class="btn btn--line" href="afisha.html">Вся афиша</a>
-        </div>
-      </div>
-    </article>`;
-  }).join('');
-  const flat = photo(list[0].image) ? 'hero__frame--photo' : 'hero__frame--flat';
-  el.innerHTML = `<div class="container"><div class="hero__frame grain ${flat} ${list[0].color || ''}">
-    <div class="hero__slides">${slides}</div>
-    <div class="hero__bar"><div class="container">
-      <span class="num" id="hero-num">${pad2(1)}/${pad2(list.length)}</span>
-      <span id="hero-name">${esc(list[0].type || 'Встреча')}</span>
-      <div class="hero__ctrl"${list.length < 2 ? ' hidden' : ''}><button type="button" data-step="-1" aria-label="Предыдущее событие">←</button><button type="button" data-step="1" aria-label="Следующее событие">→</button></div>
-    </div></div>
-  </div></div>`;
-  if (list.length < 2) return;
-  let cur = 0;
-  const all = el.querySelectorAll('.slide'), frame = el.querySelector('.hero__frame');
-  const show = n => {
-    cur = (n + list.length) % list.length;
-    all.forEach((s, i) => s.hidden = i !== cur);
-    frame.className = `hero__frame grain ${photo(list[cur].image) ? 'hero__frame--photo' : 'hero__frame--flat'} ${list[cur].color || ''}`;
-    el.querySelector('#hero-num').textContent = `${pad2(cur + 1)}/${pad2(list.length)}`;
-    el.querySelector('#hero-name').textContent = list[cur].type || 'Встреча';
-  };
-  el.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => { show(cur + Number(b.dataset.step)); restart(); }));
-  // автопрокрутка по кругу каждые 3 секунды; пауза при наведении/фокусе и при «уменьшить движение»
-  let timer = null;
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const start = () => { if (!reduce && !timer) timer = setInterval(() => show(cur + 1), 3000); };
-  const stop = () => { clearInterval(timer); timer = null; };
-  const restart = () => { stop(); start(); };
-  frame.addEventListener('mouseenter', stop); frame.addEventListener('mouseleave', start);
-  frame.addEventListener('focusin', stop); frame.addEventListener('focusout', start);
-  document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
-  start();
+  const h = typeof HERO !== 'undefined' ? HERO : null;
+  if (!h) { el.hidden = true; return; }
+  const f = h.frame || {};
+  const pics = (h.photos || []).map(p => `<figure class="wall__pic" style="left:${p.x}%;top:${p.y}%;width:${p.w}%;--rot:${p.rot || 0}deg"><img src="${p.src}" alt="" loading="lazy"></figure>`).join('');
+  const btns = (h.actions || []).map(a => `<a class="btn${a.line ? ' btn--line' : ''}" href="${a.href}"${/^https?:/.test(a.href) ? ' target="_blank" rel="noopener"' : ''}>${esc(a.label)}</a>`).join('');
+  const canvas = f.image
+    ? `<img class="frame__img" src="${f.image}" alt="${esc(f.title || '')}">`
+    : `<div class="frame__canvas grain">${f.kicker ? `<p class="frame__kicker">${esc(f.kicker)}</p>` : ''}<h1 class="frame__title">${esc(f.title || SITE.slogan)}</h1>${f.sub ? `<p class="frame__sub">${esc(f.sub)}</p>` : ''}</div>`;
+  el.classList.add('hero--wall');
+  el.innerHTML = `<div class="wall" style="background-image:url('${h.wall}')">${pics}
+      <div class="frame"><span class="frame__nail"></span>${canvas}</div>
+    </div>
+    ${btns ? `<div class="container hero__actions">${btns}</div>` : ''}`;
+  const head = document.getElementById('head');
+  if (!head) return;
+  const sync = () => head.classList.toggle('head--over', window.scrollY < 24 && getComputedStyle(el).display !== 'none');
+  window.addEventListener('scroll', sync, { passive: true }); window.addEventListener('resize', sync); sync();
 }
 
 /* ---------- афиша: месяцы и карточки ---------- */

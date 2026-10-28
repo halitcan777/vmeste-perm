@@ -17,6 +17,15 @@
 <!-- Ближайшие события: кадр на всю ширину -->
 <section class="hero home-desk" id="hero" aria-label="Ближайшие события"></section>
 
+<!-- Блог и новости -->
+<section class="section" id="news"><div class="container">
+  <div class="sec-head">
+    <div><h2>Блог и новости</h2></div>
+    <a class="btn btn--line more" href="blog.html">Все записи</a>
+  </div>
+  <div id="home-posts"></div>
+</div></section>
+
 <!-- Афиша -->
 <section class="section section--alt" id="afisha"><div class="container">
   <div class="sec-head sec-head--tabs">
@@ -60,6 +69,7 @@
 <script>
 renderHero();
 renderPosters('home-events', { months: true });
+renderPosts('home-posts', { limit: 3 });
 renderTeamMosaic('home-team', { count: 16 });
 renderPeople('home-people', { limit: 5, compact: true });
 renderWhere('where-block');
