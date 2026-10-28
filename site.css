@@ -25,7 +25,7 @@
   --head-h: 72px;
   --tick-h: 48px;
 
-  --f-display: 'Fredoka One', 'Onest', system-ui, sans-serif;   /* 28.10: Fatboy убран по решению владельца (перегружает) */
+  --f-display: 'Oswald', 'Rubik', system-ui, sans-serif;   /* 28.10: заголовки снова Oswald (решение владельца), Fredoka — мелкий текст */
   --f-sub: 'Fredoka One', 'Onest', system-ui, sans-serif;
   --f-head: 'Rubik', system-ui, sans-serif;
   --f-text: 'Onest', system-ui, sans-serif;
@@ -946,34 +946,13 @@ body[data-page="home"] .join h2 { font-size: 56px; }
 .hero--wall:not(:has(.hang)) { padding-bottom: var(--section); }
 .hero--wall:not(:has(.hang)) .wall { height: clamp(360px, 56vh, 520px); }
 
-/* ---------- шрифты дизайнера: Fatboy широкий, размеры заголовков ужаты; Fredoka — подзаголовки ---------- */
-h1, h2, h3, h4 { font-weight: 400; letter-spacing: .01em; }
-.sec-head h2 { font-size: 48px; }
-.page-head h1 { font-size: 80px; }
-.event-head h1 { font-size: 44px; line-height: 1; }
-.phero__name { font-size: 96px; }
-.h-sub { font-size: 28px; }
-.step b, .fmt__name, .card__name, .ev-card__title, .spot__text h3, .principles b, .menu nav a, .mbar b { font-family: var(--f-sub); font-weight: 400; text-transform: none; }
-.step b { font-size: 22px; }
-.poster__title { letter-spacing: 0; line-height: 1; }
-.poster__k, .poster__meta { font-family: var(--f-sub); letter-spacing: .02em; }
-.poster__big { font-family: var(--f-display); }
-@media (max-width: 760px) {
-  .sec-head h2 { font-size: 32px; }
-  .page-head h1 { font-size: 44px; }
-  .event-head h1 { font-size: 30px; }
-  .phero__name { font-size: clamp(28px, 9vw, 44px); }
-  .h-sub { font-size: 24px; }
-}
-
-
-/* длинные заголовки (название встречи, подразделы, форма) — Fredoka: Fatboy только для коротких «масштабных» */
-.event-head h1, .h-sub, .reg h2, .post-head h1, .lb__note { font-family: var(--f-sub) !important; text-transform: none !important; letter-spacing: 0; }
-.event-head h1 { font-size: 52px; line-height: 1.05; }
-.h-sub { font-size: 30px; }
-.reg h2 { font-size: 28px; }
-@media (max-width: 760px) { .event-head h1 { font-size: 32px; } .h-sub { font-size: 24px; } }
 
 /* пустая стена вплотную к афише: без полосы фона между ними, стена выше */
 .hero--wall:not(:has(.hang)) { padding-bottom: 0 !important; }
 .hero--wall:not(:has(.hang)) .wall { height: clamp(420px, 66vh, 640px) !important; }
+
+/* Fredoka One — мелкий текст (28.10): плашки, подписи и мета на постерах, имена в карточках, шаги программы, вкладки, кнопки */
+.poster__k, .poster__meta, .poster__tag, .poster__marq, .poster__vert, .poster__box, .poster__grid, .poster__face small,
+.card__name, .card__role, .card__num, .step b, .fmt__name, .fmt__next, .slide__when, .crumbs, .fact strong, .hero__kicker,
+.months button, .btn, .head__nav a, .tick, .foot h3, .phero__top, .phero__foot, .where__addr span, .field > span, .form-note {
+  font-family: var(--f-sub) !important; font-weight: 400 !important; }
